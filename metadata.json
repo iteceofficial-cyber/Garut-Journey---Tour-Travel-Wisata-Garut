@@ -1,0 +1,6 @@
+{
+  "name": "Garut Journey - Tour & Travel Wisata Garut",
+  "description": "Platform resmi tour & travel Garut Journey. Jelajahi keindahan alam Gunung Papandayan, Kawah Kamojang, Situ Bagendit, dan Curug Sanghyang Taraje dengan booking online dan pembayaran aman.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
