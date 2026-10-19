@@ -162,12 +162,11 @@ export const ContactPage: React.FC = () => {
 
                 <div>
                   <label className="block text-xs font-medium text-stone-700 mb-1">
-                    Alamat Email <span className="text-rose-500">*</span>
+                    Alamat Email (Opsional)
                   </label>
                   <input
                     type="email"
-                    required
-                    placeholder="nama@email.com"
+                    placeholder="nama@email.com (opsional)"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full text-xs rounded-lg border border-stone-300 px-3 py-2.5 bg-stone-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#0F3827]"

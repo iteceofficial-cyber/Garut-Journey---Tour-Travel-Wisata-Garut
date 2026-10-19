@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { TourPackage, Article, GalleryItem, SiteSettings } from '../types.js';
+import type { TourPackage, Article, GalleryItem, SiteSettings, AddonOption } from '../types.js';
 import {
   ShieldCheck,
   TrendingUp,
@@ -33,8 +33,14 @@ import {
   Smartphone,
   Monitor,
   AlertTriangle,
+  AlertCircle,
+  Sparkles,
+  Zap,
+  Eye,
+  Link as LinkIcon,
   Image as ImageIcon
 } from 'lucide-react';
+import { analyzeArticleSEO, autoOptimizeArticleSEO, type ArticleSEOAnalysis } from '../utils/seo.js';
 
 interface AdminDashboardProps {
   onLogout: () => void;
@@ -42,13 +48,14 @@ interface AdminDashboardProps {
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'analytics' | 'bookings' | 'packages' | 'articles' | 'gallery' | 'branding_legality' | 'payments'
+    'overview' | 'analytics' | 'bookings' | 'packages' | 'addons' | 'articles' | 'gallery' | 'branding_legality' | 'seo' | 'payments'
   >('overview');
 
   const [metrics, setMetrics] = useState<any>(null);
   const [analytics, setAnalytics] = useState<any>(null);
   const [bookings, setBookings] = useState<any[]>([]);
   const [packages, setPackages] = useState<TourPackage[]>([]);
+  const [addons, setAddons] = useState<AddonOption[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [paymentEvents, setPaymentEvents] = useState<any[]>([]);
@@ -74,6 +81,26 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [newActivityDay, setNewActivityDay] = useState(1);
   const [newActivityText, setNewActivityText] = useState('');
 
+  // Layanan Tambahan (Add-ons) state
+  const [showNewAddonModal, setShowNewAddonModal] = useState(false);
+  const [editingAddon, setEditingAddon] = useState<AddonOption | null>(null);
+  const [addonName, setAddonName] = useState('');
+  const [addonPrice, setAddonPrice] = useState<number>(100000);
+  const [addonUnit, setAddonUnit] = useState('per trip');
+  const [addonDesc, setAddonDesc] = useState('');
+  const [addonIsActive, setAddonIsActive] = useState(true);
+  const [addonSaving, setAddonSaving] = useState(false);
+
+  // Website Global SEO state
+  const [metaTitle, setMetaTitle] = useState('');
+  const [metaDescription, setMetaDescription] = useState('');
+  const [metaKeywords, setMetaKeywords] = useState('');
+  const [canonicalUrl, setCanonicalUrl] = useState('');
+  const [ogImageUrl, setOgImageUrl] = useState('');
+  const [robotsTxt, setRobotsTxt] = useState('');
+  const [seoSavedMessage, setSeoSavedMessage] = useState(false);
+  const [seoDevicePreview, setSeoDevicePreview] = useState<'desktop' | 'mobile'>('desktop');
+
   // Article creation and edit state
   const [showNewArticleModal, setShowNewArticleModal] = useState(false);
   const [editingArticle, setEditingArticle] = useState<Article | null>(null);
@@ -84,6 +111,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [artContent, setArtContent] = useState('');
   const [artImage, setArtImage] = useState('/src/assets/images/hero_garut_papandayan_1792431914366.jpg');
   const [artReadTime, setArtReadTime] = useState(4);
+  const [artFocusKeyword, setArtFocusKeyword] = useState('');
+  const [artMetaTitle, setArtMetaTitle] = useState('');
+  const [artMetaDesc, setArtMetaDesc] = useState('');
+  const [artKeywords, setArtKeywords] = useState('');
+  const [editArtFocusKeyword, setEditArtFocusKeyword] = useState('');
 
   // Gallery creation and edit state
   const [showNewGalleryModal, setShowNewGalleryModal] = useState(false);
@@ -114,12 +146,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     try {
       const headers = { 'x-admin-token': adminToken };
 
-      const [resMetrics, resAnalytics, resBookings, resPackages, resEvents, resArticles, resGallery, resSettings] =
+      const [resMetrics, resAnalytics, resBookings, resPackages, resAddons, resEvents, resArticles, resGallery, resSettings] =
         await Promise.all([
           fetch('/api/admin/metrics', { headers }).then(r => r.json()).catch(() => ({})),
           fetch('/api/admin/analytics', { headers }).then(r => r.json()).catch(() => ({})),
           fetch('/api/admin/bookings', { headers }).then(r => r.json()).catch(() => ({})),
           fetch('/api/packages').then(r => r.json()).catch(() => ({})),
+          fetch('/api/admin/addons', { headers }).then(r => r.json()).catch(() => ({})),
           fetch('/api/admin/payments/events', { headers }).then(r => r.json()).catch(() => ({})),
           fetch('/api/articles').then(r => r.json()).catch(() => ({})),
           fetch('/api/gallery').then(r => r.json()).catch(() => ({})),
@@ -130,6 +163,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       if (resAnalytics.success) setAnalytics(resAnalytics.data);
       if (resBookings.success) setBookings(resBookings.data);
       if (resPackages.success) setPackages(resPackages.data);
+      if (resAddons.success && Array.isArray(resAddons.data)) setAddons(resAddons.data);
       if (resEvents.success) setPaymentEvents(resEvents.data);
       if (resArticles.success) setArticles(resArticles.data);
       if (resGallery.success) setGallery(resGallery.data);
@@ -145,6 +179,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         setCompanyName(resSettings.data.companyName || '');
         setNibNumber(resSettings.data.nibNumber || '');
         setLicenseNumber(resSettings.data.licenseNumber || '');
+        
+        // Populate SEO fields
+        setMetaTitle(resSettings.data.metaTitle || 'Garut Journey – Jelajahi Keindahan Wisata Garut');
+        setMetaDescription(resSettings.data.metaDescription || 'Temukan pengalaman wisata Garut yang berkesan melalui paket perjalanan praktis, nyaman, dan mudah dipesan secara online. Papandayan, Kamojang, Bagendit.');
+        setMetaKeywords(resSettings.data.metaKeywords || 'Wisata Garut, Paket Wisata Garut, Tour Garut, Garut City Tour, Private Trip Garut');
+        setCanonicalUrl(resSettings.data.canonicalUrl || 'https://garutjourney.id');
+        setOgImageUrl(resSettings.data.ogImageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg');
+        setRobotsTxt(resSettings.data.robotsTxtContent || 'User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /booking/\nDisallow: /pembayaran/\nDisallow: /api/\n\nSitemap: https://garutjourney.id/sitemap.xml');
       }
     } catch (err) {
       console.error('Failed to load admin data', err);

@@ -30,10 +30,11 @@ const bookingInputSchema = z.object({
   packageSlug: z.string().min(1, 'Slug paket wisata wajib diisi.'),
   scheduleId: z.string().optional().default(''),
   customDate: z.string().optional(),
+  departureDate: z.string().optional(),
   participantsCount: z.number().int().min(1, 'Jumlah peserta minimal 1 orang.'),
   customerName: z.string().min(3, 'Nama lengkap minimal 3 karakter.'),
   customerPhone: z.string().min(8, 'Nomor WhatsApp tidak valid.').max(18),
-  customerEmail: z.string().email('Format alamat email tidak valid.'),
+  customerEmail: z.string().email('Format alamat email tidak valid.').optional().or(z.literal('')),
   customerNotes: z.string().max(500).optional(),
   pickupLocation: z.string().min(2, 'Lokasi penjemputan wajib ditentukan.'),
   paymentTier: z.enum(['full', 'dp']).optional().default('full'),
@@ -99,13 +100,57 @@ app.get('/api/packages/:slug', (req: Request, res: Response) => {
   }
 });
 
-// 2. Addons
+// 2. Addons (Public)
 app.get('/api/addons', (_req: Request, res: Response) => {
-  const addons = Object.entries(VERIFIED_ADDONS).map(([id, info]) => ({
-    id,
-    ...info
-  }));
-  res.json({ success: true, data: addons });
+  res.json({ success: true, data: dbStore.getAddons(false) });
+});
+
+// Admin Addons CRUD
+app.get('/api/admin/addons', requireAdmin, (_req: Request, res: Response) => {
+  res.json({ success: true, data: dbStore.getAddons(true) });
+});
+
+app.post('/api/admin/addons', requireAdmin, (req: Request, res: Response) => {
+  try {
+    const { name, price, unit, description, isActive } = req.body;
+    if (!name || isNaN(Number(price))) {
+      return res.status(400).json({ success: false, error: 'Nama dan harga layanan tambahan wajib diisi.' });
+    }
+    const newAddon = dbStore.createAddon({
+      name,
+      price: Number(price),
+      unit: unit || 'per trip',
+      description: description || '',
+      isActive: isActive !== undefined ? Boolean(isActive) : true
+    });
+    res.status(201).json({ success: true, data: newAddon, message: 'Layanan tambahan berhasil ditambahkan.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.put('/api/admin/addons/:id', requireAdmin, (req: Request, res: Response) => {
+  try {
+    const updated = dbStore.updateAddon(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Layanan tambahan tidak ditemukan.' });
+    }
+    res.json({ success: true, data: updated, message: 'Layanan tambahan berhasil diperbarui.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.delete('/api/admin/addons/:id', requireAdmin, (req: Request, res: Response) => {
+  try {
+    const deleted = dbStore.deleteAddon(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ success: false, error: 'Layanan tambahan tidak ditemukan.' });
+    }
+    res.json({ success: true, message: 'Layanan tambahan berhasil dihapus.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 // 3. Articles (Blog Wisata Garut)
@@ -160,7 +205,18 @@ app.post('/api/bookings', (req: Request, res: Response) => {
   }
 
   try {
-    const creation = dbStore.createBooking(parsed.data);
+    const departureDate = (parsed.data.departureDate || parsed.data.customDate || '').trim();
+    if (!departureDate) {
+      return res.status(400).json({
+        success: false,
+        error: 'Tentukan tanggal keberangkatan trip Anda.'
+      });
+    }
+
+    const creation = dbStore.createBooking({
+      ...parsed.data,
+      departureDate
+    });
     if (!creation.success || !creation.booking) {
       return res.status(400).json({
         success: false,
@@ -414,7 +470,6 @@ app.get('/api/admin/bookings', requireAdmin, (req: Request, res: Response) => {
     .map(b => ({
       ...b,
       tourPackage: dbStore.packages.find(p => p.id === b.packageId),
-      schedule: dbStore.schedules.find(s => s.id === b.scheduleId),
       payment: dbStore.payments.find(p => p.bookingId === b.id)
     }));
 
@@ -436,14 +491,6 @@ app.patch('/api/admin/bookings/:id/status', requireAdmin, (req: Request, res: Re
 
   booking.status = operationalStatus;
   booking.updatedAt = new Date().toISOString();
-
-  if (operationalStatus === 'cancelled') {
-    const schedule = dbStore.schedules.find(s => s.id === booking.scheduleId);
-    if (schedule) {
-      schedule.bookedCapacity = Math.max(0, schedule.bookedCapacity - booking.participantsCount);
-      if (schedule.status === 'sold_out') schedule.status = 'open';
-    }
-  }
 
   dbStore.saveToDisk();
   res.json({ success: true, message: 'Status operasional berhasil diperbarui.', data: booking });
@@ -525,7 +572,7 @@ app.delete('/api/admin/packages/:id', requireAdmin, (req: Request, res: Response
 // Admin Articles CRUD
 app.post('/api/admin/articles', requireAdmin, (req: Request, res: Response) => {
   try {
-    const { title, category, summary, content, author, imageUrl, readTimeMinutes } = req.body;
+    const { title, category, summary, content, author, imageUrl, readTimeMinutes, metaTitle, metaDescription, keywords } = req.body;
     const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     const newArt = {
       id: 'art-' + Date.now(),
@@ -538,6 +585,9 @@ app.post('/api/admin/articles', requireAdmin, (req: Request, res: Response) => {
       imageUrl: imageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg',
       readTimeMinutes: Number(readTimeMinutes) || 4,
       isPublished: true,
+      metaTitle: metaTitle || `${title} | Garut Journey`,
+      metaDescription: metaDescription || summary || content.slice(0, 150),
+      keywords: keywords || '',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -641,6 +691,7 @@ app.post('/api/admin/packages', requireAdmin, (req: Request, res: Response) => {
       termsAndConditions: data.termsAndConditions || '',
       isPublished: data.isPublished !== undefined ? data.isPublished : true,
       featuredOrder: Number(data.featuredOrder) || 0,
+      tripType: 'private' as const,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -652,45 +703,17 @@ app.post('/api/admin/packages', requireAdmin, (req: Request, res: Response) => {
   }
 });
 
-// Admin Schedules
+// Admin Schedules (Garut Journey operates 100% private trips with flexible dates)
 app.get('/api/admin/schedules', requireAdmin, (_req: Request, res: Response) => {
-  const schedules = dbStore.schedules.map(s => ({
-    ...s,
-    package: dbStore.packages.find(p => p.id === s.packageId)
-  }));
-  res.json({ success: true, data: schedules });
+  res.json({ success: true, data: [] });
 });
 
-app.post('/api/admin/schedules', requireAdmin, (req: Request, res: Response) => {
-  try {
-    const { packageId, departureDate, totalCapacity, customPrice } = req.body;
-    const newSchedule = {
-      id: `sch-${packageId}-${departureDate}`,
-      packageId,
-      departureDate,
-      totalCapacity: Number(totalCapacity) || 15,
-      bookedCapacity: 0,
-      customPrice: customPrice ? Number(customPrice) : null,
-      status: 'open' as const,
-      createdAt: new Date().toISOString()
-    };
-    dbStore.schedules.push(newSchedule);
-    dbStore.saveToDisk();
-    res.status(201).json({ success: true, data: newSchedule });
-  } catch (err: any) {
-    res.status(500).json({ success: false, error: err.message });
-  }
+app.post('/api/admin/schedules', requireAdmin, (_req: Request, res: Response) => {
+  res.status(201).json({ success: true, message: 'Garut Journey mengoperasikan 100% Private Trip dengan tanggal fleksibel.' });
 });
 
-app.delete('/api/admin/schedules/:id', requireAdmin, (req: Request, res: Response) => {
-  const idx = dbStore.schedules.findIndex(s => s.id === req.params.id);
-  if (idx !== -1) {
-    dbStore.schedules.splice(idx, 1);
-    dbStore.saveToDisk();
-    res.json({ success: true, message: 'Jadwal berhasil dihapus.' });
-  } else {
-    res.status(404).json({ success: false, error: 'Jadwal tidak ditemukan.' });
-  }
+app.delete('/api/admin/schedules/:id', requireAdmin, (_req: Request, res: Response) => {
+  res.json({ success: true, message: 'Jadwal berhasil dihapus.' });
 });
 
 // Admin Audit Events
@@ -794,7 +817,11 @@ ${allUrls
 });
 
 app.get('/robots.txt', (_req: Request, res: Response) => {
-  const baseUrl = process.env.APP_URL || 'https://garutjourney.id';
+  const baseUrl = process.env.APP_URL || dbStore.siteSettings.canonicalUrl || 'https://garutjourney.id';
+  if (dbStore.siteSettings.robotsTxtContent) {
+    res.setHeader('Content-Type', 'text/plain');
+    return res.send(dbStore.siteSettings.robotsTxtContent);
+  }
   const robots = `User-agent: *
 Allow: /
 Disallow: /admin
@@ -828,7 +855,7 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, () => {
+  app.listen(Number(PORT), '0.0.0.0', () => {
     console.log(`[Garut Journey] Server running on port ${PORT} (dev: ${isDev})`);
   });
 }

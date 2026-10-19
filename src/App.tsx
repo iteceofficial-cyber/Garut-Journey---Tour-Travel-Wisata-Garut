@@ -230,12 +230,13 @@ export default function App() {
     );
   };
 
-  const isAdminView = currentPath.startsWith('/admin') && isAdminLoggedIn;
+  const isAdminPage = currentPath === '/admin' || currentPath.startsWith('/admin');
+  const isAdminDashboard = isAdminPage && isAdminLoggedIn;
 
   return (
     <div className="min-h-screen flex flex-col bg-stone-50 font-sans text-stone-900">
       {/* Hide standard navbar on full admin dashboard */}
-      {!isAdminView && (
+      {!isAdminDashboard && (
         <Navbar
           currentPath={currentPath}
           navigate={navigate}
@@ -249,13 +250,13 @@ export default function App() {
         {renderCurrentView()}
       </main>
 
-      {/* Floating WhatsApp button on public pages */}
-      {!isAdminView && (
+      {/* Floating WhatsApp button on public pages (never on admin portal or dashboard) */}
+      {!isAdminPage && (
         <WhatsAppFloatingButton whatsappNumber={siteSettings?.whatsappNumber} />
       )}
 
       {/* Dynamic footer */}
-      {!isAdminView && (
+      {!isAdminDashboard && (
         <Footer navigate={navigate} siteSettings={siteSettings} />
       )}
     </div>

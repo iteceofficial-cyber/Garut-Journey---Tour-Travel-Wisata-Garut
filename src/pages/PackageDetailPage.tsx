@@ -69,8 +69,6 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({ pkg, onBac
       ? `${pkg.durationDays} Hari ${pkg.durationNights} Malam`
       : `${pkg.durationDays} Hari Penuh (One Day Trip)`;
 
-  const availableSchedules = pkg.schedules?.filter(s => s.status !== 'closed') || [];
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       {/* Breadcrumb & Back */}

@@ -186,7 +186,7 @@ export const PaymentPage: React.FC<PaymentPageProps> = ({ bookingNumber, token, 
             </div>
             <div>
               <span className="text-stone-400 block text-[11px]">Tanggal Keberangkatan</span>
-              <span className="font-semibold text-stone-800 font-mono">{booking.schedule?.departureDate || '-'}</span>
+              <span className="font-semibold text-stone-800 font-mono">{booking.departureDate || '-'}</span>
             </div>
             <div>
               <span className="text-stone-400 block text-[11px]">Jumlah Tamu</span>

@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import type {
+  AddonOption,
   Booking,
   BookingItem,
   BookingStatus,
@@ -61,6 +62,40 @@ class GarutJourneyStore {
   articles: Article[] = [];
   gallery: GalleryItem[] = [];
   pageViews: PageViewEvent[] = [];
+  addons: AddonOption[] = [
+    {
+      id: 'drone-doc',
+      name: 'Dokumentasi Video Drone 4K & Cinematic Reel',
+      price: 350000,
+      unit: 'per trip',
+      description: 'Pilot drone profesional + video editan 60 detik siap posting Instagram/TikTok',
+      isActive: true
+    },
+    {
+      id: 'porter-mount',
+      name: 'Jasa Porter Gunung Papandayan (Bawa Tenda/Logistik)',
+      price: 250000,
+      unit: 'per hari',
+      description: 'Bawa perlengkapan hingga 20kg sehingga Anda dapat mendaki dengan santai',
+      isActive: true
+    },
+    {
+      id: 'shuttle-bandung',
+      name: 'Penjemputan & Pengantaran Stasiun/Bandara Bandung (PP)',
+      price: 450000,
+      unit: 'per rombongan',
+      description: 'Toyota HiAce / Avanza AC nyaman dari Bandung ke Garut PP',
+      isActive: true
+    },
+    {
+      id: 'souvenir-garut',
+      name: 'Paket Oleh-oleh Khas (Dodol Garut Picnic & Chocodot)',
+      price: 120000,
+      unit: 'per pax',
+      description: 'Kemasan eksklusif oleh-oleh legendaris Garut langsung siap dibawa pulang',
+      isActive: true
+    }
+  ];
   siteSettings: SiteSettings = {
     id: 'settings-1',
     companyName: 'PT Garut Journey Nusantara',
@@ -77,6 +112,12 @@ class GarutJourneyStore {
     bankAccountNumber: '148-092-8899',
     bankAccountHolder: 'PT Garut Journey Nusantara',
     paymentTimeoutMinutes: 60,
+    metaTitle: 'Garut Journey – Jelajahi Keindahan Wisata Garut',
+    metaDescription: 'Temukan pengalaman wisata Garut yang berkesan melalui paket perjalanan praktis, nyaman, dan mudah dipesan secara online. Papandayan, Kamojang, Bagendit.',
+    metaKeywords: 'Wisata Garut, Paket Wisata Garut, Tour Garut, Garut City Tour, Private Trip Garut, Papandayan Tour',
+    canonicalUrl: 'https://garutjourney.id',
+    ogImageUrl: '/src/assets/images/hero_garut_papandayan_1792431914366.jpg',
+    robotsTxtContent: `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /booking/\nDisallow: /pembayaran/\nDisallow: /api/\n\nSitemap: https://garutjourney.id/sitemap.xml`,
     featuredDestinations: [
       'Gunung Papandayan & Hutan Mati',
       'Geothermal Kawah Kamojang',
@@ -132,6 +173,7 @@ class GarutJourneyStore {
         paymentEvents: this.paymentEvents,
         articles: this.articles,
         gallery: this.gallery,
+        addons: this.addons,
         pageViews: this.pageViews.slice(-5000), // Keep last 5000 views
         siteSettings: this.siteSettings
       };
@@ -157,6 +199,9 @@ class GarutJourneyStore {
           this.paymentEvents = state.paymentEvents || [];
           this.articles = state.articles || [];
           this.gallery = state.gallery || [];
+          if (state.addons && Array.isArray(state.addons) && state.addons.length > 0) {
+            this.addons = state.addons;
+          }
           this.pageViews = state.pageViews || [];
           if (state.siteSettings) {
             this.siteSettings = { ...this.siteSettings, ...state.siteSettings };
@@ -851,6 +896,50 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
     };
   }
 
+  getAddons(includeInactive = false): AddonOption[] {
+    if (includeInactive) return this.addons;
+    return this.addons.filter(a => a.isActive !== false);
+  }
+
+  getAddonById(id: string): AddonOption | undefined {
+    return this.addons.find(a => a.id === id);
+  }
+
+  createAddon(data: { name: string; price: number; unit?: string; description?: string; isActive?: boolean }): AddonOption {
+    const id = `addon-${Date.now()}`;
+    const newAddon: AddonOption = {
+      id,
+      name: data.name,
+      price: Number(data.price) || 0,
+      unit: data.unit || 'per trip',
+      description: data.description || '',
+      isActive: data.isActive !== undefined ? data.isActive : true
+    };
+    this.addons.push(newAddon);
+    this.saveToDisk();
+    return newAddon;
+  }
+
+  updateAddon(id: string, data: Partial<AddonOption>): AddonOption | null {
+    const item = this.addons.find(a => a.id === id);
+    if (!item) return null;
+    if (data.name !== undefined) item.name = data.name;
+    if (data.price !== undefined) item.price = Number(data.price);
+    if (data.unit !== undefined) item.unit = data.unit;
+    if (data.description !== undefined) item.description = data.description;
+    if (data.isActive !== undefined) item.isActive = data.isActive;
+    this.saveToDisk();
+    return item;
+  }
+
+  deleteAddon(id: string): boolean {
+    const idx = this.addons.findIndex(a => a.id === id);
+    if (idx === -1) return false;
+    this.addons.splice(idx, 1);
+    this.saveToDisk();
+    return true;
+  }
+
   // --- 100% PRIVATE TRIP BOOKING CREATION ---
 
   createBooking(req: CreateBookingRequest): { success: boolean; booking?: Booking; error?: string } {
@@ -859,7 +948,7 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
       return { success: false, error: 'Paket wisata tidak ditemukan atau tidak tersedia.' };
     }
 
-    const targetDate = req.departureDate ? req.departureDate.trim() : '';
+    const targetDate = (req.departureDate || (req as any).customDate || '').trim();
     if (!targetDate) {
       return { success: false, error: 'Tentukan tanggal keberangkatan private trip Anda.' };
     }
@@ -877,7 +966,7 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
 
     if (req.selectedAddons && Array.isArray(req.selectedAddons)) {
       for (const addonReq of req.selectedAddons) {
-        const catalogAddon = VERIFIED_ADDONS[addonReq.id];
+        const catalogAddon = this.addons.find(a => a.id === addonReq.id) || VERIFIED_ADDONS[addonReq.id];
         if (catalogAddon && addonReq.quantity > 0) {
           const itemAddonTotal = catalogAddon.price * addonReq.quantity;
           addonTotal += itemAddonTotal;
@@ -932,7 +1021,7 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
       accessToken,
       customerName: req.customerName.trim(),
       customerPhone: req.customerPhone.trim(),
-      customerEmail: req.customerEmail.trim(),
+      customerEmail: (req.customerEmail || '').trim(),
       customerNotes: req.customerNotes?.trim() || '',
       departureDate: targetDate,
       packageId: pkg.id,

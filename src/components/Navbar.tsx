@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { SiteSettings } from '../types.js';
-import { Compass, Menu, X } from 'lucide-react';
+import { Compass, Menu, X, Globe, ChevronDown } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext.tsx';
+import type { SupportedLanguage } from '../utils/i18n.js';
 
 interface NavbarProps {
   currentPath: string;
@@ -11,14 +13,28 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ currentPath, navigate, siteSettings }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+  const { language, setLanguage, t, languages, currentMeta } = useLanguage();
+  const langRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const navLinks = [
-    { label: 'Beranda', path: '/' },
-    { label: 'Paket Wisata', path: '/paket-wisata' },
-    { label: 'Artikel', path: '/artikel' },
-    { label: 'Galeri', path: '/galeri' },
-    { label: 'Tentang Kami', path: '/tentang-kami' },
-    { label: 'Kontak', path: '/kontak' },
+    { label: t('navHome'), path: '/' },
+    { label: t('navPackages'), path: '/paket-wisata' },
+    { label: t('navArticles'), path: '/artikel' },
+    { label: t('navGallery'), path: '/galeri' },
+    { label: t('navAbout'), path: '/tentang-kami' },
+    { label: t('navContact'), path: '/kontak' },
   ];
 
   const handleNav = (path: string) => {
@@ -26,10 +42,15 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, navigate, siteSetti
     setMobileMenuOpen(false);
   };
 
+  const handleSelectLanguage = (code: SupportedLanguage) => {
+    setLanguage(code);
+    setLangDropdownOpen(false);
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-stone-50/95 backdrop-blur-md border-b border-stone-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 gap-8">
+        <div className="flex items-center justify-between h-20 gap-4 sm:gap-8">
           {/* Zone 1: Wordmark & Dynamic Logo */}
           <button
             onClick={() => handleNav('/')}
@@ -56,8 +77,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, navigate, siteSetti
             </div>
           </button>
 
-          {/* Zone 2: Navigation Links (Clean - Admin Portal moved to Footer) */}
-          <nav className="hidden lg:flex items-center gap-7 text-sm font-medium text-stone-600">
+          {/* Zone 2: Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-7 text-sm font-medium text-stone-600">
             {navLinks.map(link => {
               const isActive = currentPath === link.path || (link.path !== '/' && currentPath.startsWith(link.path));
               return (
@@ -74,18 +95,72 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, navigate, siteSetti
             })}
           </nav>
 
-          {/* Zone 3: 1 Primary Action */}
+          {/* Zone 3: Language Switcher & Primary Action */}
           <div className="hidden sm:flex items-center gap-3 shrink-0">
+            {/* Language Selector Dropdown */}
+            <div className="relative" ref={langRef}>
+              <button
+                type="button"
+                onClick={() => setLangDropdownOpen(!langDropdownOpen)}
+                className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-stone-700 bg-white border border-stone-200 hover:border-stone-300 rounded-lg shadow-2xs transition-colors cursor-pointer"
+                aria-label="Pilih Bahasa / Select Language"
+                aria-expanded={langDropdownOpen}
+              >
+                <span className="text-sm">{currentMeta.flag}</span>
+                <span className="uppercase font-semibold tracking-wider">{currentMeta.code}</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-stone-400 transition-transform ${langDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {langDropdownOpen && (
+                <div className="absolute right-0 mt-1.5 w-52 bg-white rounded-xl shadow-xl border border-stone-200 py-1.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="px-3 py-1.5 border-b border-stone-100 text-[10px] uppercase tracking-wider font-bold text-stone-400">
+                    Pilih Bahasa / Language
+                  </div>
+                  <div className="max-h-72 overflow-y-auto py-1">
+                    {languages.map(l => (
+                      <button
+                        key={l.code}
+                        type="button"
+                        onClick={() => handleSelectLanguage(l.code)}
+                        className={`w-full flex items-center justify-between px-3 py-2 text-xs text-left transition-colors cursor-pointer ${
+                          language === l.code ? 'bg-[#F3F8F5] text-[#0F3827] font-bold' : 'text-stone-700 hover:bg-stone-50'
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="text-base">{l.flag}</span>
+                          <span>{l.nativeName}</span>
+                        </span>
+                        {language === l.code && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#0F3827]"></span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <button
               onClick={() => handleNav('/paket-wisata')}
-              className="px-5 py-2.5 text-xs uppercase tracking-wider font-semibold text-stone-50 bg-[#0F3827] hover:bg-[#17523A] rounded-lg transition-colors shadow-sm whitespace-nowrap shrink-0 cursor-pointer"
+              className="px-4 py-2.5 text-xs uppercase tracking-wider font-semibold text-stone-50 bg-[#0F3827] hover:bg-[#17523A] rounded-lg transition-colors shadow-sm whitespace-nowrap shrink-0 cursor-pointer"
             >
-              Cari Paket Wisata
+              {t('navBookTrip')}
             </button>
           </div>
 
-          {/* Mobile hamburger */}
-          <div className="flex lg:hidden items-center">
+          {/* Mobile hamburger & mobile language icon */}
+          <div className="flex sm:hidden items-center gap-2">
+            <button
+              onClick={() => {
+                const nextIndex = (languages.findIndex(l => l.code === language) + 1) % languages.length;
+                setLanguage(languages[nextIndex].code);
+              }}
+              className="px-2 py-1 text-xs border border-stone-200 rounded bg-white flex items-center gap-1"
+              title="Ganti Bahasa"
+            >
+              <span>{currentMeta.flag}</span>
+              <span className="uppercase font-bold text-[10px]">{currentMeta.code}</span>
+            </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 text-stone-700 hover:text-stone-900 focus:outline-none"
@@ -99,7 +174,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, navigate, siteSetti
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-stone-200 bg-stone-50 px-4 pt-3 pb-6 space-y-2">
+        <div className="lg:hidden border-t border-stone-200 bg-stone-50 px-4 pt-3 pb-6 space-y-3">
           {navLinks.map(link => (
             <button
               key={link.path}
@@ -109,12 +184,39 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, navigate, siteSetti
               {link.label}
             </button>
           ))}
+
+          {/* Mobile Language Selector List */}
+          <div className="pt-2 border-t border-stone-200">
+            <span className="text-[10px] uppercase font-bold text-stone-400 block mb-2">
+              Pilihan Bahasa / Select Language:
+            </span>
+            <div className="grid grid-cols-2 gap-1.5">
+              {languages.map(l => (
+                <button
+                  key={l.code}
+                  onClick={() => {
+                    setLanguage(l.code);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`flex items-center gap-2 p-2 rounded-lg text-xs text-left border ${
+                    language === l.code
+                      ? 'border-[#0F3827] bg-[#F3F8F5] text-[#0F3827] font-bold'
+                      : 'border-stone-200 bg-white text-stone-700'
+                  }`}
+                >
+                  <span>{l.flag}</span>
+                  <span className="truncate">{l.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="pt-2">
             <button
               onClick={() => handleNav('/paket-wisata')}
               className="w-full py-3 text-center text-xs uppercase tracking-wider font-semibold text-stone-50 bg-[#0F3827] rounded-lg"
             >
-              Cari Paket Wisata
+              {t('navBookTrip')}
             </button>
           </div>
         </div>

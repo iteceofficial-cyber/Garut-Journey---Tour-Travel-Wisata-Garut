@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import type { TourPackage, DepartureSchedule, AddonOption, PaymentTier } from '../types.js';
+import type { TourPackage, AddonOption, PaymentTier } from '../types.js';
 import { Calendar, Users, Check, AlertCircle, X, ShieldCheck, Tag, ArrowRight, CreditCard } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 interface BookingModalProps {
   pkg: TourPackage;
@@ -10,9 +11,8 @@ interface BookingModalProps {
 }
 
 export const BookingModal: React.FC<BookingModalProps> = ({ pkg, isOpen, onClose, onSuccess }) => {
-  const [selectedScheduleId, setSelectedScheduleId] = useState<string>('');
+  const { t } = useLanguage();
   const [customDate, setCustomDate] = useState<string>('');
-  const [useCustomDate, setUseCustomDate] = useState<boolean>(false);
   const [participantsCount, setParticipantsCount] = useState<number>(pkg.minParticipants || 2);
   const [pickupLocation, setPickupLocation] = useState<string>(pkg.pickupPoints?.[0] || 'Stasiun Garut');
   const [customerName, setCustomerName] = useState('');
@@ -57,12 +57,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ pkg, isOpen, onClose
 
   if (!isOpen) return null;
 
-  const currentSchedule = pkg.schedules?.find(s => s.id === selectedScheduleId);
-  const availableSeats = currentSchedule ? currentSchedule.totalCapacity - currentSchedule.bookedCapacity : 20;
-  const unitPrice = currentSchedule?.customPrice !== null && currentSchedule?.customPrice !== undefined
-    ? currentSchedule.customPrice
-    : pkg.basePrice;
-
+  const unitPrice = pkg.basePrice;
   const subtotal = unitPrice * participantsCount;
 
   let addonTotal = 0;
@@ -129,7 +124,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ pkg, isOpen, onClose
     e.preventDefault();
     setSubmitError('');
 
-    const targetDate = useCustomDate ? customDate : (currentSchedule?.departureDate || customDate);
+    const targetDate = customDate;
     if (!targetDate) {
       setSubmitError('Pilih tanggal keberangkatan terlebih dahulu.');
       return;
@@ -150,7 +145,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ pkg, isOpen, onClose
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           packageSlug: pkg.slug,
-          scheduleId: selectedScheduleId || '',
+          departureDate: targetDate,
           customDate: targetDate,
           participantsCount,
           customerName,
@@ -427,12 +422,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({ pkg, isOpen, onClose
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-medium text-stone-700 mb-1">
-                  Alamat Email (Untuk E-Ticket) <span className="text-rose-500">*</span>
+                  {t('emailLabel')}
                 </label>
                 <input
                   type="email"
-                  required
-                  placeholder="budi@example.com"
+                  placeholder={t('emailPlaceholder')}
                   value={customerEmail}
                   onChange={(e) => setCustomerEmail(e.target.value)}
                   className="w-full text-xs rounded-lg border border-stone-300 px-3 py-2 bg-white text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"

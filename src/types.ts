@@ -73,7 +73,7 @@ export interface Booking {
   accessToken: string;
   customerName: string;
   customerPhone: string;
-  customerEmail: string;
+  customerEmail?: string;
   customerNotes?: string;
   departureDate: string;
   packageId: string;
@@ -107,6 +107,7 @@ export interface AddonOption {
   price: number;
   unit: string;
   description: string;
+  isActive?: boolean;
 }
 
 export interface Article {
@@ -154,6 +155,15 @@ export interface SiteSettings {
   bankAccountNumber: string;
   bankAccountHolder: string;
   paymentTimeoutMinutes: number;
+  
+  // Website SEO
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  canonicalUrl?: string;
+  ogImageUrl?: string;
+  robotsTxtContent?: string;
+
   featuredDestinations: string[];
   infoAndPolicies: { label: string; path: string }[];
 }

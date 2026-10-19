@@ -88,7 +88,7 @@ export interface Booking {
   customerId?: string;
   customerName: string;
   customerPhone: string;
-  customerEmail: string;
+  customerEmail?: string;
   customerNotes?: string;
   departureDate: string; // YYYY-MM-DD langsung ditentukan konsumen
   packageId: string;
@@ -186,6 +186,15 @@ export interface PageViewEvent {
   timestamp: string;
 }
 
+export interface AddonOption {
+  id: string;
+  name: string;
+  price: number;
+  unit: string;
+  description: string;
+  isActive: boolean;
+}
+
 export interface SiteSettings {
   id: string;
   companyName: string;
@@ -203,6 +212,14 @@ export interface SiteSettings {
   bankAccountHolder: string;
   paymentTimeoutMinutes: number;
   
+  // Website SEO & Meta
+  metaTitle?: string;
+  metaDescription?: string;
+  metaKeywords?: string;
+  canonicalUrl?: string;
+  ogImageUrl?: string;
+  robotsTxtContent?: string;
+
   // Editable footer lists
   featuredDestinations: string[];
   infoAndPolicies: { label: string; path: string }[];
@@ -210,11 +227,12 @@ export interface SiteSettings {
 
 export interface CreateBookingRequest {
   packageSlug: string;
-  departureDate: string; // Tanggal ditentukan langsung oleh konsumen
+  departureDate?: string;
+  customDate?: string;
   participantsCount: number;
   customerName: string;
   customerPhone: string;
-  customerEmail: string;
+  customerEmail?: string;
   customerNotes?: string;
   pickupLocation: string;
   paymentTier?: PaymentTier;

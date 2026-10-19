@@ -86,7 +86,7 @@ export const BookingDetailPage: React.FC<BookingDetailPageProps> = ({ bookingNum
   };
 
   const getWhatsAppInvoiceLink = () => {
-    const text = `Halo Admin Garut Journey, ini konfirmasi pesanan saya:\n• No. Booking: ${booking.bookingNumber}\n• Status: ${isLunas ? 'LUNAS (100%)' : `BARU DP (Sisa: Rp ${booking.remainingBalance.toLocaleString('id-ID')})`}\n• Paket: ${booking.tourPackage?.name}\n• Tanggal: ${booking.schedule?.departureDate}\nMohon informasi persiapan penjemputan. Terima kasih!`;
+    const text = `Halo Admin Garut Journey, ini konfirmasi pesanan saya:\n• No. Booking: ${booking.bookingNumber}\n• Status: ${isLunas ? 'LUNAS (100%)' : `BARU DP (Sisa: Rp ${booking.remainingBalance.toLocaleString('id-ID')})`}\n• Paket: ${booking.tourPackage?.name}\n• Tanggal: ${booking.departureDate}\nMohon informasi persiapan penjemputan. Terima kasih!`;
     return `https://wa.me/6281223456789?text=${encodeURIComponent(text)}`;
   };
 
@@ -190,7 +190,7 @@ export const BookingDetailPage: React.FC<BookingDetailPageProps> = ({ bookingNum
             <div>
               <span className="text-stone-400 block text-[11px]">Tanggal Keberangkatan</span>
               <span className="font-mono font-bold text-stone-900 text-sm mt-0.5 block">
-                {booking.schedule?.departureDate}
+                {booking.departureDate}
               </span>
               <span className="text-stone-500">Jumlah: {booking.participantsCount} Orang Peserta</span>
             </div>
