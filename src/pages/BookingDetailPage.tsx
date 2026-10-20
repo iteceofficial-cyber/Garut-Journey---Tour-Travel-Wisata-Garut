@@ -83,15 +83,19 @@ export const BookingDetailPage: React.FC<BookingDetailPageProps> = ({ bookingNum
   const isLunas = booking.paymentTier === 'full' || booking.remainingBalance <= 0;
 
   const handlePrint = () => {
+    const printUrl = `/api/bookings/${booking.bookingNumber}/print`;
     try {
-      window.print();
+      const w = window.open(printUrl, '_blank');
+      if (!w) {
+        window.location.href = printUrl;
+      }
     } catch {
-      window.open(`/api/bookings/${booking.bookingNumber}/pdf?print=true`, '_blank');
+      window.location.href = printUrl;
     }
   };
 
   const getWhatsAppInvoiceLink = () => {
-    const text = `Halo Admin Garut Journey, ini konfirmasi pesanan saya:\n• No. Booking: ${booking.bookingNumber}\n• Status: ${isLunas ? 'LUNAS (100%)' : `BARU DP (Sisa: Rp ${booking.remainingBalance.toLocaleString('id-ID')})`}\n• Paket: ${booking.tourPackage?.name}\n• Tanggal: ${booking.departureDate}\nMohon informasi persiapan penjemputan. Terima kasih!`;
+    const text = `Halo Admin Garut Journey, ini konfirmasi pesanan saya:\n- No. Booking: ${booking.bookingNumber}\n- Status: ${isLunas ? 'LUNAS (100%)' : `BARU DP (Sisa: Rp ${booking.remainingBalance.toLocaleString('id-ID')})`}\n- Paket: ${booking.tourPackage?.name}\n- Tanggal: ${booking.departureDate}\nMohon informasi persiapan penjemputan. Terima kasih!`;
     return `https://wa.me/6281223456789?text=${encodeURIComponent(text)}`;
   };
 

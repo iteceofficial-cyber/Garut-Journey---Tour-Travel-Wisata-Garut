@@ -172,7 +172,25 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
     navigate(`/paket-wisata?q=${encodeURIComponent(searchQuery)}&cat=${encodeURIComponent(selectedCategory)}`);
   };
 
-  const featured = packages.slice(0, 3);
+  const filteredDropdownPackages = packages.filter(pkg => {
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase().trim();
+    return (
+      pkg.name.toLowerCase().includes(q) ||
+      pkg.destinationArea.toLowerCase().includes(q) ||
+      pkg.category.toLowerCase().includes(q) ||
+      pkg.shortDescription.toLowerCase().includes(q)
+    );
+  });
+
+  const [homeCategoryFilter, setHomeCategoryFilter] = useState('Semua');
+
+  const displayedPackages = packages.filter(pkg => {
+    if (homeCategoryFilter === 'Semua') return true;
+    return pkg.category.toLowerCase().includes(homeCategoryFilter.toLowerCase());
+  });
+
+  const featured = displayedPackages.slice(0, 6);
   const activeGalleryItem = galleryItems[currentSlide] || galleryItems[0];
   const activeImgUrl = activeGalleryItem?.imageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg';
 
@@ -291,58 +309,55 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
                             <span className="text-[9px] text-stone-400">Tidak perlu ketik manual</span>
                           </div>
 
-                          {/* Render all Tour Packages from DB */}
+                          {/* Render filtered Tour Packages */}
                           <div className="divide-y divide-stone-100">
-                            {packages.map(pkg => (
-                              <button
-                                key={pkg.id}
-                                type="button"
-                                onClick={() => handleSelectTripDropdown(pkg.name, pkg.category, pkg.slug)}
-                                className="w-full p-2.5 text-left hover:bg-emerald-50/70 transition-colors flex items-center gap-3 cursor-pointer group"
-                              >
-                                <img
-                                  src={pkg.images?.[0]?.imageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg'}
-                                  alt={pkg.name}
-                                  className="w-10 h-10 rounded-lg object-cover border border-stone-200 shrink-0"
-                                />
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center justify-between">
-                                    <span className="text-xs font-bold text-stone-900 group-hover:text-[#0F3827] truncate">
-                                      {pkg.name}
-                                    </span>
-                                    <span className="text-[11px] font-mono font-bold text-[#0F3827] shrink-0 ml-2">
-                                      Rp {pkg.basePrice.toLocaleString('id-ID')}
-                                    </span>
+                            {filteredDropdownPackages.length > 0 ? (
+                              filteredDropdownPackages.map(pkg => (
+                                <button
+                                  key={pkg.id}
+                                  type="button"
+                                  onClick={() => handleSelectTripDropdown(pkg.name, pkg.category, pkg.slug)}
+                                  className="w-full p-2.5 text-left hover:bg-emerald-50/70 transition-colors flex items-center gap-3 cursor-pointer group"
+                                >
+                                  <img
+                                    src={pkg.images?.[0]?.imageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg'}
+                                    alt={pkg.name}
+                                    className="w-10 h-10 rounded-lg object-cover border border-stone-200 shrink-0"
+                                  />
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-xs font-bold text-stone-900 group-hover:text-[#0F3827] truncate">
+                                        {pkg.name}
+                                      </span>
+                                      <span className="text-[11px] font-mono font-bold text-[#0F3827] shrink-0 ml-2">
+                                        Rp {pkg.basePrice.toLocaleString('id-ID')}
+                                      </span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-[10px] text-stone-500 mt-0.5">
+                                      <span className="text-[#C8A951] font-semibold">{pkg.destinationArea}</span>
+                                      <span>·</span>
+                                      <span>{pkg.durationDays} Hari</span>
+                                      <span>·</span>
+                                      <span className="bg-emerald-100 text-emerald-800 px-1 rounded font-medium">100% Private</span>
+                                    </div>
                                   </div>
-                                  <div className="flex items-center gap-2 text-[10px] text-stone-500 mt-0.5">
-                                    <span className="text-[#C8A951] font-semibold">{pkg.destinationArea}</span>
-                                    <span>·</span>
-                                    <span>{pkg.durationDays} Hari</span>
-                                    <span>·</span>
-                                    <span className="bg-emerald-100 text-emerald-800 px-1 rounded font-medium">100% Private</span>
-                                  </div>
-                                </div>
-                              </button>
-                            ))}
-
-                            {/* Additional Popular Destinations */}
-                            <button
-                              type="button"
-                              onClick={() => handleSelectTripDropdown('Kawah Talaga Bodas', 'Gunung & Alam')}
-                              className="w-full p-2.5 text-left hover:bg-emerald-50/70 transition-colors flex items-center gap-3 cursor-pointer group"
-                            >
-                              <div className="w-10 h-10 rounded-lg bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs shrink-0">
-                                ♨️
+                                </button>
+                              ))
+                            ) : (
+                              <div className="p-4 text-center space-y-2">
+                                <p className="text-xs text-stone-600">Tidak ada paket yang cocok dengan kata kunci &quot;{searchQuery}&quot;.</p>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setSearchQuery('');
+                                    navigate('/paket-wisata');
+                                  }}
+                                  className="px-3 py-1 bg-[#0F3827] text-white text-[11px] font-semibold rounded-lg cursor-pointer"
+                                >
+                                  Lihat Seluruh Katalog Paket
+                                </button>
                               </div>
-                              <div className="flex-1">
-                                <span className="text-xs font-bold text-stone-900 group-hover:text-[#0F3827] block">
-                                  Kawah Talaga Bodas & Darajat Pass
-                                </span>
-                                <span className="text-[10px] text-stone-500">
-                                  Pemandian air panas alami belerang pegunungan Wanaraja
-                                </span>
-                              </div>
-                            </button>
+                            )}
                           </div>
                         </div>
                       )}
@@ -557,7 +572,28 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
           </button>
         </div>
 
-        {/* 3-Column Grid */}
+        {/* Category Filter Switcher on HomePage */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 text-xs no-scrollbar">
+          {categories.map(cat => {
+            const isActive = homeCategoryFilter === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setHomeCategoryFilter(cat)}
+                className={`px-3.5 py-1.5 rounded-full font-medium transition-all whitespace-nowrap cursor-pointer border ${
+                  isActive
+                    ? 'bg-[#0F3827] text-white border-[#0F3827] shadow-xs'
+                    : 'bg-white hover:bg-stone-100 text-stone-700 border-stone-200'
+                }`}
+              >
+                {cat}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* 3-Column Responsive Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featured.map(pkg => (
             <PackageCard key={pkg.id} pkg={pkg} onSelect={onSelectPackage} />

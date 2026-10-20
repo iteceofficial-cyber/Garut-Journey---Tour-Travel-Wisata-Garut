@@ -148,6 +148,6 @@ export function sendPaymentSuccessEmail(booking: Booking): EmailLog {
 
 export function generateWhatsAppLink(bookingNumber: string, customerName: string, packageName?: string): string {
   const phone = '6281223456789';
-  const text = `Halo Admin Garut Journey, saya ingin konfirmasi pesanan wisata:\n• No. Booking: ${bookingNumber}\n• Atas Nama: ${customerName}\n• Paket: ${packageName || 'Tour Garut'}\nMohon informasi persiapan perjalanannya. Terima kasih!`;
+  const text = `Halo Admin Garut Journey, saya ingin konfirmasi pesanan wisata:\n- No. Booking: ${bookingNumber}\n- Atas Nama: ${customerName}\n- Paket: ${packageName || 'Tour Garut'}\nMohon informasi persiapan perjalanannya. Terima kasih!`;
   return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }

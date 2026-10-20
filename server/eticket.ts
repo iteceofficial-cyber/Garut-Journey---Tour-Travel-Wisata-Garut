@@ -334,12 +334,16 @@ export function generateETicketHtml(booking: Booking, settings?: SiteSettings): 
       <span style="font-weight: 700; font-size: 14px;">E-Ticket Wisata Garut Resmi</span>
       <span style="font-size: 12px; opacity: 0.8; display: block;">Simpan dokumen ini untuk konfirmasi saat penjemputan di Garut.</span>
     </div>
-    <div style="display: flex; gap: 8px;">
-      <button onclick="window.print()">
+    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+      <a href="/api/bookings/${booking.bookingNumber}/pdf" download style="background: #ffffff; color: #0F3827; font-weight: 700;">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        Unduh File PDF
+      </a>
+      <button onclick="try { window.print(); } catch(e) { alert('Silakan gunakan menu Cetak browser (Ctrl+P) atau unduh PDF.'); }">
         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
-        Cetak / Simpan PDF
+        Cetak Kwitansi
       </button>
-      <a href="/" target="_self">
+      <a href="/" target="_self" style="background: rgba(255,255,255,0.15); color: #ffffff;">
         Kembali ke Beranda
       </a>
     </div>
@@ -506,11 +510,15 @@ export function generateETicketHtml(booking: Booking, settings?: SiteSettings): 
   </div>
 
   <script>
-    // Safe auto-open print dialog if triggered via direct print intent
-    if (window.location.search.includes('print=true')) {
+    // Safe auto-open print dialog if triggered via direct print intent or /print URL
+    if (window.location.search.includes('print=true') || window.location.pathname.endsWith('/print')) {
       window.addEventListener('load', () => {
         setTimeout(() => {
-          window.print();
+          try {
+            window.print();
+          } catch (e) {
+            console.log('Browser blocked automated print:', e);
+          }
         }, 400);
       });
     }

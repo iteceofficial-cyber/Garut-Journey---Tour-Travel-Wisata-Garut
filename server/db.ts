@@ -206,7 +206,28 @@ class GarutJourneyStore {
           if (state.siteSettings) {
             this.siteSettings = { ...this.siteSettings, ...state.siteSettings };
           }
-          console.log('[Garut Journey] Database restored from disk.');
+          // Ensure all standard curated packages and images are present
+          const existingIds = new Set(this.packages.map(p => p.id));
+          const standardPackages = this.getStandardCuratedPackages();
+          for (const sp of standardPackages) {
+            if (!existingIds.has(sp.id)) {
+              this.packages.push(sp);
+            }
+          }
+          const stdImages = this.getStandardPackageImages();
+          const existingImgIds = new Set(this.packageImages.map(img => img.id));
+          for (const sImg of stdImages) {
+            if (!existingImgIds.has(sImg.id)) {
+              this.packageImages.push(sImg);
+            }
+          }
+          for (const pkg of this.packages) {
+            if (!pkg.images || pkg.images.length === 0) {
+              pkg.images = this.packageImages.filter(img => img.packageId === pkg.id);
+            }
+          }
+          this.saveToDisk();
+          console.log('[Garut Journey] Database restored from disk with full package catalog.');
           return true;
         }
       }
@@ -216,16 +237,7 @@ class GarutJourneyStore {
     return false;
   }
 
-  private seedInitialData() {
-    this.profiles.push({
-      id: 'usr-admin-1',
-      email: 'admin@garutjourney.id',
-      fullName: 'Administrator Garut Journey',
-      phoneNumber: '081223456789',
-      role: 'admin',
-      createdAt: new Date().toISOString()
-    });
-
+  public getStandardCuratedPackages(): TourPackage[] {
     const pkg1: TourPackage = {
       id: 'pkg-papandayan',
       slug: 'jelajah-gunung-papandayan-edelweiss',
@@ -464,9 +476,185 @@ class GarutJourneyStore {
       updatedAt: new Date().toISOString()
     };
 
-    this.packages = [pkg1, pkg2, pkg3, pkg4];
+    const pkg5: TourPackage = {
+      id: 'pkg-darajat-talaga-bodas',
+      slug: 'kawah-talaga-bodas-pemandian-darajat-pass',
+      name: 'Sensasi Kawah Putih Talaga Bodas & Pemandian Air Panas Darajat Pass',
+      category: 'Keluarga & Relaksasi',
+      shortDescription: 'Eksotisme danau kawah putih belerang Talaga Bodas dipadukan kesegaran pemandian air panas alami pegunungan Darajat Pass.',
+      description: 'Nikmati perpaduan sempurna antara wisata alam kawah vulkanik putih kehijauan Talaga Bodas di Wanaraja dan relaksasi pemandian air panas alami berlatar perbukitan berkabut di Darajat Pass. Sangat nyaman untuk semua kalangan usia dan liburan keluarga santai.',
+      durationDays: 1,
+      durationNights: 0,
+      basePrice: 310000,
+      minParticipants: 1,
+      maxParticipants: 20,
+      destinationArea: 'Darajat & Wanaraja',
+      tripType: 'private',
+      inclusions: [
+        'Transportasi privat AC (Avanza / Innova / HiAce) PP Garut',
+        'Driver berpengalaman merangkap tour leader',
+        'Tiket masuk Kawasan Wisata Kawah Talaga Bodas',
+        'Tiket terusan Pemandian Air Panas Darajat Pass Waterpark',
+        'Makan siang khas Sunda (Nasi Liwet & Gurame Goreng)',
+        'Air mineral & snack selama perjalanan'
+      ],
+      exclusions: [
+        'Sewa ojek lokal di area Talaga Bodas (opsional)',
+        'Pengeluaran pribadi & belanja oleh-oleh'
+      ],
+      itinerary: [
+        {
+          id: 'itin-5-1',
+          day: 1,
+          title: 'Eksplorasi Danau Kawah Putih & Relaksasi Air Panas',
+          activities: [
+            '08.00 - Penjemputan di hotel / stasiun area Garut Kota',
+            '09.30 - Tiba di Kawah Talaga Bodas, menikmati keindahan danau kawah putih toska berkabut',
+            '10.30 - Relaksasi rendam kaki air panas alami belerang di tepi kawah',
+            '12.00 - Makan siang masakan khas Sunda di Saung Bambu lokal',
+            '13.30 - Melanjutkan perjalanan menuju kawasan perbukitan Darajat Pass',
+            '14.30 - Berenang dan berendam air panas alami dengan pemandangan lembah pegunungan asri',
+            '17.00 - Mampir belanja oleh-oleh khas Garut',
+            '18.30 - Pengantaran kembali ke hotel / stasiun. Tour selesai.'
+          ]
+        }
+      ],
+      pickupPoints: [
+        'Stasiun Kereta Api Garut',
+        'Seluruh Hotel & Villa di Garut Kota / Cipanas'
+      ],
+      termsAndConditions: 'Sangat aman dan nyaman untuk anak-anak hingga lansia. Harap membawa baju renang/ganti.',
+      isPublished: true,
+      featuredOrder: 5,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
 
-    this.packageImages = [
+    const pkg6: TourPackage = {
+      id: 'pkg-pantai-santolo-heulang',
+      slug: 'pantai-santolo-sayang-heulang-garut-selatan',
+      name: 'Eksplorasi Pantai Santolo & Bukit Teletubbies Sayang Heulang',
+      category: 'Petualangan Alam',
+      shortDescription: 'Menjelajahi pesisir Samudera Hindia Garut Selatan, jembatan gantung Pulau Santolo, dan sunset menakjubkan.',
+      description: 'Garut Selatan menyimpan pesona bahari Samudera Hindia yang spektakuler. Dari hamparan pasir putih Pantai Santolo, menyeberang ke Pulau Santolo bersejarah, hingga berfoto di jembatan bentang laut dan bukit Teletubbies Sayang Heulang.',
+      durationDays: 2,
+      durationNights: 1,
+      basePrice: 485000,
+      minParticipants: 2,
+      maxParticipants: 16,
+      destinationArea: 'Cikelet, Garut Selatan',
+      tripType: 'private',
+      inclusions: [
+        'Transportasi armada prima AC PP Garut Kota - Garut Selatan',
+        'Akomodasi penginapan tepi pantai 1 malam (AC, TV, shower)',
+        'Tiket masuk Pantai Santolo & Sayang Heulang',
+        'Sewa perahu tradisional penyeberangan Pulau Santolo',
+        'Makan 3x (termasuk makan malam santap seafood segar tepi pantai)',
+        'Pemandu lokal Garut Selatan',
+        'Air mineral selama perjalanan'
+      ],
+      exclusions: [
+        'Wahana banana boat (opsional)',
+        'Pengeluaran belanja pribadi'
+      ],
+      itinerary: [
+        {
+          id: 'itin-6-1',
+          day: 1,
+          title: 'Roadtrip Eksotis Garut Selatan & Sunset Sayang Heulang',
+          activities: [
+            '07.30 - Berangkat dari Garut Kota melintasi panorama pegunungan Cikajang & kebun teh',
+            '11.30 - Tiba di Cikelet, check-in penginapan tepi pantai & istirahat sejenak',
+            '12.30 - Makan siang hidangan ikan laut segar',
+            '14.30 - Menyeberang dengan perahu ke Pulau Santolo & dermaga purba',
+            '16.30 - Bergeser ke Pantai Sayang Heulang, hunting foto di Bukit Teletubbies saat golden sunset',
+            '19.00 - Makan malam seafood bakar khas pesisir selatan, acara santai'
+          ]
+        },
+        {
+          id: 'itin-6-2',
+          day: 2,
+          title: 'Sunrise Pesisir, Belanja Ikan Segar & Kembali ke Kota',
+          activities: [
+            '05.30 - Menikmati sunrise damai di bibir pantai',
+            '07.30 - Sarapan pagi di penginapan & packing check-out',
+            '09.00 - Mampir di TPI (Tempat Pelelangan Ikan) Santolo berburu ikan segar',
+            '10.30 - Perjalanan santai kembali menuju Garut Kota',
+            '15.00 - Singgah di sentra oleh-oleh Garut',
+            '16.30 - Tiba kembali di Stasiun Garut / Hotel. Tour selesai.'
+          ]
+        }
+      ],
+      pickupPoints: [
+        'Stasiun Garut',
+        'Terminal Guntur',
+        'Hotel area Garut Kota'
+      ],
+      termsAndConditions: 'Bawa pakaian santai pantai, sunblock, topi, dan kacamata hitam.',
+      isPublished: true,
+      featuredOrder: 6,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    const pkg7: TourPackage = {
+      id: 'pkg-city-tour-garut',
+      slug: 'garut-heritage-city-tour-sukaregang',
+      name: 'Garut Heritage City Tour, Kuliner Dodol & Kerajinan Sukaregang',
+      category: 'Budaya & Sejarah',
+      shortDescription: 'Wisata belanja ikonik jaket kulit Sukaregang, pusat dodol Picnic asli, dan mencicipi ragam kuliner legendaris Garut.',
+      description: 'Menikmati kehangatan dan budaya Kota Garut yang berjuluk "Swiss van Java". Mengunjungi sentra penyamakan kulit asli Sukaregang untuk produk jaket & tas kulit terbaik, menyaksikan pembuatan dodol Garut legendaris, serta menikmati santapan kuliner legendaris baso aci dan soto Garut.',
+      durationDays: 1,
+      durationNights: 0,
+      basePrice: 250000,
+      minParticipants: 1,
+      maxParticipants: 20,
+      destinationArea: 'Garut Kota & Sukaregang',
+      tripType: 'private',
+      inclusions: [
+        'Transportasi city tour ber-AC',
+        'Driver berpengalaman merangkap tour guide lokal',
+        'Kunjungan resmi sentra kerajinan kulit Sukaregang',
+        'Kunjungan dan edukasi pembuatan Dodol Picnic Garut',
+        'Makan siang kuliner khas Garut (Soto Ahri / Liwet Asep Stroberi)',
+        'Welcome snack & air mineral'
+      ],
+      exclusions: [
+        'Belanja produk kerajinan kulit pribadi',
+        'Oleh-oleh dodol & batik garutan'
+      ],
+      itinerary: [
+        {
+          id: 'itin-7-1',
+          day: 1,
+          title: 'Satu Hari Jelajah Warisan Budaya & Belanja Khas Garut',
+          activities: [
+            '09.00 - Penjemputan di Stasiun Garut / hotel',
+            '09.30 - Berkeliling kawasan bersejarah Alun-alun & Babancong Garut',
+            '10.30 - Wisata belanja kerajinan kulit asli Sukaregang (jaket, sepatu, tas kulit garansi asli)',
+            '12.30 - Makan siang kuliner legendaris khas Garut',
+            '14.00 - Mengunjungi pusat oleh-oleh dodol Garut, melihat demonstrasi pembuatan dodol',
+            '16.00 - Singgah di Galeri Batik Tulis Garutan khas motif Merak Ngibing',
+            '17.30 - Kembali ke stasiun / hotel penginapan.'
+          ]
+        }
+      ],
+      pickupPoints: [
+        'Stasiun Kereta Api Garut',
+        'Hotel di Area Garut Kota, Tarogong, atau Cipanas'
+      ],
+      termsAndConditions: 'Sangat cocok untuk keluarga, liburan singkat, dan pecinta kuliner serta kerajinan.',
+      isPublished: true,
+      featuredOrder: 7,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    return [pkg1, pkg2, pkg3, pkg4, pkg5, pkg6, pkg7];
+  }
+
+  public getStandardPackageImages(): PackageImage[] {
+    return [
       {
         id: 'img-1',
         packageId: 'pkg-papandayan',
@@ -498,8 +686,46 @@ class GarutJourneyStore {
         altText: 'Air terjun kembar Curug Sanghyang Taraje di tebing tropis Garut',
         sortOrder: 1,
         isPrimary: true
+      },
+      {
+        id: 'img-5',
+        packageId: 'pkg-darajat-talaga-bodas',
+        imageUrl: '/public/assets/aistudio/image_7f145474.png',
+        altText: 'Kawah Talaga Bodas dan Pemandian Air Panas Alami Darajat Pass Garut',
+        sortOrder: 1,
+        isPrimary: true
+      },
+      {
+        id: 'img-6',
+        packageId: 'pkg-pantai-santolo-heulang',
+        imageUrl: '/public/assets/aistudio/image_30253526.png',
+        altText: 'Pantai Santolo dan Bukit Teletubbies Sayang Heulang Garut Selatan',
+        sortOrder: 1,
+        isPrimary: true
+      },
+      {
+        id: 'img-7',
+        packageId: 'pkg-city-tour-garut',
+        imageUrl: '/public/assets/aistudio/image_19f9301b.png',
+        altText: 'Garut City Tour Sentra Kerajinan Kulit Sukaregang dan Dodol Garut',
+        sortOrder: 1,
+        isPrimary: true
       }
     ];
+  }
+
+  private seedInitialData() {
+    this.profiles.push({
+      id: 'usr-admin-1',
+      email: 'admin@garutjourney.id',
+      fullName: 'Administrator Garut Journey',
+      phoneNumber: '081223456789',
+      role: 'admin',
+      createdAt: new Date().toISOString()
+    });
+
+    this.packages = this.getStandardCuratedPackages();
+    this.packageImages = this.getStandardPackageImages();
 
     for (const pkg of this.packages) {
       pkg.images = this.packageImages.filter(img => img.packageId === pkg.id);
@@ -1265,10 +1491,10 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
     const dateTrip = booking.departureDate || '-';
     const baseAppUrl = process.env.APP_URL || 'https://garutjourney.id';
 
-    const rawText = `*=========================================*
+    const rawText = `*-----------------------------------------*
 *KWITANSI & INVOICE RESMI*
 *PT GARUT JOURNEY NUSANTARA*
-*=========================================*
+*-----------------------------------------*
 
 Halo Kak *${booking.customerName}*, berikut adalah rincian kwitansi pemesanan wisata Garut Anda:
 
@@ -1279,9 +1505,9 @@ Halo Kak *${booking.customerName}*, berikut adalah rincian kwitansi pemesanan wi
 *Titik Jemput* : ${booking.pickupLocation}
 
 *DETAIL PEMBAYARAN:*
-• Total Tagihan : Rp ${booking.totalAmount.toLocaleString('id-ID')}
-• Status Bayar : *${statusLabel}*
-${!isLunas ? `• Sisa Pelunasan : *Rp ${booking.remainingBalance.toLocaleString('id-ID')}* (Dibayarkan saat penjemputan)\n` : ''}
+- Total Tagihan : Rp ${booking.totalAmount.toLocaleString('id-ID')}
+- Status Bayar : *${statusLabel}*
+${!isLunas ? `- Sisa Pelunasan : *Rp ${booking.remainingBalance.toLocaleString('id-ID')}* (Dibayarkan saat penjemputan)\n` : ''}
 *Unduh E-Ticket Resmi (PDF Langsung Tanpa Perlu Login):*
 ${baseAppUrl}/api/bookings/${booking.bookingNumber}/pdf
 

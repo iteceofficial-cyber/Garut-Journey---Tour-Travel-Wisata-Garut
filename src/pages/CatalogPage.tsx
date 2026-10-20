@@ -25,6 +25,19 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
   const [selectedDuration, setSelectedDuration] = useState('Semua');
   const [sortBy, setSortBy] = useState<'recommended' | 'price_low' | 'price_high'>('recommended');
 
+  // Keep state in sync whenever user searches from HomePage or navbar links
+  useEffect(() => {
+    if (initialQuery !== undefined) {
+      setSearchQuery(initialQuery);
+    }
+  }, [initialQuery]);
+
+  useEffect(() => {
+    if (initialCategory !== undefined) {
+      setSelectedCategory(initialCategory);
+    }
+  }, [initialCategory]);
+
   useEffect(() => {
     updateSEO({
       title: 'Katalog Paket Wisata Garut – Private Trip Resmi',
@@ -35,18 +48,20 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
   }, []);
 
   const categories = ['Semua', 'Gunung & Alam', 'Keluarga & Relaksasi', 'Budaya & Sejarah', 'Petualangan Alam'];
-  const destinations = ['Semua', 'Papandayan', 'Kamojang', 'Banyuresmi', 'Garut Selatan'];
+  const destinations = ['Semua', 'Papandayan', 'Kamojang', 'Banyuresmi', 'Garut Selatan', 'Darajat & Wanaraja', 'Garut Kota'];
   const durations = ['Semua', '1 Hari', '2 Hari 1 Malam'];
 
   const filteredPackages = useMemo(() => {
     return packages.filter(pkg => {
-      // Search
+      // Search across name, desc, destinationArea, category, and slug
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
         const matchName = pkg.name.toLowerCase().includes(q);
         const matchDesc = pkg.shortDescription.toLowerCase().includes(q);
         const matchDest = pkg.destinationArea.toLowerCase().includes(q);
-        if (!matchName && !matchDesc && !matchDest) return false;
+        const matchCat = pkg.category.toLowerCase().includes(q);
+        const matchSlug = pkg.slug.toLowerCase().includes(q);
+        if (!matchName && !matchDesc && !matchDest && !matchCat && !matchSlug) return false;
       }
 
       // Category

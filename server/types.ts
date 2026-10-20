@@ -49,7 +49,7 @@ export interface TourPackage {
   termsAndConditions: string;
   isPublished: boolean;
   featuredOrder: number;
-  tripType: 'private'; // 100% Private Trip
+  tripType?: 'private'; // 100% Private Trip
   createdAt: string;
   updatedAt: string;
   images?: PackageImage[];

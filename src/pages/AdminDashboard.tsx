@@ -38,7 +38,11 @@ import {
   Zap,
   Image as ImageIcon,
   Printer,
-  FileText
+  FileText,
+  Eye,
+  Compass,
+  ArrowRight,
+  ChevronRight
 } from 'lucide-react';
 import { analyzeArticleSEO, autoOptimizeArticleSEO, type ArticleSEOAnalysis } from '../utils/seo.js';
 
@@ -76,10 +80,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [copiedInvoice, setCopiedInvoice] = useState(false);
   const [sendingInvoice, setSendingInvoice] = useState(false);
 
-  // Package activity / itinerary editing
+  // Package activity / itinerary editing & search
   const [selectedPackageForActivities, setSelectedPackageForActivities] = useState<TourPackage | null>(null);
   const [newActivityDay, setNewActivityDay] = useState(1);
   const [newActivityText, setNewActivityText] = useState('');
+  const [adminPackageSearch, setAdminPackageSearch] = useState('');
+  const [adminPackageCategory, setAdminPackageCategory] = useState('Semua');
 
   // Layanan Tambahan (Add-ons) state
   const [showNewAddonModal, setShowNewAddonModal] = useState(false);
@@ -920,6 +926,121 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 </div>
               )}
             </div>
+
+            {/* Curated Tour Packages & Attractions Widget on Overview */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-2xs space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b pb-3">
+                <div>
+                  <h3 className="font-serif-luxury text-base font-bold text-stone-900 flex items-center gap-2">
+                    <Compass className="w-4 h-4 text-[#C8A951]" />
+                    <span>Pilihan Objek Wisata & Paket ({packages.length} Paket Tersedia)</span>
+                  </h3>
+                  <p className="text-xs text-stone-500 mt-0.5">
+                    Katalog objek wisata Garut yang aktif dan siap dipesan wisatawan.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('packages')}
+                  className="text-xs font-bold text-[#0F3827] hover:underline self-start sm:self-auto cursor-pointer flex items-center gap-1"
+                >
+                  <span>Kelola Semua Paket & Itinerary</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {/* Quick Search on Overview */}
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="relative flex-1 min-w-[200px]">
+                  <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-2.5 pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder="Cari objek wisata / paket di dashboard..."
+                    value={adminPackageSearch}
+                    onChange={(e) => setAdminPackageSearch(e.target.value)}
+                    className="w-full text-xs pl-8 pr-7 py-2 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
+                  />
+                  {adminPackageSearch && (
+                    <button
+                      type="button"
+                      onClick={() => setAdminPackageSearch('')}
+                      className="absolute right-2.5 top-2 text-stone-400 hover:text-stone-700 text-xs"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+
+                {/* Quick Chips */}
+                {[
+                  { label: 'Semua', val: '' },
+                  { label: 'Papandayan', val: 'Papandayan' },
+                  { label: 'Kamojang', val: 'Kamojang' },
+                  { label: 'Situ Bagendit', val: 'Bagendit' },
+                  { label: 'Curug Taraje', val: 'Taraje' },
+                  { label: 'Darajat Pass', val: 'Darajat' },
+                  { label: 'Santolo', val: 'Santolo' },
+                  { label: 'City Tour', val: 'City Tour' }
+                ].map(chip => (
+                  <button
+                    key={chip.label}
+                    type="button"
+                    onClick={() => setAdminPackageSearch(chip.val)}
+                    className={`px-2.5 py-1 rounded-full text-[11px] font-medium border cursor-pointer transition-colors ${
+                      adminPackageSearch === chip.val
+                        ? 'bg-[#0F3827] text-white border-[#0F3827]'
+                        : 'bg-stone-50 hover:bg-stone-100 text-stone-600 border-stone-200'
+                    }`}
+                  >
+                    {chip.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Package Cards Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+                {packages
+                  .filter(p => {
+                    if (!adminPackageSearch.trim()) return true;
+                    const q = adminPackageSearch.toLowerCase().trim();
+                    return (
+                      p.name.toLowerCase().includes(q) ||
+                      p.destinationArea.toLowerCase().includes(q) ||
+                      p.category.toLowerCase().includes(q) ||
+                      p.shortDescription.toLowerCase().includes(q)
+                    );
+                  })
+                  .map(pkg => (
+                    <div key={pkg.id} className="p-3.5 bg-stone-50 rounded-xl border border-stone-200 hover:border-emerald-300 transition-colors space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <span className="text-[9px] font-bold uppercase tracking-wider text-[#C8A951]">{pkg.category}</span>
+                          <h4 className="font-bold text-xs text-stone-900 line-clamp-1">{pkg.name}</h4>
+                          <span className="text-[10px] text-stone-500">{pkg.destinationArea} • {pkg.durationDays} Hari</span>
+                        </div>
+                        <span className="font-mono text-xs font-bold text-[#0F3827] shrink-0">
+                          Rp {pkg.basePrice.toLocaleString('id-ID')}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-stone-600 line-clamp-2">{pkg.shortDescription}</p>
+                      <div className="flex items-center justify-between pt-1 border-t border-stone-200 text-[10px]">
+                        <span className="text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded">100% Private Trip</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setActiveTab('packages');
+                            setSelectedPackageForActivities(pkg);
+                          }}
+                          className="text-[#0F3827] hover:underline font-bold flex items-center gap-0.5 cursor-pointer"
+                        >
+                          <span>Kelola Itinerary</span>
+                          <ChevronRight className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
           </div>
         )}
 
@@ -1339,11 +1460,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                       </a>
 
                       <a
-                        href={`/api/bookings/${selectedBooking.bookingNumber}/pdf?print=true`}
+                        href={`/api/bookings/${selectedBooking.bookingNumber}/print`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="py-2 px-3 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 font-semibold rounded-lg text-xs flex items-center gap-1.5 cursor-pointer"
-                        title="Buka Pratinjau & Cetak Kwitansi"
+                        title="Buka Pratinjau & Cetak Kwitansi Resmi"
                       >
                         <Printer className="w-3.5 h-3.5 text-stone-600" />
                         <span>Cetak Kwitansi</span>
@@ -1401,8 +1522,91 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               </p>
             </div>
 
+            {/* Search and Category Filter for Packages */}
+            <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-2xs space-y-3">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="relative flex-1">
+                  <Search className="w-4 h-4 text-stone-400 absolute left-3 top-3 pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder="Cari objek wisata atau nama paket (Papandayan, Kamojang, Bagendit, Taraje, Darajat, Santolo, City Tour)..."
+                    value={adminPackageSearch}
+                    onChange={(e) => setAdminPackageSearch(e.target.value)}
+                    className="w-full text-xs pl-9 pr-8 py-2.5 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
+                  />
+                  {adminPackageSearch && (
+                    <button
+                      type="button"
+                      onClick={() => setAdminPackageSearch('')}
+                      className="absolute right-2.5 top-2.5 text-stone-400 hover:text-stone-700 text-xs"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+
+                <div className="sm:w-52">
+                  <select
+                    value={adminPackageCategory}
+                    onChange={(e) => setAdminPackageCategory(e.target.value)}
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827] cursor-pointer"
+                  >
+                    <option value="Semua">Semua Kategori</option>
+                    <option value="Gunung & Alam">Gunung & Alam</option>
+                    <option value="Keluarga & Relaksasi">Keluarga & Relaksasi</option>
+                    <option value="Budaya & Sejarah">Budaya & Sejarah</option>
+                    <option value="Petualangan Alam">Petualangan Alam</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Quick Destination Chips */}
+              <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-stone-100">
+                <span className="text-[10px] uppercase font-bold text-stone-400 mr-1">Filter Objek:</span>
+                {[
+                  { label: 'Semua', val: '' },
+                  { label: 'Papandayan', val: 'Papandayan' },
+                  { label: 'Kamojang', val: 'Kamojang' },
+                  { label: 'Situ Bagendit', val: 'Bagendit' },
+                  { label: 'Curug Taraje', val: 'Taraje' },
+                  { label: 'Darajat Pass', val: 'Darajat' },
+                  { label: 'Santolo', val: 'Santolo' },
+                  { label: 'City Tour', val: 'City Tour' }
+                ].map(chip => (
+                  <button
+                    key={chip.label}
+                    type="button"
+                    onClick={() => setAdminPackageSearch(chip.val)}
+                    className={`px-2.5 py-0.5 rounded-full text-[11px] font-medium border cursor-pointer transition-colors ${
+                      adminPackageSearch === chip.val
+                        ? 'bg-[#0F3827] text-white border-[#0F3827]'
+                        : 'bg-stone-50 hover:bg-stone-100 text-stone-600 border-stone-200'
+                    }`}
+                  >
+                    {chip.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {packages.map(pkg => (
+              {packages
+                .filter(pkg => {
+                  if (adminPackageCategory !== 'Semua' && !pkg.category.toLowerCase().includes(adminPackageCategory.toLowerCase())) {
+                    return false;
+                  }
+                  if (adminPackageSearch.trim()) {
+                    const q = adminPackageSearch.toLowerCase().trim();
+                    return (
+                      pkg.name.toLowerCase().includes(q) ||
+                      pkg.destinationArea.toLowerCase().includes(q) ||
+                      pkg.category.toLowerCase().includes(q) ||
+                      pkg.shortDescription.toLowerCase().includes(q)
+                    );
+                  }
+                  return true;
+                })
+                .map(pkg => (
                 <div key={pkg.id} className="bg-white p-5 rounded-2xl border border-stone-200 shadow-2xs space-y-3">
                   <div className="flex items-start justify-between">
                     <div>

@@ -12,6 +12,7 @@ import {
   emailLogs
 } from './server/notifications.js';
 import { generateETicketHtml } from './server/eticket.js';
+import { generateETicketPdfBuffer } from './server/pdf.js';
 
 dotenv.config();
 
@@ -280,7 +281,7 @@ app.get('/api/bookings/:bookingNumber', (req: Request, res: Response) => {
 });
 
 // 7b. Download E-Ticket as PDF (Direct public download without login)
-app.get(['/api/bookings/:bookingNumber/pdf', '/api/bookings/:bookingNumber/eticket.pdf', '/tiket/:bookingNumber'], (req: Request, res: Response) => {
+app.get(['/api/bookings/:bookingNumber/pdf', '/api/bookings/:bookingNumber/eticket.pdf', '/tiket/:bookingNumber'], async (req: Request, res: Response) => {
   try {
     const { bookingNumber } = req.params;
     // Direct access to booking without requiring login
@@ -299,12 +300,37 @@ app.get(['/api/bookings/:bookingNumber/pdf', '/api/bookings/:bookingNumber/etick
       `);
     }
 
+    // If consumer specifically requests HTML preview or print
+    if (req.query.format === 'html' || req.query.view === 'html' || req.query.print === 'true') {
+      const html = generateETicketHtml(booking, dbStore.siteSettings);
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      return res.send(html);
+    }
+
+    // Default: Generate and stream true binary PDF
+    const pdfBuffer = await generateETicketPdfBuffer(booking, dbStore.siteSettings);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `inline; filename="E-Ticket-Garut-Journey-${booking.bookingNumber}.pdf"`);
+    res.setHeader('Content-Length', pdfBuffer.length);
+    res.send(pdfBuffer);
+  } catch (err: any) {
+    res.status(500).send('Gagal membuat dokumen e-ticket PDF: ' + err.message);
+  }
+});
+
+// Dedicated print endpoint for printing Kwitansi
+app.get('/api/bookings/:bookingNumber/print', (req: Request, res: Response) => {
+  try {
+    const { bookingNumber } = req.params;
+    const booking = dbStore.getBookingByNumberAndToken(bookingNumber, undefined, true);
+    if (!booking) {
+      return res.status(404).send('Booking tidak ditemukan.');
+    }
     const html = generateETicketHtml(booking, dbStore.siteSettings);
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Content-Disposition', `inline; filename="E-Ticket-Garut-Journey-${booking.bookingNumber}.html"`);
     res.send(html);
   } catch (err: any) {
-    res.status(500).send('Gagal membuat dokumen e-ticket: ' + err.message);
+    res.status(500).send('Gagal memuat dokumen cetak: ' + err.message);
   }
 });
 
@@ -890,4 +916,8 @@ async function startServer() {
   });
 }
 
-startServer();
+if (!process.env.VERCEL) {
+  startServer();
+}
+
+export default app;
