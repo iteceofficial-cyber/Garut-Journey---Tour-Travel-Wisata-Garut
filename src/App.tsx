@@ -80,14 +80,17 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const getQueryParams = () => {
-    const search = window.location.search;
-    return new URLSearchParams(search);
+  const getQueryParams = (customPath?: string) => {
+    const raw = customPath || currentPath || (typeof window !== 'undefined' ? window.location.search : '');
+    const queryPart = raw.includes('?') ? raw.slice(raw.indexOf('?')) : (typeof window !== 'undefined' ? window.location.search : '');
+    return new URLSearchParams(queryPart);
   };
 
   const renderCurrentView = () => {
+    const normalizedPath = currentPath.split('?')[0];
+
     // 1. Admin Portal
-    if (currentPath === '/admin' || currentPath.startsWith('/admin/')) {
+    if (normalizedPath === '/admin' || normalizedPath.startsWith('/admin/')) {
       if (!isAdminLoggedIn) {
         return (
           <AdminLogin
@@ -108,8 +111,8 @@ export default function App() {
     }
 
     // 2. Package Detail: /paket-wisata/:slug
-    if (currentPath.startsWith('/paket-wisata/')) {
-      const slug = currentPath.replace('/paket-wisata/', '').split('?')[0];
+    if (normalizedPath.startsWith('/paket-wisata/') && normalizedPath !== '/paket-wisata') {
+      const slug = normalizedPath.replace('/paket-wisata/', '').split('?')[0];
       const pkg = packages.find(p => p.slug === slug);
       if (pkg) {
         return (
@@ -138,8 +141,8 @@ export default function App() {
     }
 
     // 3. Payment Page: /pembayaran/:bookingNumber
-    if (currentPath.startsWith('/pembayaran/')) {
-      const bookingNumber = currentPath.replace('/pembayaran/', '').split('?')[0];
+    if (normalizedPath.startsWith('/pembayaran/')) {
+      const bookingNumber = normalizedPath.replace('/pembayaran/', '').split('?')[0];
       const params = getQueryParams();
       const token = params.get('token') || undefined;
 
@@ -153,8 +156,8 @@ export default function App() {
     }
 
     // 4. Booking Detail (E-Ticket): /booking/:bookingNumber
-    if (currentPath.startsWith('/booking/')) {
-      const bookingNumber = currentPath.replace('/booking/', '').split('?')[0];
+    if (normalizedPath.startsWith('/booking/')) {
+      const bookingNumber = normalizedPath.replace('/booking/', '').split('?')[0];
       const params = getQueryParams();
       const token = params.get('token') || undefined;
 
@@ -167,8 +170,8 @@ export default function App() {
       );
     }
 
-    // 5. Catalog: /paket-wisata
-    if (currentPath === '/paket-wisata') {
+    // 5. Catalog: /paket-wisata (Supports /paket-wisata?q=...&cat=...)
+    if (normalizedPath === '/paket-wisata') {
       const params = getQueryParams();
       const initialCat = params.get('cat') || 'Semua';
       const initialQ = params.get('q') || '';
@@ -184,39 +187,39 @@ export default function App() {
     }
 
     // 6. Articles List: /artikel
-    if (currentPath === '/artikel') {
+    if (normalizedPath === '/artikel') {
       return <ArticlesPage navigate={navigate} />;
     }
 
     // 7. Article Detail: /artikel/:slug
-    if (currentPath.startsWith('/artikel/')) {
-      const slug = currentPath.replace('/artikel/', '').split('?')[0];
+    if (normalizedPath.startsWith('/artikel/')) {
+      const slug = normalizedPath.replace('/artikel/', '').split('?')[0];
       return <ArticleDetailPage slug={slug} navigate={navigate} />;
     }
 
     // 8. Gallery: /galeri
-    if (currentPath === '/galeri') {
+    if (normalizedPath === '/galeri') {
       return <GalleryPage navigate={navigate} />;
     }
 
     // 9. About Us: /tentang-kami
-    if (currentPath === '/tentang-kami') {
+    if (normalizedPath === '/tentang-kami') {
       return <AboutPage navigate={navigate} />;
     }
 
     // 10. Contact: /kontak
-    if (currentPath === '/kontak') {
+    if (normalizedPath === '/kontak') {
       return <ContactPage />;
     }
 
     // 11. Legal Pages
-    if (currentPath === '/syarat-ketentuan') {
+    if (normalizedPath === '/syarat-ketentuan') {
       return <LegalPages type="terms" navigate={navigate} />;
     }
-    if (currentPath === '/kebijakan-privasi') {
+    if (normalizedPath === '/kebijakan-privasi') {
       return <LegalPages type="privacy" navigate={navigate} />;
     }
-    if (currentPath === '/kebijakan-pembatalan') {
+    if (normalizedPath === '/kebijakan-pembatalan') {
       return <LegalPages type="cancellation" navigate={navigate} />;
     }
 

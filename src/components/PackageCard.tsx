@@ -1,6 +1,7 @@
 import React from 'react';
 import type { TourPackage } from '../types.js';
 import { MapPin, Calendar, Users, ArrowUpRight } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 interface PackageCardProps {
   pkg: TourPackage;
@@ -8,12 +9,13 @@ interface PackageCardProps {
 }
 
 export const PackageCard: React.FC<PackageCardProps> = ({ pkg, onSelect }) => {
+  const { t } = useLanguage();
   const primaryImage = pkg.images?.[0]?.imageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg';
 
   const durationText =
     pkg.durationNights > 0
-      ? `${pkg.durationDays}H${pkg.durationNights}M`
-      : `${pkg.durationDays} Hari`;
+      ? `${pkg.durationDays} ${t('days')} ${pkg.durationNights} ${t('nights')}`
+      : `${pkg.durationDays} ${t('days')}`;
 
   return (
     <article
@@ -28,7 +30,6 @@ export const PackageCard: React.FC<PackageCardProps> = ({ pkg, onSelect }) => {
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500 ease-out"
           onError={(e) => {
-            // Styled CSS fallback
             e.currentTarget.style.display = 'none';
           }}
         />
@@ -49,7 +50,7 @@ export const PackageCard: React.FC<PackageCardProps> = ({ pkg, onSelect }) => {
       {/* Content */}
       <div className="p-5 flex flex-col flex-1 justify-between gap-4">
         <div className="space-y-2">
-          {/* Unboxed clean metadata (NO PILLS) */}
+          {/* Metadata */}
           <div className="flex items-center gap-2 text-xs text-stone-500 font-medium">
             <span className="text-[#0F3827] uppercase tracking-wider text-[11px] font-semibold">{pkg.category}</span>
             <span aria-hidden="true">·</span>
@@ -70,15 +71,15 @@ export const PackageCard: React.FC<PackageCardProps> = ({ pkg, onSelect }) => {
         {/* Price & CTA baseline */}
         <div className="pt-3 border-t border-stone-100 flex items-end justify-between">
           <div>
-            <span className="text-[11px] text-stone-500 block">Mulai dari</span>
+            <span className="text-[11px] text-stone-500 block">{t('startingFrom')}</span>
             <div className="text-base font-bold text-[#0F3827] tabular-nums">
               Rp {pkg.basePrice.toLocaleString('id-ID')}
-              <span className="text-xs font-normal text-stone-500"> / pax</span>
+              <span className="text-xs font-normal text-stone-500"> {t('perPerson')}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-1 text-xs font-semibold text-[#0F3827] group-hover:text-[#17523A] transition-colors">
-            <span>Lihat Paket</span>
+            <span>{t('viewDetail')}</span>
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </div>
         </div>

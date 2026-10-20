@@ -13,7 +13,8 @@ import {
   ExternalLink,
   Compass,
   ArrowRight,
-  Receipt
+  Receipt,
+  Download
 } from 'lucide-react';
 
 interface BookingDetailPageProps {
@@ -82,7 +83,11 @@ export const BookingDetailPage: React.FC<BookingDetailPageProps> = ({ bookingNum
   const isLunas = booking.paymentTier === 'full' || booking.remainingBalance <= 0;
 
   const handlePrint = () => {
-    window.print();
+    try {
+      window.print();
+    } catch {
+      window.open(`/api/bookings/${booking.bookingNumber}/pdf?print=true`, '_blank');
+    }
   };
 
   const getWhatsAppInvoiceLink = () => {
@@ -261,10 +266,23 @@ export const BookingDetailPage: React.FC<BookingDetailPageProps> = ({ bookingNum
             <span>Dokumen sah digital diterbitkan oleh PT Garut Journey Nusantara</span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            {/* Direct PDF Download (no login needed) */}
+            <a
+              href={`/api/bookings/${booking.bookingNumber}/pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-lg flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
+              title="Unduh file E-Ticket PDF langsung tanpa login"
+            >
+              <Download className="w-4 h-4 text-[#C8A951]" />
+              <span>Unduh E-Ticket (PDF)</span>
+            </a>
+
             <button
               onClick={handlePrint}
-              className="px-4 py-2 bg-white border border-stone-300 hover:bg-stone-100 rounded-lg text-stone-800 font-medium flex items-center gap-1.5 cursor-pointer shadow-2xs"
+              type="button"
+              className="px-4 py-2 bg-white border border-stone-300 hover:bg-stone-100 rounded-lg text-stone-800 font-medium flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors"
             >
               <Printer className="w-4 h-4 text-stone-600" />
               <span>Cetak Kwitansi</span>
@@ -274,7 +292,7 @@ export const BookingDetailPage: React.FC<BookingDetailPageProps> = ({ bookingNum
               href={getWhatsAppInvoiceLink()}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium flex items-center gap-1.5 cursor-pointer shadow-2xs"
+              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium flex items-center gap-1.5 cursor-pointer shadow-2xs transition-colors"
             >
               <MessageSquare className="w-4 h-4" />
               <span>Kirim ke WhatsApp</span>

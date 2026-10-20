@@ -11,6 +11,7 @@ import {
   generateWhatsAppLink,
   emailLogs
 } from './server/notifications.js';
+import { generateETicketHtml } from './server/eticket.js';
 
 dotenv.config();
 
@@ -278,6 +279,35 @@ app.get('/api/bookings/:bookingNumber', (req: Request, res: Response) => {
   }
 });
 
+// 7b. Download E-Ticket as PDF (Direct public download without login)
+app.get(['/api/bookings/:bookingNumber/pdf', '/api/bookings/:bookingNumber/eticket.pdf', '/tiket/:bookingNumber'], (req: Request, res: Response) => {
+  try {
+    const { bookingNumber } = req.params;
+    // Direct access to booking without requiring login
+    const booking = dbStore.getBookingByNumberAndToken(bookingNumber, undefined, true);
+    if (!booking) {
+      return res.status(404).send(`
+        <!DOCTYPE html>
+        <html lang="id">
+        <head><meta charset="utf-8"><title>E-Ticket Tidak Ditemukan</title></head>
+        <body style="font-family: sans-serif; text-align: center; padding: 50px 20px;">
+          <h2>Nomor Pesanan Tidak Ditemukan</h2>
+          <p>E-Ticket untuk nomor booking "${bookingNumber}" tidak ditemukan.</p>
+          <a href="/" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #0F3827; color: white; border-radius: 8px; text-decoration: none;">Kembali ke Beranda</a>
+        </body>
+        </html>
+      `);
+    }
+
+    const html = generateETicketHtml(booking, dbStore.siteSettings);
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('Content-Disposition', `inline; filename="E-Ticket-Garut-Journey-${booking.bookingNumber}.html"`);
+    res.send(html);
+  } catch (err: any) {
+    res.status(500).send('Gagal membuat dokumen e-ticket: ' + err.message);
+  }
+});
+
 // Visitor Analytics Tracking
 app.post('/api/track-visit', (req: Request, res: Response) => {
   try {
@@ -461,7 +491,7 @@ app.get('/api/admin/bookings', requireAdmin, (req: Request, res: Response) => {
       b.bookingNumber.toLowerCase().includes(q) ||
       b.customerName.toLowerCase().includes(q) ||
       b.customerPhone.includes(q) ||
-      b.customerEmail.toLowerCase().includes(q)
+      (b.customerEmail ? b.customerEmail.toLowerCase().includes(q) : false)
     );
   }
 

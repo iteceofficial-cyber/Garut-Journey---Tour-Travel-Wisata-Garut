@@ -3,6 +3,7 @@ import type { TourPackage } from '../types.js';
 import { PackageCard } from '../components/PackageCard.js';
 import { updateSEO } from '../utils/seo.js';
 import { Search, Filter, SlidersHorizontal, RotateCcw, Sparkles } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext.tsx';
 
 interface CatalogPageProps {
   packages: TourPackage[];
@@ -17,6 +18,7 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
   initialQuery = '',
   onSelectPackage
 }) => {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [selectedDestination, setSelectedDestination] = useState('Semua');
@@ -88,14 +90,14 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
       {/* Header */}
       <div>
         <span className="text-xs uppercase tracking-wider font-semibold text-[#0F3827]">
-          Katalog Wisata Resmi
+          {t('catalogTitle')}
         </span>
         <h1 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-stone-900 mt-1">
-          Paket Wisata Garut Pilihan
+          {t('catalogSubtitle')}
         </h1>
         <p className="text-xs sm:text-sm text-stone-600 mt-1 flex items-center gap-1.5 font-light">
           <Sparkles className="w-3.5 h-3.5 text-[#C8A951] shrink-0" />
-          <span>Seluruh paket merupakan <strong>100% Private Trip</strong> — tanggal keberangkatan fleksibel langsung Anda tentukan sendiri.</span>
+          <span>{t('descPrivateTrip')}</span>
         </p>
       </div>
 
@@ -107,7 +109,7 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
             <Search className="w-4 h-4 text-stone-400 absolute left-3 top-3" />
             <input
               type="text"
-              placeholder="Cari nama destinasi, kawah, atau aktivitas..."
+              placeholder={t('heroSearchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full text-xs pl-9 pr-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
@@ -131,7 +133,7 @@ export const CatalogPage: React.FC<CatalogPageProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-stone-100 text-xs">
           <div>
             <label className="block text-[11px] uppercase tracking-wider font-semibold text-stone-500 mb-1">
-              Kategori
+              {t('searchCategory')}
             </label>
             <select
               value={selectedCategory}

@@ -1258,38 +1258,41 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
   generateWhatsAppInvoice(booking: Booking, customNote?: string): { url: string; rawText: string; phone: string } {
     const isLunas = booking.paymentTier === 'full' || booking.remainingBalance <= 0;
     const statusLabel = isLunas
-      ? '✅ LUNAS (PEMBAYARAN 100%)'
-      : `⚠️ BARU DP (Uang Muka Terbayar: Rp ${booking.dpAmount.toLocaleString('id-ID')})`;
+      ? '[LUNAS - 100% TERBAYAR]'
+      : `[BARU DP 30% - Terbayar: Rp ${booking.dpAmount.toLocaleString('id-ID')}]`;
 
     const pkgName = booking.tourPackage?.name || 'Private Trip Garut';
     const dateTrip = booking.departureDate || '-';
     const baseAppUrl = process.env.APP_URL || 'https://garutjourney.id';
 
-    const rawText = `*═══════════════════════════*
+    const rawText = `*=========================================*
 *KWITANSI & INVOICE RESMI*
 *PT GARUT JOURNEY NUSANTARA*
-*═══════════════════════════*
+*=========================================*
 
 Halo Kak *${booking.customerName}*, berikut adalah rincian kwitansi pemesanan wisata Garut Anda:
 
-📌 *No. Booking* : ${booking.bookingNumber}
-📆 *Tgl Keberangkatan* : ${dateTrip} (Private Trip)
-🎒 *Paket Wisata* : ${pkgName}
-👥 *Jumlah Tamu* : ${booking.participantsCount} Orang
-📍 *Titik Penjemputan* : ${booking.pickupLocation}
+*No. Booking* : ${booking.bookingNumber}
+*Tgl Keberangkatan* : ${dateTrip} (100% Private Trip)
+*Paket Wisata* : ${pkgName}
+*Jumlah Peserta* : ${booking.participantsCount} Orang
+*Titik Jemput* : ${booking.pickupLocation}
 
 *DETAIL PEMBAYARAN:*
 • Total Tagihan : Rp ${booking.totalAmount.toLocaleString('id-ID')}
 • Status Bayar : *${statusLabel}*
 ${!isLunas ? `• Sisa Pelunasan : *Rp ${booking.remainingBalance.toLocaleString('id-ID')}* (Dibayarkan saat penjemputan)\n` : ''}
-🔗 *Akses E-Ticket & Voucher Digital:*
+*Unduh E-Ticket Resmi (PDF Langsung Tanpa Perlu Login):*
+${baseAppUrl}/api/bookings/${booking.bookingNumber}/pdf
+
+*Akses E-Ticket Web:*
 ${baseAppUrl}/booking/${booking.bookingNumber}?token=${booking.accessToken}
 
-${customNote ? `💬 *Catatan Admin:* ${customNote}\n\n` : ''}🏢 *Kantor Operasional:*
+${customNote ? `*Catatan Admin:* ${customNote}\n\n` : ''}*Kantor Operasional:*
 ${this.siteSettings.officeAddress}
-WhatsApp: +${this.siteSettings.whatsappNumber}
+WhatsApp CS: +${this.siteSettings.whatsappNumber}
 
-Terima kasih atas kepercayaan Anda berwisata bersama Garut Journey!`;
+Terima kasih telah mempercayakan perjalanan Anda bersama Garut Journey!`;
 
     const cleanPhone = booking.customerPhone.replace(/[^0-9]/g, '');
     const intlPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.slice(1) : cleanPhone;

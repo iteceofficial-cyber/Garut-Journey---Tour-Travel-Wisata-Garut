@@ -66,7 +66,7 @@ export function sendBookingCreatedEmail(booking: Booking, paymentExpiryMinutes: 
 
   const log: EmailLog = {
     id: 'eml-' + Math.random().toString(36).substring(2, 9),
-    to: booking.customerEmail,
+    to: booking.customerEmail || '',
     subject,
     htmlContent,
     sentAt: new Date().toISOString(),
@@ -135,7 +135,7 @@ export function sendPaymentSuccessEmail(booking: Booking): EmailLog {
 
   const log: EmailLog = {
     id: 'eml-' + Math.random().toString(36).substring(2, 9),
-    to: booking.customerEmail,
+    to: booking.customerEmail || '',
     subject,
     htmlContent,
     sentAt: new Date().toISOString(),

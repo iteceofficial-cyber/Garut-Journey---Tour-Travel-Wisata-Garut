@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import type { TourPackage } from '../types.js';
+import React, { useState, useEffect, useRef } from 'react';
+import type { TourPackage, GalleryItem } from '../types.js';
 import { PackageCard } from '../components/PackageCard.js';
 import { updateSEO } from '../utils/seo.js';
+import { useLanguage } from '../context/LanguageContext.tsx';
 import {
   Compass,
   MapPin,
@@ -15,7 +16,10 @@ import {
   ArrowRight,
   ChevronRight,
   ChevronLeft,
-  Sparkles
+  Sparkles,
+  Camera,
+  ExternalLink,
+  ChevronDown
 } from 'lucide-react';
 
 interface HomePageProps {
@@ -25,10 +29,79 @@ interface HomePageProps {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelectPackage }) => {
+  const { t, language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Semua');
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [loadingGallery, setLoadingGallery] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [showTripDropdown, setShowTripDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close trip dropdown on outside click
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowTripDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, []);
+
+  // Fetch uploaded gallery items for right-side showcase
+  useEffect(() => {
+    fetch('/api/gallery')
+      .then(res => res.json())
+      .then(json => {
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          setGalleryItems(json.data);
+        } else {
+          // Fallback to initial curated gallery items
+          setGalleryItems([
+            {
+              id: 'gal-default-1',
+              title: 'Matahari Terbit di Kawah Gunung Papandayan',
+              category: 'Gunung & Alam',
+              location: 'TWA Gunung Papandayan, Cisurupan',
+              imageUrl: '/src/assets/images/hero_garut_papandayan_1792431914366.jpg',
+              description: 'Siluet dramatis pepohonan Hutan Mati berlatar fajar keemasan di ketinggian 2.665 mdpl.',
+              createdAt: new Date().toISOString()
+            },
+            {
+              id: 'gal-default-2',
+              title: 'Keheningan Danau Geothermal Kawah Kamojang',
+              category: 'Kawah & Danau',
+              location: 'Samarang, Garut',
+              imageUrl: '/src/assets/images/tour_kamojang_pine_1792431915131.jpg',
+              description: 'Jembatan kayu setapak melintasi danau air hangat berbalut kabut pagi dan hutan pinus asri.',
+              createdAt: new Date().toISOString()
+            },
+            {
+              id: 'gal-default-3',
+              title: 'Senja di Situ Bagendit Berlatar Gunung Guntur',
+              category: 'Kawah & Danau',
+              location: 'Banyuresmi, Garut',
+              imageUrl: '/src/assets/images/tour_situ_bagendit_1792431916060.jpg',
+              description: 'Pantulan langit senja keemasan di atas air tenang danau Situ Bagendit.',
+              createdAt: new Date().toISOString()
+            },
+            {
+              id: 'gal-default-4',
+              title: 'Kemegahan Air Terjun Kembar Curug Sanghyang Taraje',
+              category: 'Air Terjun',
+              location: 'Pamulihan, Garut Selatan',
+              imageUrl: '/src/assets/images/tour_curug_taraje_1792431915604.jpg',
+              description: 'Dua aliran air terjun raksasa setinggi 90 meter membelah dinding tebing karst hijau perawan.',
+              createdAt: new Date().toISOString()
+            }
+          ]);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoadingGallery(false));
+  }, []);
 
   useEffect(() => {
     updateSEO({
@@ -47,14 +120,43 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
     });
   }, []);
 
-  // Auto-rotating hero showcase timer
+  // Auto-rotating uploaded gallery showcase timer
   useEffect(() => {
-    if (packages.length <= 1 || isPaused) return;
+    if (galleryItems.length <= 1 || isPaused) return;
     const timer = setInterval(() => {
-      setCurrentSlide(prev => (prev + 1) % packages.length);
+      setCurrentSlide(prev => (prev + 1) % galleryItems.length);
     }, 4500);
     return () => clearInterval(timer);
-  }, [packages.length, isPaused]);
+  }, [galleryItems.length, isPaused]);
+
+  // Clickable popular trip presets as requested by user
+  const popularTripPresets = [
+    { label: '🏔️ Papandayan', query: 'Papandayan', category: 'Gunung & Alam' },
+    { label: '🌋 Kamojang', query: 'Kamojang', category: 'Keluarga & Relaksasi' },
+    { label: '🚣 Situ Bagendit', query: 'Situ Bagendit', category: 'Budaya & Sejarah' },
+    { label: '🌊 Curug Taraje', query: 'Curug Sanghyang Taraje', category: 'Petualangan Alam' },
+    { label: '♨️ Darajat Pass', query: 'Darajat', category: 'Keluarga & Relaksasi' },
+    { label: '🏖️ Pantai Santolo', query: 'Santolo', category: 'Petualangan Alam' },
+    { label: '⭐ Semua Paket', query: '', category: 'Semua' }
+  ];
+
+  const handleSelectPreset = (preset: { query: string; category: string }) => {
+    setSearchQuery(preset.query);
+    setSelectedCategory(preset.category);
+    setShowTripDropdown(false);
+    navigate(`/paket-wisata?q=${encodeURIComponent(preset.query)}&cat=${encodeURIComponent(preset.category)}`);
+  };
+
+  const handleSelectTripDropdown = (pkgName: string, category: string, slug?: string) => {
+    setSearchQuery(pkgName);
+    setSelectedCategory(category);
+    setShowTripDropdown(false);
+    if (slug) {
+      onSelectPackage(slug);
+    } else {
+      navigate(`/paket-wisata?q=${encodeURIComponent(pkgName)}&cat=${encodeURIComponent(category)}`);
+    }
+  };
 
   const categories = [
     'Semua',
@@ -66,12 +168,13 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    setShowTripDropdown(false);
     navigate(`/paket-wisata?q=${encodeURIComponent(searchQuery)}&cat=${encodeURIComponent(selectedCategory)}`);
   };
 
   const featured = packages.slice(0, 3);
-  const activePackage = packages[currentSlide] || packages[0];
-  const activeImgUrl = activePackage?.images?.[0]?.imageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg';
+  const activeGalleryItem = galleryItems[currentSlide] || galleryItems[0];
+  const activeImgUrl = activeGalleryItem?.imageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg';
 
   const testimonials = [
     {
@@ -125,53 +228,135 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Column: Headlines & Search */}
+            {/* Left Column: Headlines & Search Widget */}
             <div className="lg:col-span-7 space-y-8">
               <div className="space-y-4">
                 <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#C8A951] font-semibold">
                   <Compass className="w-4 h-4" />
-                  <span>Garut Tour & Travel Specialist</span>
+                  <span>{t('heroBadge')}</span>
                 </div>
 
                 <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-stone-100 leading-[1.15] text-balance">
-                  Jelajahi Keindahan Garut Bersama Garut Journey
+                  {t('heroMainTitle')}
                 </h1>
 
                 <p className="text-sm sm:text-base text-stone-300 leading-relaxed max-w-2xl font-light">
-                  Temukan pengalaman wisata Garut yang berkesan melalui paket perjalanan yang praktis, nyaman, dan mudah dipesan secara online.
+                  {t('heroMainSubtitle')}
                 </p>
               </div>
 
-              {/* Integrated Search Bar Module */}
+              {/* Integrated Search Bar Module with Instant Click Presets & Dropdown */}
               <div className="bg-white/95 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-2xl border border-white/20 text-stone-900">
                 <form onSubmit={handleSearch} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {/* Destination Search */}
-                    <div className="sm:col-span-2">
-                      <label className="block text-[11px] uppercase tracking-wider font-semibold text-stone-500 mb-1">
-                        Cari Objek Wisata / Paket
-                      </label>
+                    {/* Destination Search with Clickable Auto-dropdown List */}
+                    <div className="sm:col-span-2 relative" ref={dropdownRef}>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="block text-[11px] uppercase tracking-wider font-semibold text-stone-500">
+                          {t('searchTitle')}
+                        </label>
+                        <span className="text-[10px] text-emerald-800 font-medium hidden sm:inline">
+                          ✨ Klik untuk memilih destinasi langsung
+                        </span>
+                      </div>
+
                       <div className="relative">
-                        <Search className="w-4 h-4 text-stone-400 absolute left-3 top-3" />
+                        <Search className="w-4 h-4 text-stone-400 absolute left-3 top-3 pointer-events-none" />
                         <input
                           type="text"
-                          placeholder="Papandayan, Kamojang, Bagendit..."
+                          placeholder={t('heroSearchPlaceholder')}
                           value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          className="w-full text-xs pl-9 pr-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
+                          onFocus={() => setShowTripDropdown(true)}
+                          onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                            setShowTripDropdown(true);
+                          }}
+                          className="w-full text-xs pl-9 pr-8 py-2.5 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowTripDropdown(!showTripDropdown)}
+                          className="absolute right-2.5 top-2.5 text-stone-400 hover:text-stone-700 p-0.5 rounded cursor-pointer"
+                          title="Buka daftar pilihan trip"
+                        >
+                          <ChevronDown className={`w-4 h-4 transition-transform ${showTripDropdown ? 'rotate-180' : ''}`} />
+                        </button>
                       </div>
+
+                      {/* Clickable Dropdown List for Trips & Packages */}
+                      {showTripDropdown && (
+                        <div className="absolute left-0 right-0 top-full mt-1 bg-white rounded-xl shadow-2xl border border-stone-200 py-2 z-50 max-h-72 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
+                          <div className="px-3 py-1 text-[10px] uppercase font-bold text-stone-400 border-b border-stone-100 flex items-center justify-between">
+                            <span>Pilihan Objek Wisata & Trip (Tinggal Klik)</span>
+                            <span className="text-[9px] text-stone-400">Tidak perlu ketik manual</span>
+                          </div>
+
+                          {/* Render all Tour Packages from DB */}
+                          <div className="divide-y divide-stone-100">
+                            {packages.map(pkg => (
+                              <button
+                                key={pkg.id}
+                                type="button"
+                                onClick={() => handleSelectTripDropdown(pkg.name, pkg.category, pkg.slug)}
+                                className="w-full p-2.5 text-left hover:bg-emerald-50/70 transition-colors flex items-center gap-3 cursor-pointer group"
+                              >
+                                <img
+                                  src={pkg.images?.[0]?.imageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg'}
+                                  alt={pkg.name}
+                                  className="w-10 h-10 rounded-lg object-cover border border-stone-200 shrink-0"
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-xs font-bold text-stone-900 group-hover:text-[#0F3827] truncate">
+                                      {pkg.name}
+                                    </span>
+                                    <span className="text-[11px] font-mono font-bold text-[#0F3827] shrink-0 ml-2">
+                                      Rp {pkg.basePrice.toLocaleString('id-ID')}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-[10px] text-stone-500 mt-0.5">
+                                    <span className="text-[#C8A951] font-semibold">{pkg.destinationArea}</span>
+                                    <span>·</span>
+                                    <span>{pkg.durationDays} Hari</span>
+                                    <span>·</span>
+                                    <span className="bg-emerald-100 text-emerald-800 px-1 rounded font-medium">100% Private</span>
+                                  </div>
+                                </div>
+                              </button>
+                            ))}
+
+                            {/* Additional Popular Destinations */}
+                            <button
+                              type="button"
+                              onClick={() => handleSelectTripDropdown('Kawah Talaga Bodas', 'Gunung & Alam')}
+                              className="w-full p-2.5 text-left hover:bg-emerald-50/70 transition-colors flex items-center gap-3 cursor-pointer group"
+                            >
+                              <div className="w-10 h-10 rounded-lg bg-teal-100 text-teal-800 flex items-center justify-center font-bold text-xs shrink-0">
+                                ♨️
+                              </div>
+                              <div className="flex-1">
+                                <span className="text-xs font-bold text-stone-900 group-hover:text-[#0F3827] block">
+                                  Kawah Talaga Bodas & Darajat Pass
+                                </span>
+                                <span className="text-[10px] text-stone-500">
+                                  Pemandian air panas alami belerang pegunungan Wanaraja
+                                </span>
+                              </div>
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Category Filter */}
                     <div>
                       <label className="block text-[11px] uppercase tracking-wider font-semibold text-stone-500 mb-1">
-                        Kategori Wisata
+                        {t('searchCategory')}
                       </label>
                       <select
                         value={selectedCategory}
                         onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
+                        className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827] cursor-pointer"
                       >
                         {categories.map(c => (
                           <option key={c} value={c}>{c}</option>
@@ -180,17 +365,43 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
                     </div>
                   </div>
 
+                  {/* QUICK-SELECT TRIP PILLS (Permintaan User: Pilihan trip pada gambar masukan di list supaya tinggal klik) */}
+                  <div className="pt-1">
+                    <span className="block text-[10px] uppercase font-bold text-stone-400 tracking-wider mb-1.5">
+                      {t('searchPopularTrips')}
+                    </span>
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {popularTripPresets.map(preset => {
+                        const isSelected = searchQuery === preset.query;
+                        return (
+                          <button
+                            key={preset.label}
+                            type="button"
+                            onClick={() => handleSelectPreset(preset)}
+                            className={`px-2.5 py-1 rounded-full text-[11px] font-medium transition-all cursor-pointer border ${
+                              isSelected
+                                ? 'bg-[#0F3827] text-white border-[#0F3827] shadow-xs'
+                                : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border-stone-200'
+                            }`}
+                          >
+                            {preset.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-stone-100">
                     <div className="flex items-center gap-2 text-[11px] text-stone-500">
                       <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Pembayaran Midtrans Terverifikasi • Kuota Resmi</span>
+                      <span>{t('trustMidtrans')}</span>
                     </div>
 
                     <button
                       type="submit"
                       className="w-full sm:w-auto px-6 py-2.5 bg-[#0F3827] hover:bg-[#17523A] text-white text-xs uppercase tracking-wider font-bold rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
                     >
-                      <span>Temukan Jadwal Trip</span>
+                      <span>{t('btnFindTrip')}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -201,30 +412,30 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
               <div className="flex flex-wrap items-center gap-6 pt-2 text-xs text-stone-300">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#C8A951]" />
-                  <span>Pemandu HPI Garut</span>
+                  <span>{t('trustGuide')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#C8A951]" />
-                  <span>Garansi Kursi Terjamin</span>
+                  <span>{t('trustGuaranteedSeat')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#C8A951]" />
-                  <span>Pilihan Pembayaran Lengkap</span>
+                  <span>{t('trustPaymentOptions')}</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Dynamic Auto-Rotating Hero Visual Showcase */}
+            {/* Right Column: Hero Showcase Replaced with Uploaded Gallery Photos */}
             <div
               className="lg:col-span-5"
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
             >
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl group aspect-4/3 lg:aspect-auto lg:h-[480px] bg-stone-900">
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl group aspect-4/3 lg:aspect-auto lg:h-[500px] bg-stone-900">
                 <img
-                  key={activePackage?.id || currentSlide}
+                  key={activeGalleryItem?.id || currentSlide}
                   src={activeImgUrl}
-                  alt={activePackage?.name || 'Paket Wisata Garut'}
+                  alt={activeGalleryItem?.title || 'Galeri Foto Wisata Garut'}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover transition-all duration-700 ease-out"
                 />
@@ -232,22 +443,22 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
 
                 {/* Top Badge & Slide Indicators */}
                 <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-[#C8A951] text-[10px] font-semibold tracking-wider border border-white/10">
-                    <Sparkles className="w-3 h-3" />
-                    <span>100% PRIVATE TRIP</span>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md text-[#C8A951] text-[10px] font-semibold tracking-wider border border-white/10">
+                    <Camera className="w-3.5 h-3.5 text-[#C8A951]" />
+                    <span className="uppercase">GALERI FOTO RESMI GARUT</span>
                   </div>
 
                   {/* Indicator Dots */}
-                  {packages.length > 1 && (
-                    <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
-                      {packages.map((_, idx) => (
+                  {galleryItems.length > 1 && (
+                    <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
+                      {galleryItems.slice(0, 6).map((_, idx) => (
                         <button
                           key={idx}
                           onClick={() => setCurrentSlide(idx)}
                           className={`h-1.5 rounded-full transition-all cursor-pointer ${
                             currentSlide === idx ? 'w-4 bg-[#C8A951]' : 'w-1.5 bg-white/40 hover:bg-white/70'
                           }`}
-                          aria-label={`Slide ${idx + 1}`}
+                          aria-label={`Foto ${idx + 1}`}
                         />
                       ))}
                     </div>
@@ -255,53 +466,69 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
                 </div>
 
                 {/* Arrow Navigation */}
-                {packages.length > 1 && (
+                {galleryItems.length > 1 && (
                   <div className="absolute inset-y-0 left-3 right-3 flex items-center justify-between pointer-events-none">
                     <button
-                      onClick={() => setCurrentSlide(prev => (prev === 0 ? packages.length - 1 : prev - 1))}
-                      className="w-8 h-8 rounded-full bg-black/50 hover:bg-black/80 backdrop-blur-sm text-white flex items-center justify-center pointer-events-auto transition-colors cursor-pointer border border-white/10 shadow"
-                      aria-label="Paket Sebelumnya"
+                      onClick={() => setCurrentSlide(prev => (prev === 0 ? galleryItems.length - 1 : prev - 1))}
+                      className="w-8 h-8 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-sm text-white flex items-center justify-center pointer-events-auto transition-colors cursor-pointer border border-white/15 shadow"
+                      aria-label="Foto Sebelumnya"
                     >
                       <ChevronLeft className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => setCurrentSlide(prev => (prev + 1) % packages.length)}
-                      className="w-8 h-8 rounded-full bg-black/50 hover:bg-black/80 backdrop-blur-sm text-white flex items-center justify-center pointer-events-auto transition-colors cursor-pointer border border-white/10 shadow"
-                      aria-label="Paket Berikutnya"
+                      onClick={() => setCurrentSlide(prev => (prev + 1) % galleryItems.length)}
+                      className="w-8 h-8 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-sm text-white flex items-center justify-center pointer-events-auto transition-colors cursor-pointer border border-white/15 shadow"
+                      aria-label="Foto Berikutnya"
                     >
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>
                 )}
 
-                {/* Floating caption card matching user reference */}
-                <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-stone-900/85 backdrop-blur-md border border-white/10 text-white z-10">
+                {/* Floating caption card showing Uploaded Photo details */}
+                <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-stone-900/90 backdrop-blur-md border border-white/15 text-white z-10 space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] uppercase tracking-widest text-[#C8A951] font-semibold block">
-                      DESTINASI IKONIK GARUT · {activePackage?.destinationArea || 'GARUT'}
+                    <span className="text-[10px] uppercase tracking-widest text-[#C8A951] font-semibold flex items-center gap-1">
+                      <MapPin className="w-3 h-3" />
+                      <span>{activeGalleryItem?.location || 'Garut, Jawa Barat'}</span>
                     </span>
                     <span className="text-[10px] font-mono text-stone-400">
-                      {currentSlide + 1} / {packages.length}
+                      Foto {currentSlide + 1} / {galleryItems.length}
                     </span>
                   </div>
-                  <h4 className="font-serif-luxury text-base font-bold mt-1 text-stone-100 line-clamp-1">
-                    {activePackage?.name || 'Paket Garut Journey'}
+
+                  <h4 className="font-serif-luxury text-base font-bold text-stone-100 line-clamp-1">
+                    {activeGalleryItem?.title || 'Pesona Keindahan Alam Garut'}
                   </h4>
-                  <p className="text-xs text-stone-300 mt-1 line-clamp-2 font-light">
-                    {activePackage?.shortDescription || 'Pengalaman wisata eksklusif di Garut Jawa Barat.'}
+
+                  <p className="text-xs text-stone-300 line-clamp-2 font-light">
+                    {activeGalleryItem?.description || 'Dokumentasi otentik perjalanan wisata alam dan budaya di Garut.'}
                   </p>
-                  <div className="mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-xs">
-                    <span className="font-mono text-[#C8A951] font-bold">
-                      Mulai Rp {(activePackage?.basePrice || 550000).toLocaleString('id-ID')} / pax
-                    </span>
-                    <button
-                      onClick={() => onSelectPackage(activePackage?.slug || '')}
-                      className="text-stone-200 hover:text-white font-medium flex items-center gap-1 cursor-pointer bg-white/10 hover:bg-white/20 px-2.5 py-1 rounded transition-colors"
-                    >
-                      <span>Lihat Detail</span>
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
+
+                  {/* Thumbnail strip of uploaded gallery photos */}
+                  {galleryItems.length > 1 && (
+                    <div className="flex items-center gap-2 pt-1 border-t border-white/10 overflow-x-auto py-1">
+                      {galleryItems.slice(0, 5).map((item, idx) => (
+                        <button
+                          key={item.id}
+                          onClick={() => setCurrentSlide(idx)}
+                          className={`w-12 h-9 rounded-md overflow-hidden border transition-all shrink-0 cursor-pointer ${
+                            currentSlide === idx ? 'border-[#C8A951] ring-1 ring-[#C8A951] scale-105' : 'border-white/20 opacity-60 hover:opacity-100'
+                          }`}
+                        >
+                          <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
+                        </button>
+                      ))}
+
+                      <button
+                        onClick={() => navigate('/galeri')}
+                        className="text-[10px] font-semibold text-[#C8A951] hover:text-amber-200 shrink-0 ml-auto flex items-center gap-1 cursor-pointer bg-white/10 hover:bg-white/20 px-2 py-1.5 rounded transition-colors"
+                      >
+                        <span>Semua Galeri</span>
+                        <ChevronRight className="w-3 h-3" />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -314,21 +541,18 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
             <span className="text-xs uppercase tracking-wider font-semibold text-[#0F3827]">
-              Pilihan Wisata Populer
+              {t('popularDestinations')}
             </span>
             <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-              Paket Wisata Unggulan Garut
+              {t('popularDestinationsSub')}
             </h2>
-            <p className="text-xs sm:text-sm text-stone-500 mt-1">
-              Dirancang dengan rute optimal, akomodasi berkualitas, dan pemandu lokal berlisensi.
-            </p>
           </div>
 
           <button
             onClick={() => navigate('/paket-wisata')}
             className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-bold text-[#0F3827] hover:text-[#17523A] transition-colors self-start sm:self-auto cursor-pointer"
           >
-            <span>Lihat Semua Paket ({packages.length})</span>
+            <span>{t('heroBtnExplore')} ({packages.length})</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -346,14 +570,11 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs uppercase tracking-wider font-semibold text-[#0F3827]">
-              Standar Layanan Kami
+              {t('whyChooseUs')}
             </span>
             <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-              Mengapa Berwisata Bersama Garut Journey?
+              {t('whyChooseUsSub')}
             </h2>
-            <p className="text-xs sm:text-sm text-stone-500 mt-2">
-              Kami memadukan kemudahan pemesanan digital dengan keramahan khas tatar Pasundan.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -362,10 +583,10 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
                 <Users className="w-5 h-5" />
               </div>
               <h3 className="font-serif-luxury text-base font-bold text-stone-900">
-                Pemandu Lokal Berlisensi
+                {t('badgeCertifiedGuide')}
               </h3>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Dipandu oleh pemandu asli Garut bersertifikasi HPI yang menguasai rute, sejarah lokal, dan titik foto terbaik.
+                {t('descCertifiedGuide')}
               </p>
             </div>
 
@@ -374,10 +595,10 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
                 <Award className="w-5 h-5" />
               </div>
               <h3 className="font-serif-luxury text-base font-bold text-stone-900">
-                Transparansi Biaya
+                {t('badgeTransparentPrice')}
               </h3>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Harga paket telah mencakup tiket masuk, transportasi, dan makan. Tanpa ada pungutan liar atau biaya siluman di lokasi.
+                {t('descTransparentPrice')}
               </p>
             </div>
 
@@ -386,10 +607,10 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <h3 className="font-serif-luxury text-base font-bold text-stone-900">
-                Pembayaran Midtrans Aman
+                {t('badgeEasyBooking')}
               </h3>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Transaksi terenkripsi via Midtrans Snap dengan pilihan QRIS, Virtual Account bank, dan konfirmasi otomatis instan.
+                {t('descEasyBooking')}
               </p>
             </div>
 
@@ -398,10 +619,10 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
                 <Calendar className="w-5 h-5" />
               </div>
               <h3 className="font-serif-luxury text-base font-bold text-stone-900">
-                Alokasi Kuota Terjamin
+                {t('badgePrivateTrip')}
               </h3>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Sistem database mengunci kursi pesanan Anda secara real-time untuk menjamin Anda tidak mengalami overbooking.
+                {t('descPrivateTrip')}
               </p>
             </div>
           </div>
@@ -412,32 +633,28 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <span className="text-xs uppercase tracking-wider font-semibold text-[#0F3827]">
-            Pengalaman Tamu
+            {t('testimonialsTitle')}
           </span>
           <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-            Cerita Perjalanan Bersama Kami
+            {t('testimonialsSub')}
           </h2>
-          <p className="text-xs sm:text-sm text-stone-500 mt-1">
-            Kisah nyata dari wisatawan yang telah mempercayakan liburan Garut mereka kepada kami.
-          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((t, idx) => (
+          {testimonials.map((testi, idx) => (
             <div key={idx} className="bg-white p-6 rounded-xl border border-stone-200 shadow-2xs flex flex-col justify-between">
               <div className="space-y-3">
-                {/* Quiet unboxed metadata */}
                 <div className="text-[11px] font-semibold text-[#C8A951] uppercase tracking-wider">
-                  {t.package}
+                  {testi.package}
                 </div>
                 <p className="text-xs text-stone-700 leading-relaxed italic">
-                  "{t.text}"
+                  "{testi.text}"
                 </p>
               </div>
 
               <div className="pt-4 mt-4 border-t border-stone-100">
-                <div className="font-semibold text-xs text-stone-900">{t.name}</div>
-                <div className="text-[11px] text-stone-500">{t.role} · {t.city}</div>
+                <div className="font-semibold text-xs text-stone-900">{testi.name}</div>
+                <div className="text-[11px] text-stone-500">{testi.role} · {testi.city}</div>
               </div>
             </div>
           ))}
@@ -448,10 +665,10 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <span className="text-xs uppercase tracking-wider font-semibold text-[#0F3827]">
-            Informasi Praktis
+            {t('faqTitle')}
           </span>
           <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-            Pertanyaan yang Sering Diajukan (FAQ)
+            {t('faqSub')}
           </h2>
         </div>
 
@@ -475,10 +692,10 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
         <div className="bg-[#0F3827] rounded-2xl p-8 sm:p-12 text-white text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
           <div className="space-y-2 max-w-xl">
             <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-stone-100">
-              Siap Menjelajahi Pesona Alam Garut?
+              {t('heroMainTitle')}
             </h3>
             <p className="text-xs sm:text-sm text-stone-300">
-              Pesan paket perjalanan Anda sekarang dengan jaminan kuota dan pembayaran online resmi.
+              {t('heroMainSubtitle')}
             </p>
           </div>
 
@@ -486,7 +703,7 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
             onClick={() => navigate('/paket-wisata')}
             className="px-6 py-3.5 bg-[#C8A951] hover:bg-[#B89940] text-stone-950 text-xs uppercase tracking-wider font-bold rounded-lg transition-colors whitespace-nowrap cursor-pointer shadow-md"
           >
-            Pilih Paket Sekarang
+            {t('heroBtnExplore')}
           </button>
         </div>
       </section>

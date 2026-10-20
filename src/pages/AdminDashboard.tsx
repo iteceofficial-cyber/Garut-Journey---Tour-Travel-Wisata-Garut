@@ -36,9 +36,9 @@ import {
   AlertCircle,
   Sparkles,
   Zap,
-  Eye,
-  Link as LinkIcon,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Printer,
+  FileText
 } from 'lucide-react';
 import { analyzeArticleSEO, autoOptimizeArticleSEO, type ArticleSEOAnalysis } from '../utils/seo.js';
 
@@ -361,7 +361,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           summary: artSummary || artContent.slice(0, 150),
           content: artContent,
           imageUrl: artImage,
-          readTimeMinutes: artReadTime
+          readTimeMinutes: artReadTime,
+          metaTitle: artMetaTitle || `${artTitle} | Garut Journey`,
+          metaDescription: artMetaDesc || artSummary || artContent.slice(0, 150),
+          keywords: artKeywords || artFocusKeyword
         })
       });
       const json = await res.json();
@@ -370,6 +373,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         setArtTitle('');
         setArtContent('');
         setArtSummary('');
+        setArtFocusKeyword('');
+        setArtMetaTitle('');
+        setArtMetaDesc('');
+        setArtKeywords('');
         fetchAllData();
       }
     } catch {
@@ -379,6 +386,41 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
   const handleOpenEditArticle = (art: Article) => {
     setEditingArticle({ ...art });
+    setEditArtFocusKeyword(art.keywords?.split(',')[0]?.trim() || '');
+  };
+
+  const handleAutoOptimizeNewArticle = () => {
+    if (!artTitle.trim() && !artContent.trim()) {
+      alert('Isi judul atau konten artikel terlebih dahulu sebelum koreksi SEO.');
+      return;
+    }
+    const result = autoOptimizeArticleSEO({
+      title: artTitle,
+      content: artContent,
+      category: artCategory,
+      focusKeyword: artFocusKeyword
+    });
+    setArtMetaTitle(result.optimizedTitle);
+    setArtMetaDesc(result.optimizedDescription);
+    setArtKeywords(result.suggestedKeywords);
+    setArtReadTime(result.readTimeMinutes);
+  };
+
+  const handleAutoOptimizeEditArticle = () => {
+    if (!editingArticle) return;
+    const result = autoOptimizeArticleSEO({
+      title: editingArticle.title,
+      content: editingArticle.content,
+      category: editingArticle.category,
+      focusKeyword: editArtFocusKeyword
+    });
+    setEditingArticle({
+      ...editingArticle,
+      metaTitle: result.optimizedTitle,
+      metaDescription: result.optimizedDescription,
+      keywords: result.suggestedKeywords,
+      readTimeMinutes: result.readTimeMinutes
+    });
   };
 
   const handleSaveEditArticle = async (e: React.FormEvent) => {
@@ -509,6 +551,153 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     }
   };
 
+  // Addons (Layanan Tambahan) CRUD Handlers
+  const handleCreateAddon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAddonSaving(true);
+    try {
+      const res = await fetch('/api/admin/addons', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken
+        },
+        body: JSON.stringify({
+          name: addonName,
+          price: addonPrice,
+          unit: addonUnit,
+          description: addonDesc,
+          isActive: addonIsActive
+        })
+      });
+      const json = await res.json();
+      if (json.success) {
+        setShowNewAddonModal(false);
+        setAddonName('');
+        setAddonPrice(100000);
+        setAddonDesc('');
+        setAddonUnit('per trip');
+        fetchAllData();
+      } else {
+        alert(json.error || 'Gagal menambahkan layanan tambahan.');
+      }
+    } catch {
+      alert('Koneksi server gagal.');
+    } finally {
+      setAddonSaving(false);
+    }
+  };
+
+  const handleOpenEditAddon = (item: AddonOption) => {
+    setEditingAddon({ ...item });
+  };
+
+  const handleSaveEditAddon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingAddon) return;
+    setAddonSaving(true);
+    try {
+      const res = await fetch(`/api/admin/addons/${editingAddon.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken
+        },
+        body: JSON.stringify({
+          name: editingAddon.name,
+          price: editingAddon.price,
+          unit: editingAddon.unit,
+          description: editingAddon.description,
+          isActive: editingAddon.isActive
+        })
+      });
+      const json = await res.json();
+      if (json.success) {
+        setEditingAddon(null);
+        fetchAllData();
+      } else {
+        alert(json.error || 'Gagal memperbarui layanan tambahan.');
+      }
+    } catch {
+      alert('Koneksi server gagal.');
+    } finally {
+      setAddonSaving(false);
+    }
+  };
+
+  const handleToggleAddonActive = async (addon: AddonOption) => {
+    try {
+      const res = await fetch(`/api/admin/addons/${addon.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken
+        },
+        body: JSON.stringify({ isActive: !addon.isActive })
+      });
+      const json = await res.json();
+      if (json.success) {
+        fetchAllData();
+      } else {
+        alert(json.error || 'Gagal memperbarui status layanan.');
+      }
+    } catch {
+      alert('Gagal menghubungi server.');
+    }
+  };
+
+  const handleDeleteAddon = async (id: string) => {
+    if (!confirm('Hapus layanan tambahan ini dari sistem?')) return;
+    try {
+      const res = await fetch(`/api/admin/addons/${id}`, {
+        method: 'DELETE',
+        headers: { 'x-admin-token': adminToken }
+      });
+      const json = await res.json();
+      if (json.success) {
+        fetchAllData();
+      } else {
+        alert(json.error || 'Gagal menghapus layanan tambahan.');
+      }
+    } catch {
+      alert('Koneksi server gagal.');
+    }
+  };
+
+  // SEO Save Handler
+  const handleSaveSEO = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const payload = {
+        metaTitle,
+        metaDescription,
+        metaKeywords,
+        canonicalUrl,
+        ogImageUrl,
+        robotsTxtContent: robotsTxt
+      };
+
+      const res = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken
+        },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (json.success) {
+        setSeoSavedMessage(true);
+        setTimeout(() => setSeoSavedMessage(false), 3000);
+        fetchAllData();
+      } else {
+        alert(json.error || 'Gagal menyimpan pengaturan SEO.');
+      }
+    } catch {
+      alert('Koneksi server gagal.');
+    }
+  };
+
   // Save Settings, Logo, and Favicon
   const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -614,9 +803,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
             { id: 'analytics', label: 'Laporan Pengunjung', icon: BarChart3 },
             { id: 'bookings', label: 'Manajemen Booking', icon: Calendar },
             { id: 'packages', label: 'Paket & Aktivitas', icon: Package },
+            { id: 'addons', label: 'Layanan Tambahan', icon: Layers },
             { id: 'articles', label: 'Artikel & Blog', icon: BookOpen },
             { id: 'gallery', label: 'Galeri Foto', icon: Camera },
             { id: 'branding_legality', label: 'Logo & Legalitas', icon: Building },
+            { id: 'seo', label: 'Pengaturan SEO', icon: Globe },
             { id: 'payments', label: 'Audit & Log Sistem', icon: ShieldCheck }
           ].map(tab => {
             const Icon = tab.icon;
@@ -1134,6 +1325,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                       </div>
                     )}
 
+                    {/* PDF E-Ticket & Cetak Kwitansi Actions for Admin */}
+                    <div className="flex items-center gap-2 pt-1">
+                      <a
+                        href={`/api/bookings/${selectedBooking.bookingNumber}/pdf`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-2 px-3 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-lg text-xs flex items-center justify-center gap-1.5 shadow-xs cursor-pointer"
+                        title="Unduh E-Ticket PDF Resmi (Bisa Dibagikan Tanpa Login)"
+                      >
+                        <FileText className="w-3.5 h-3.5 text-[#C8A951]" />
+                        <span>Unduh E-Ticket (PDF)</span>
+                      </a>
+
+                      <a
+                        href={`/api/bookings/${selectedBooking.bookingNumber}/pdf?print=true`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="py-2 px-3 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 font-semibold rounded-lg text-xs flex items-center gap-1.5 cursor-pointer"
+                        title="Buka Pratinjau & Cetak Kwitansi"
+                      >
+                        <Printer className="w-3.5 h-3.5 text-stone-600" />
+                        <span>Cetak Kwitansi</span>
+                      </a>
+                    </div>
+
                     <div className="pt-2 border-t space-y-2">
                       <label className="block text-stone-700 font-semibold mb-1">
                         Ubah Status Operasional Tur:
@@ -1309,6 +1525,334 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           </div>
         )}
 
+        {/* TAB: LAYANAN TAMBAHAN (ADD-ONS) MANAGEMENT (EDITABLE) */}
+        {activeTab === 'addons' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="font-serif-luxury text-2xl font-bold text-stone-900">
+                  Manajemen Layanan Tambahan (Add-ons)
+                </h2>
+                <p className="text-xs text-stone-500 mt-0.5">
+                  Kelola fasilitas opsional seperti dokumentasi drone, porter gunung, antar-jemput bandara/stasiun, dan souvenir khas Garut yang dapat dipilih konsumen saat booking.
+                </p>
+              </div>
+
+              <button
+                onClick={() => {
+                  setAddonName('');
+                  setAddonPrice(150000);
+                  setAddonUnit('per trip');
+                  setAddonDesc('');
+                  setAddonIsActive(true);
+                  setShowNewAddonModal(true);
+                }}
+                className="px-4 py-2.5 bg-[#0F3827] hover:bg-[#17523A] text-white text-xs font-bold rounded-lg flex items-center gap-1.5 shadow-2xs cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Tambah Layanan Baru</span>
+              </button>
+            </div>
+
+            {/* Addons Grid Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {addons.map(addon => (
+                <div
+                  key={addon.id}
+                  className={`bg-white p-5 rounded-2xl border shadow-2xs space-y-4 flex flex-col justify-between transition-all ${
+                    addon.isActive ? 'border-stone-200' : 'border-stone-200 opacity-60 bg-stone-50/60'
+                  }`}
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                        addon.isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600'
+                      }`}>
+                        {addon.isActive ? 'Aktif di Form Booking' : 'Nonaktif (Disembunyikan)'}
+                      </span>
+                      <span className="text-xs font-mono font-semibold text-stone-500">
+                        /{addon.unit}
+                      </span>
+                    </div>
+
+                    <h3 className="font-serif-luxury font-bold text-stone-900 text-base leading-snug">
+                      {addon.name}
+                    </h3>
+
+                    <p className="text-xs text-stone-600 line-clamp-3">
+                      {addon.description || 'Fasilitas opsional untuk melengkapi kenyamanan perjalanan Anda.'}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-stone-100 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-stone-400 block uppercase font-medium">Harga Layanan:</span>
+                      <span className="text-sm font-mono font-bold text-[#0F3827]">
+                        Rp {addon.price.toLocaleString('id-ID')}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5">
+                      {/* Toggle status button */}
+                      <button
+                        onClick={() => handleToggleAddonActive(addon)}
+                        className={`p-1.5 rounded text-xs transition-colors cursor-pointer ${
+                          addon.isActive ? 'text-amber-700 hover:bg-amber-50' : 'text-emerald-700 hover:bg-emerald-50'
+                        }`}
+                        title={addon.isActive ? 'Nonaktifkan layanan ini' : 'Aktifkan layanan ini'}
+                      >
+                        {addon.isActive ? <Clock className="w-4 h-4" /> : <CheckCircle2 className="w-4 h-4" />}
+                      </button>
+
+                      {/* Edit button */}
+                      <button
+                        onClick={() => handleOpenEditAddon(addon)}
+                        className="px-2.5 py-1 text-xs bg-stone-100 hover:bg-stone-200 text-stone-700 hover:text-stone-900 font-semibold rounded flex items-center gap-1 cursor-pointer transition-colors"
+                        title="Edit Layanan Tambahan"
+                      >
+                        <Edit3 className="w-3.5 h-3.5 text-[#0F3827]" />
+                        <span>Edit</span>
+                      </button>
+
+                      {/* Delete button */}
+                      <button
+                        onClick={() => handleDeleteAddon(addon.id)}
+                        className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded cursor-pointer transition-colors"
+                        title="Hapus Layanan"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Modal Tambah Layanan Tambahan Baru */}
+            {showNewAddonModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs">
+                <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border space-y-4 max-h-[85vh] overflow-y-auto">
+                  <div className="flex items-center justify-between border-b pb-2">
+                    <h3 className="font-serif-luxury text-lg font-bold text-stone-900">
+                      Tambah Layanan Tambahan Baru
+                    </h3>
+                    <button
+                      onClick={() => setShowNewAddonModal(false)}
+                      className="text-stone-400 hover:text-stone-700 font-bold"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleCreateAddon} className="space-y-3.5 text-xs">
+                    <div>
+                      <label className="block text-stone-700 font-semibold mb-1">
+                        Nama Layanan Tambahan <span className="text-rose-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Contoh: Dokumentasi Drone 4K & Cinematic Reel"
+                        value={addonName}
+                        onChange={(e) => setAddonName(e.target.value)}
+                        className="w-full px-3 py-2 border rounded-lg font-medium"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-stone-700 font-semibold mb-1">
+                          Harga / Tarif (Rp) <span className="text-rose-500">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          required
+                          min={0}
+                          step={5000}
+                          value={addonPrice}
+                          onChange={(e) => setAddonPrice(Number(e.target.value))}
+                          className="w-full px-3 py-2 border rounded-lg font-mono font-bold"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-stone-700 font-semibold mb-1">
+                          Satuan Tarif
+                        </label>
+                        <select
+                          value={addonUnit}
+                          onChange={(e) => setAddonUnit(e.target.value)}
+                          className="w-full px-3 py-2 border rounded-lg bg-white"
+                        >
+                          <option value="per trip">per trip</option>
+                          <option value="per hari">per hari</option>
+                          <option value="per pax">per pax</option>
+                          <option value="per rombongan">per rombongan</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-stone-700 font-semibold mb-1">
+                        Deskripsi Layanan & Rincian Fasilitas
+                      </label>
+                      <textarea
+                        rows={3}
+                        placeholder="Jelaskan detail apa saja yang didapat wisatawan..."
+                        value={addonDesc}
+                        onChange={(e) => setAddonDesc(e.target.value)}
+                        className="w-full px-3 py-2 border rounded-lg"
+                      />
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-1">
+                      <input
+                        type="checkbox"
+                        id="addonIsActiveNew"
+                        checked={addonIsActive}
+                        onChange={(e) => setAddonIsActive(e.target.checked)}
+                        className="rounded border-stone-300 text-[#0F3827] focus:ring-[#0F3827]"
+                      />
+                      <label htmlFor="addonIsActiveNew" className="text-stone-700 font-medium">
+                        Aktifkan dan tampilkan langsung di formulir pemesanan wisata
+                      </label>
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-3 border-t">
+                      <button
+                        type="button"
+                        onClick={() => setShowNewAddonModal(false)}
+                        className="px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 font-semibold rounded-lg cursor-pointer"
+                      >
+                        Batal
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={addonSaving}
+                        className="px-4 py-2 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-lg cursor-pointer shadow-xs"
+                      >
+                        {addonSaving ? 'Menyimpan...' : 'Simpan Layanan'}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* Modal Edit Layanan Tambahan (Permintaan User: Layanan tambahan buat bisa di edit admin) */}
+            {editingAddon && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs">
+                <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border space-y-4 max-h-[85vh] overflow-y-auto">
+                  <div className="flex items-center justify-between border-b pb-2">
+                    <div>
+                      <span className="text-[10px] text-stone-400 font-bold uppercase">Edit Layanan Tambahan</span>
+                      <h3 className="font-serif-luxury text-lg font-bold text-stone-900">
+                        {editingAddon.name}
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => setEditingAddon(null)}
+                      className="text-stone-400 hover:text-stone-700 font-bold"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleSaveEditAddon} className="space-y-3.5 text-xs">
+                    <div>
+                      <label className="block text-stone-700 font-semibold mb-1">
+                        Nama Layanan Tambahan <span className="text-rose-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={editingAddon.name}
+                        onChange={(e) => setEditingAddon({ ...editingAddon, name: e.target.value })}
+                        className="w-full px-3 py-2 border rounded-lg font-medium"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-stone-700 font-semibold mb-1">
+                          Harga / Tarif (Rp) <span className="text-rose-500">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          required
+                          min={0}
+                          step={5000}
+                          value={editingAddon.price}
+                          onChange={(e) => setEditingAddon({ ...editingAddon, price: Number(e.target.value) })}
+                          className="w-full px-3 py-2 border rounded-lg font-mono font-bold"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-stone-700 font-semibold mb-1">
+                          Satuan Tarif
+                        </label>
+                        <select
+                          value={editingAddon.unit}
+                          onChange={(e) => setEditingAddon({ ...editingAddon, unit: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg bg-white"
+                        >
+                          <option value="per trip">per trip</option>
+                          <option value="per hari">per hari</option>
+                          <option value="per pax">per pax</option>
+                          <option value="per rombongan">per rombongan</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-stone-700 font-semibold mb-1">
+                        Deskripsi Layanan & Rincian Fasilitas
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={editingAddon.description}
+                        onChange={(e) => setEditingAddon({ ...editingAddon, description: e.target.value })}
+                        className="w-full px-3 py-2 border rounded-lg"
+                      />
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-1">
+                      <input
+                        type="checkbox"
+                        id="addonIsActiveEdit"
+                        checked={editingAddon.isActive}
+                        onChange={(e) => setEditingAddon({ ...editingAddon, isActive: e.target.checked })}
+                        className="rounded border-stone-300 text-[#0F3827] focus:ring-[#0F3827]"
+                      />
+                      <label htmlFor="addonIsActiveEdit" className="text-stone-700 font-medium">
+                        Layanan aktif (dapat dipilih wisatawan di form booking)
+                      </label>
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-3 border-t">
+                      <button
+                        type="button"
+                        onClick={() => setEditingAddon(null)}
+                        className="px-4 py-2 bg-stone-200 hover:bg-stone-300 text-stone-700 font-semibold rounded-lg cursor-pointer"
+                      >
+                        Batal
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={addonSaving}
+                        className="px-4 py-2 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-lg cursor-pointer shadow-xs"
+                      >
+                        {addonSaving ? 'Menyimpan...' : 'Simpan Perubahan'}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* TAB 5: ARTICLES MANAGEMENT (EDITABLE) */}
         {activeTab === 'articles' && (
           <div className="space-y-6">
@@ -1436,17 +1980,132 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                         className="w-full px-3 py-2 border rounded-lg font-mono text-[11px]"
                       />
                     </div>
+
+                    {/* Panel Koreksi & Optimasi SEO Real-Time */}
+                    {(() => {
+                      const seoAnalysis = analyzeArticleSEO({
+                        title: artTitle,
+                        content: artContent,
+                        metaTitle: artMetaTitle,
+                        metaDescription: artMetaDesc,
+                        focusKeyword: artFocusKeyword
+                      });
+
+                      return (
+                        <div className="p-4 bg-emerald-50/60 rounded-xl border border-emerald-200 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-[#0F3827] flex items-center gap-1.5 text-xs">
+                              <Sparkles className="w-4 h-4 text-[#C8A951]" />
+                              <span>Asisten Koreksi & Audit SEO Artikel</span>
+                            </span>
+                            <span className={`px-2 py-0.5 rounded-full font-mono font-bold text-[10px] ${
+                              seoAnalysis.score >= 80 ? 'bg-emerald-100 text-emerald-800' : seoAnalysis.score >= 50 ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'
+                            }`}>
+                              Skor SEO: {seoAnalysis.score}/100 • {seoAnalysis.statusLabel}
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                            <div>
+                              <label className="block text-stone-700 font-semibold mb-0.5">Kata Kunci Fokus:</label>
+                              <input
+                                type="text"
+                                placeholder="Cth: Wisata Garut, Gunung Papandayan..."
+                                value={artFocusKeyword}
+                                onChange={(e) => setArtFocusKeyword(e.target.value)}
+                                className="w-full px-2.5 py-1.5 border rounded-lg bg-white"
+                              />
+                            </div>
+                            <div className="flex items-end">
+                              <button
+                                type="button"
+                                onClick={handleAutoOptimizeNewArticle}
+                                className="w-full py-1.5 px-3 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-xs shadow-xs"
+                              >
+                                <Zap className="w-3.5 h-3.5 text-[#C8A951]" />
+                                <span>⚡ Auto Koreksi & Optimasi SEO</span>
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2 pt-1 border-t border-emerald-200/60">
+                            <div>
+                              <div className="flex justify-between text-[11px] mb-0.5">
+                                <label className="text-stone-700 font-medium">Meta Title SEO (Hasil Pencarian):</label>
+                                <span className={`font-mono text-[10px] ${artMetaTitle.length >= 35 && artMetaTitle.length <= 65 ? 'text-emerald-700' : 'text-amber-700'}`}>
+                                  {artMetaTitle.length} / 60 kar
+                                </span>
+                              </div>
+                              <input
+                                type="text"
+                                placeholder="Judul optimasi untuk Google..."
+                                value={artMetaTitle}
+                                onChange={(e) => setArtMetaTitle(e.target.value)}
+                                className="w-full px-2.5 py-1.5 border rounded-lg bg-white text-xs"
+                              />
+                            </div>
+
+                            <div>
+                              <div className="flex justify-between text-[11px] mb-0.5">
+                                <label className="text-stone-700 font-medium">Meta Description SEO:</label>
+                                <span className={`font-mono text-[10px] ${artMetaDesc.length >= 110 && artMetaDesc.length <= 165 ? 'text-emerald-700' : 'text-amber-700'}`}>
+                                  {artMetaDesc.length} / 160 kar
+                                </span>
+                              </div>
+                              <textarea
+                                rows={2}
+                                placeholder="Deskripsi meta snippet..."
+                                value={artMetaDesc}
+                                onChange={(e) => setArtMetaDesc(e.target.value)}
+                                className="w-full px-2.5 py-1.5 border rounded-lg bg-white text-xs"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-stone-700 font-medium text-[11px] mb-0.5">Kata Kunci Terkait (Keywords):</label>
+                              <input
+                                type="text"
+                                placeholder="Kata kunci dipisahkan koma..."
+                                value={artKeywords}
+                                onChange={(e) => setArtKeywords(e.target.value)}
+                                className="w-full px-2.5 py-1.5 border rounded-lg bg-white text-xs"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Checklist Hasil Koreksi SEO */}
+                          <div className="pt-2 border-t border-emerald-200/60 space-y-1 text-[11px]">
+                            <span className="font-bold text-stone-800 block text-[10px] uppercase">Audit Parameter SEO:</span>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                              {seoAnalysis.checks.map(c => (
+                                <div key={c.id} className="flex items-center gap-1.5">
+                                  {c.passed ? (
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                  ) : (
+                                    <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                                  )}
+                                  <span className={c.passed ? 'text-stone-700' : 'text-amber-800 font-medium'}>
+                                    {c.label}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
                     <div className="flex justify-end gap-2 pt-2">
                       <button
                         type="button"
                         onClick={() => setShowNewArticleModal(false)}
-                        className="px-4 py-2 bg-stone-200 rounded-lg"
+                        className="px-4 py-2 bg-stone-200 rounded-lg cursor-pointer"
                       >
                         Batal
                       </button>
                       <button
                         type="submit"
-                        className="px-4 py-2 bg-[#0F3827] text-white font-bold rounded-lg"
+                        className="px-4 py-2 bg-[#0F3827] text-white font-bold rounded-lg cursor-pointer shadow-xs"
                       >
                         Terbitkan Artikel
                       </button>
@@ -1532,6 +2191,121 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                         className="w-full px-3 py-2 border rounded-lg font-mono text-[11px]"
                       />
                     </div>
+
+                    {/* Panel Koreksi & Optimasi SEO Real-Time untuk Edit Artikel */}
+                    {(() => {
+                      const seoAnalysis = analyzeArticleSEO({
+                        title: editingArticle.title,
+                        content: editingArticle.content,
+                        metaTitle: editingArticle.metaTitle,
+                        metaDescription: editingArticle.metaDescription,
+                        focusKeyword: editArtFocusKeyword
+                      });
+
+                      return (
+                        <div className="p-4 bg-emerald-50/60 rounded-xl border border-emerald-200 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="font-bold text-[#0F3827] flex items-center gap-1.5 text-xs">
+                              <Sparkles className="w-4 h-4 text-[#C8A951]" />
+                              <span>Asisten Koreksi & Audit SEO Artikel</span>
+                            </span>
+                            <span className={`px-2 py-0.5 rounded-full font-mono font-bold text-[10px] ${
+                              seoAnalysis.score >= 80 ? 'bg-emerald-100 text-emerald-800' : seoAnalysis.score >= 50 ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'
+                            }`}>
+                              Skor SEO: {seoAnalysis.score}/100 • {seoAnalysis.statusLabel}
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                            <div>
+                              <label className="block text-stone-700 font-semibold mb-0.5">Kata Kunci Fokus:</label>
+                              <input
+                                type="text"
+                                placeholder="Cth: Wisata Garut, Gunung Papandayan..."
+                                value={editArtFocusKeyword}
+                                onChange={(e) => setEditArtFocusKeyword(e.target.value)}
+                                className="w-full px-2.5 py-1.5 border rounded-lg bg-white"
+                              />
+                            </div>
+                            <div className="flex items-end">
+                              <button
+                                type="button"
+                                onClick={handleAutoOptimizeEditArticle}
+                                className="w-full py-1.5 px-3 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-lg flex items-center justify-center gap-1.5 transition-colors cursor-pointer text-xs shadow-xs"
+                              >
+                                <Zap className="w-3.5 h-3.5 text-[#C8A951]" />
+                                <span>⚡ Auto Koreksi & Optimasi SEO</span>
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="space-y-2 pt-1 border-t border-emerald-200/60">
+                            <div>
+                              <div className="flex justify-between text-[11px] mb-0.5">
+                                <label className="text-stone-700 font-medium">Meta Title SEO (Hasil Pencarian):</label>
+                                <span className={`font-mono text-[10px] ${editingArticle.metaTitle && editingArticle.metaTitle.length >= 35 && editingArticle.metaTitle.length <= 65 ? 'text-emerald-700' : 'text-amber-700'}`}>
+                                  {editingArticle.metaTitle?.length || 0} / 60 kar
+                                </span>
+                              </div>
+                              <input
+                                type="text"
+                                placeholder="Judul optimasi untuk Google..."
+                                value={editingArticle.metaTitle || ''}
+                                onChange={(e) => setEditingArticle({ ...editingArticle, metaTitle: e.target.value })}
+                                className="w-full px-2.5 py-1.5 border rounded-lg bg-white text-xs font-semibold"
+                              />
+                            </div>
+
+                            <div>
+                              <div className="flex justify-between text-[11px] mb-0.5">
+                                <label className="text-stone-700 font-medium">Meta Description SEO:</label>
+                                <span className={`font-mono text-[10px] ${editingArticle.metaDescription && editingArticle.metaDescription.length >= 110 && editingArticle.metaDescription.length <= 165 ? 'text-emerald-700' : 'text-amber-700'}`}>
+                                  {editingArticle.metaDescription?.length || 0} / 160 kar
+                                </span>
+                              </div>
+                              <textarea
+                                rows={2}
+                                placeholder="Deskripsi meta snippet..."
+                                value={editingArticle.metaDescription || ''}
+                                onChange={(e) => setEditingArticle({ ...editingArticle, metaDescription: e.target.value })}
+                                className="w-full px-2.5 py-1.5 border rounded-lg bg-white text-xs"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-stone-700 font-medium text-[11px] mb-0.5">Kata Kunci Terkait (Keywords):</label>
+                              <input
+                                type="text"
+                                placeholder="Kata kunci dipisahkan koma..."
+                                value={editingArticle.keywords || ''}
+                                onChange={(e) => setEditingArticle({ ...editingArticle, keywords: e.target.value })}
+                                className="w-full px-2.5 py-1.5 border rounded-lg bg-white text-xs"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Checklist Hasil Koreksi SEO */}
+                          <div className="pt-2 border-t border-emerald-200/60 space-y-1 text-[11px]">
+                            <span className="font-bold text-stone-800 block text-[10px] uppercase">Audit Parameter SEO:</span>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                              {seoAnalysis.checks.map(c => (
+                                <div key={c.id} className="flex items-center gap-1.5">
+                                  {c.passed ? (
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                                  ) : (
+                                    <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                                  )}
+                                  <span className={c.passed ? 'text-stone-700' : 'text-amber-800 font-medium'}>
+                                    {c.label}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })()}
+
                     <div className="flex justify-end gap-2 pt-2">
                       <button
                         type="button"
@@ -1975,6 +2749,227 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   className="px-6 py-3 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm transition-colors cursor-pointer"
                 >
                   Simpan Semua Pengaturan & Logo
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        {/* TAB: WEBSITE GLOBAL SEO SETTINGS (Permintaan User: Buat website memiliki SEO sendiri) */}
+        {activeTab === 'seo' && (
+          <div className="max-w-4xl bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-2xs space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-100 pb-4">
+              <div>
+                <span className="text-[10px] text-[#C8A951] uppercase font-bold tracking-wider block">
+                  Search Engine Optimization (SEO) & Google Indexing
+                </span>
+                <h2 className="font-serif-luxury text-2xl font-bold text-stone-900 mt-0.5">
+                  Pengaturan SEO Website & Live Google Snippet
+                </h2>
+                <p className="text-xs text-stone-500 mt-0.5">
+                  Kelola meta tag judul, deskripsi pencarian, canonical URL, robots.txt, dan pratinjau live tampilan di Google.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <a
+                  href="/sitemap.xml"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold rounded-lg flex items-center gap-1.5 border border-stone-200 transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-[#0F3827]" />
+                  <span>Lihat Sitemap XML</span>
+                </a>
+                <a
+                  href="/robots.txt"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold rounded-lg flex items-center gap-1.5 border border-stone-200 transition-colors"
+                >
+                  <ExternalLink className="w-3.5 h-3.5 text-[#0F3827]" />
+                  <span>Lihat Robots.txt</span>
+                </a>
+              </div>
+            </div>
+
+            {seoSavedMessage && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-xl flex items-center gap-2 animate-in fade-in">
+                <Check className="w-4 h-4 text-emerald-600" />
+                <span>Pengaturan SEO website berhasil disimpan dan aktif langsung di mesin pencari!</span>
+              </div>
+            )}
+
+            {/* LIVE GOOGLE SEARCH RESULT SNIPPET PREVIEW */}
+            <div className="p-5 bg-stone-50 rounded-2xl border border-stone-200 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-[#0F3827] flex items-center gap-1.5">
+                  <Eye className="w-4 h-4 text-[#C8A951]" />
+                  <span>Pratinjau Hasil Pencarian Google (Live SERP Preview)</span>
+                </span>
+
+                <div className="flex items-center gap-1 bg-white p-1 rounded-lg border border-stone-200 text-[11px]">
+                  <button
+                    type="button"
+                    onClick={() => setSeoDevicePreview('desktop')}
+                    className={`px-2 py-1 rounded flex items-center gap-1 font-medium cursor-pointer ${
+                      seoDevicePreview === 'desktop' ? 'bg-[#0F3827] text-white' : 'text-stone-600 hover:bg-stone-100'
+                    }`}
+                  >
+                    <Monitor className="w-3 h-3" />
+                    <span>Desktop</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSeoDevicePreview('mobile')}
+                    className={`px-2 py-1 rounded flex items-center gap-1 font-medium cursor-pointer ${
+                      seoDevicePreview === 'mobile' ? 'bg-[#0F3827] text-white' : 'text-stone-600 hover:bg-stone-100'
+                    }`}
+                  >
+                    <Smartphone className="w-3 h-3" />
+                    <span>Mobile</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Realistic Google Search Card */}
+              <div className={`p-4 bg-white rounded-xl border border-stone-200 shadow-xs space-y-1 ${seoDevicePreview === 'mobile' ? 'max-w-sm mx-auto' : ''}`}>
+                <div className="flex items-center gap-2 text-[12px] text-stone-700">
+                  <div className="w-4 h-4 rounded-full bg-emerald-800 flex items-center justify-center text-[9px] text-white font-bold">G</div>
+                  <div className="flex flex-col leading-none">
+                    <span className="font-medium text-stone-800 text-[11px]">Garut Journey</span>
+                    <span className="text-[10px] text-stone-500 font-mono truncate">{canonicalUrl || 'https://garutjourney.id'}</span>
+                  </div>
+                </div>
+
+                <h4 className="text-blue-800 hover:underline cursor-pointer font-medium text-base line-clamp-1 pt-1 leading-snug">
+                  {metaTitle || 'Garut Journey – Jelajahi Keindahan Wisata Garut'}
+                </h4>
+
+                <p className="text-xs text-stone-600 leading-relaxed line-clamp-2">
+                  {metaDescription || 'Temukan pengalaman wisata Garut yang berkesan melalui paket perjalanan praktis, nyaman, dan mudah dipesan secara online. Papandayan, Kamojang, Bagendit.'}
+                </p>
+              </div>
+
+              {/* Character length indicator bars */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-[11px]">
+                <div className="flex items-center justify-between p-2 rounded-lg bg-white border border-stone-200">
+                  <span className="text-stone-500">Panjang Judul SEO:</span>
+                  <span className={`font-mono font-bold ${metaTitle.length >= 40 && metaTitle.length <= 65 ? 'text-emerald-700' : 'text-amber-700'}`}>
+                    {metaTitle.length} / 60 karakter ({metaTitle.length >= 40 && metaTitle.length <= 65 ? 'Optimal' : 'Perlu disesuaikan'})
+                  </span>
+                </div>
+                <div className="flex items-center justify-between p-2 rounded-lg bg-white border border-stone-200">
+                  <span className="text-stone-500">Panjang Deskripsi:</span>
+                  <span className={`font-mono font-bold ${metaDescription.length >= 120 && metaDescription.length <= 165 ? 'text-emerald-700' : 'text-amber-700'}`}>
+                    {metaDescription.length} / 160 karakter ({metaDescription.length >= 120 && metaDescription.length <= 165 ? 'Optimal' : 'Perlu disesuaikan'})
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* SEO FORM */}
+            <form onSubmit={handleSaveSEO} className="space-y-5 text-xs">
+              <div>
+                <label className="block text-stone-800 font-semibold mb-1">
+                  Meta Title Website Utama (Muncul di Tab Browser & Google):
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={metaTitle}
+                  onChange={(e) => setMetaTitle(e.target.value)}
+                  placeholder="Contoh: Garut Journey – Jelajahi Keindahan Wisata Garut"
+                  className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg font-medium text-stone-900 focus:bg-white"
+                />
+                <span className="text-[10px] text-stone-500 mt-1 block">
+                  Rekomendasi: 40–60 karakter yang memuat kata kunci utama (Wisata Garut, Tour Garut, Private Trip).
+                </span>
+              </div>
+
+              <div>
+                <label className="block text-stone-800 font-semibold mb-1">
+                  Meta Description Website (Ringkasan Google Snippet):
+                </label>
+                <textarea
+                  rows={3}
+                  required
+                  value={metaDescription}
+                  onChange={(e) => setMetaDescription(e.target.value)}
+                  placeholder="Ringkasan 1-2 kalimat tentang paket wisata Garut..."
+                  className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900 focus:bg-white"
+                />
+                <span className="text-[10px] text-stone-500 mt-1 block">
+                  Rekomendasi: 120–160 karakter memuat ajakan bertindak (CTA) dan destinasi utama.
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-stone-800 font-semibold mb-1">
+                    Meta Keywords (Kata Kunci Pencarian):
+                  </label>
+                  <input
+                    type="text"
+                    value={metaKeywords}
+                    onChange={(e) => setMetaKeywords(e.target.value)}
+                    placeholder="Wisata Garut, Tour Garut, Private Trip, Papandayan..."
+                    className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg text-stone-900 focus:bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-stone-800 font-semibold mb-1">
+                    Canonical URL Resmi Website:
+                  </label>
+                  <input
+                    type="url"
+                    value={canonicalUrl}
+                    onChange={(e) => setCanonicalUrl(e.target.value)}
+                    placeholder="https://garutjourney.id"
+                    className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-lg font-mono text-[11px] text-stone-900 focus:bg-white"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-stone-800 font-semibold mb-1">
+                  OpenGraph Social Share Card Image (Gambar Saat Link Dibagikan di WA/FB/Twitter):
+                </label>
+                <div className="flex items-center gap-3">
+                  <input
+                    type="text"
+                    value={ogImageUrl}
+                    onChange={(e) => setOgImageUrl(e.target.value)}
+                    placeholder="https://... atau /src/assets/images/hero_garut_papandayan_1792431914366.jpg"
+                    className="flex-1 p-2.5 bg-stone-50 border border-stone-300 rounded-lg font-mono text-[11px]"
+                  />
+                  {ogImageUrl && (
+                    <div className="w-12 h-10 rounded border overflow-hidden shrink-0 bg-stone-100">
+                      <img src={ogImageUrl} alt="OG Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-stone-800 font-semibold mb-1">
+                  Konfigurasi Aturan Perayapan Bot Mesin Pencari (robots.txt):
+                </label>
+                <textarea
+                  rows={6}
+                  value={robotsTxt}
+                  onChange={(e) => setRobotsTxt(e.target.value)}
+                  className="w-full p-3 bg-stone-900 text-emerald-400 font-mono text-xs rounded-xl"
+                />
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold text-xs uppercase tracking-wider rounded-xl shadow-sm transition-colors cursor-pointer"
+                >
+                  Simpan Konfigurasi SEO Website
                 </button>
               </div>
             </form>
