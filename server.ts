@@ -44,9 +44,14 @@ const bookingInputSchema = z.object({
   departureDate: z.string().optional(),
   participantsCount: z.number().int().min(1, 'Jumlah peserta minimal 1 orang.'),
   customerName: z.string().min(3, 'Nama lengkap minimal 3 karakter.'),
-  customerPhone: z.string().min(8, 'Nomor WhatsApp tidak valid.').max(18),
-  customerEmail: z.string().email('Format alamat email tidak valid.').optional().or(z.literal('')),
-  customerNotes: z.string().max(500).optional(),
+  customerPhone: z.string().min(8, 'Nomor WhatsApp / HP minimal 8 digit.'),
+  customerEmail: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(''))
+    .refine(val => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), { message: 'Format alamat email tidak valid.' }),
+  customerNotes: z.string().optional(),
   pickupLocation: z.string().min(2, 'Lokasi penjemputan wajib ditentukan.'),
   paymentTier: z.enum(['full', 'dp']).optional().default('full'),
   selectedAddons: z
@@ -218,6 +223,18 @@ app.delete('/api/admin/addons/:id', requireAdmin, (req: Request, res: Response) 
   }
 });
 
+app.post('/api/admin/addons/:id/delete', requireAdmin, (req: Request, res: Response) => {
+  try {
+    const deleted = dbStore.deleteAddon(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ success: false, error: 'Layanan tambahan tidak ditemukan.' });
+    }
+    res.json({ success: true, message: 'Layanan tambahan berhasil dihapus.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // 3. Articles (Blog Wisata Garut)
 app.get('/api/articles', (_req: Request, res: Response) => {
   res.json({ success: true, data: dbStore.getArticles() });
@@ -235,6 +252,50 @@ app.get('/api/articles/:slug', (req: Request, res: Response) => {
 app.get('/api/gallery', (req: Request, res: Response) => {
   const cat = typeof req.query.category === 'string' ? req.query.category : undefined;
   res.json({ success: true, data: dbStore.getGallery(cat) });
+});
+
+// 4b. Testimonials (Cerita Pengalaman Tamu)
+app.get('/api/testimonials', (_req: Request, res: Response) => {
+  res.json({ success: true, data: dbStore.getTestimonials() });
+});
+
+app.post('/api/admin/testimonials', requireAdmin, (req: Request, res: Response) => {
+  try {
+    const item = dbStore.createTestimonial(req.body);
+    res.status(201).json({ success: true, data: item, message: 'Cerita pengalaman tamu berhasil ditambahkan.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.put('/api/admin/testimonials/:id', requireAdmin, (req: Request, res: Response) => {
+  try {
+    const updated = dbStore.updateTestimonial(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Cerita tamu tidak ditemukan.' });
+    }
+    res.json({ success: true, data: updated, message: 'Cerita pengalaman tamu berhasil diperbarui.' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.delete(['/api/admin/testimonials/:id', '/api/admin/testimonials/:id/delete'], requireAdmin, (req: Request, res: Response) => {
+  const ok = dbStore.deleteTestimonial(req.params.id);
+  if (ok) {
+    res.json({ success: true, message: 'Cerita pengalaman tamu berhasil dihapus.' });
+  } else {
+    res.status(404).json({ success: false, error: 'Cerita tamu tidak ditemukan.' });
+  }
+});
+
+app.post('/api/admin/testimonials/:id/delete', requireAdmin, (req: Request, res: Response) => {
+  const ok = dbStore.deleteTestimonial(req.params.id);
+  if (ok) {
+    res.json({ success: true, message: 'Cerita pengalaman tamu berhasil dihapus.' });
+  } else {
+    res.status(404).json({ success: false, error: 'Cerita tamu tidak ditemukan.' });
+  }
 });
 
 // 5. Promo Validation
@@ -343,43 +404,58 @@ app.get('/api/bookings/:bookingNumber', (req: Request, res: Response) => {
   }
 });
 
-// 7b. Download E-Ticket as PDF (Direct public download without login)
-app.get(['/api/bookings/:bookingNumber/pdf', '/api/bookings/:bookingNumber/eticket.pdf', '/tiket/:bookingNumber'], async (req: Request, res: Response) => {
-  try {
-    const { bookingNumber } = req.params;
-    // Direct access to booking without requiring login
-    const booking = dbStore.getBookingByNumberAndToken(bookingNumber, undefined, true);
-    if (!booking) {
-      return res.status(404).send(`
-        <!DOCTYPE html>
-        <html lang="id">
-        <head><meta charset="utf-8"><title>E-Ticket Tidak Ditemukan</title></head>
-        <body style="font-family: sans-serif; text-align: center; padding: 50px 20px;">
-          <h2>Nomor Pesanan Tidak Ditemukan</h2>
-          <p>E-Ticket untuk nomor booking "${bookingNumber}" tidak ditemukan.</p>
-          <a href="/" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #0F3827; color: white; border-radius: 8px; text-decoration: none;">Kembali ke Beranda</a>
-        </body>
-        </html>
-      `);
-    }
+// 7b. Download E-Ticket as PDF & Kwitansi (Direct public download without login)
+app.get(
+  [
+    '/api/bookings/:bookingNumber/pdf',
+    '/api/bookings/:bookingNumber/eticket.pdf',
+    '/api/bookings/:bookingNumber/kwitansi.pdf',
+    '/tiket/:bookingNumber',
+    '/tiket/:bookingNumber/pdf',
+    '/tiket/:bookingNumber/kwitansi.pdf'
+  ],
+  async (req: Request, res: Response) => {
+    try {
+      const { bookingNumber } = req.params;
+      const cleanBooking = (bookingNumber || '').trim();
+      // Direct access to booking without requiring login
+      const booking = dbStore.getBookingByNumberAndToken(cleanBooking, undefined, true);
+      if (!booking) {
+        return res.status(404).send(`
+          <!DOCTYPE html>
+          <html lang="id">
+          <head><meta charset="utf-8"><title>E-Ticket Tidak Ditemukan</title></head>
+          <body style="font-family: sans-serif; text-align: center; padding: 50px 20px;">
+            <h2>Nomor Pesanan Tidak Ditemukan</h2>
+            <p>E-Ticket untuk nomor booking "${cleanBooking}" tidak ditemukan.</p>
+            <a href="/" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #0F3827; color: white; border-radius: 8px; text-decoration: none;">Kembali ke Beranda</a>
+          </body>
+          </html>
+        `);
+      }
 
-    // If consumer specifically requests HTML preview or print
-    if (req.query.format === 'html' || req.query.view === 'html' || req.query.print === 'true') {
-      const html = generateETicketHtml(booking, dbStore.siteSettings);
-      res.setHeader('Content-Type', 'text/html; charset=utf-8');
-      return res.send(html);
-    }
+      // If consumer specifically requests HTML preview or print
+      if (req.query.format === 'html' || req.query.view === 'html' || req.query.print === 'true') {
+        const html = generateETicketHtml(booking, dbStore.siteSettings);
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        return res.send(html);
+      }
 
-    // Default: Generate and stream true binary PDF
-    const pdfBuffer = await generateETicketPdfBuffer(booking, dbStore.siteSettings);
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `inline; filename="E-Ticket-Garut-Journey-${booking.bookingNumber}.pdf"`);
-    res.setHeader('Content-Length', pdfBuffer.length);
-    res.send(pdfBuffer);
-  } catch (err: any) {
-    res.status(500).send('Gagal membuat dokumen e-ticket PDF: ' + err.message);
+      // Default: Generate and stream true binary PDF
+      const pdfBuffer = await generateETicketPdfBuffer(booking, dbStore.siteSettings);
+      res.setHeader('Content-Type', 'application/pdf');
+      const isInline = req.query.inline === 'true' || req.query.view === 'inline';
+      const disposition = isInline ? 'inline' : 'attachment';
+      res.setHeader('Content-Disposition', `${disposition}; filename="E-Ticket-Garut-Journey-${booking.bookingNumber}.pdf"`);
+      res.setHeader('Content-Length', pdfBuffer.length);
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.send(pdfBuffer);
+    } catch (err: any) {
+      res.status(500).send('Gagal membuat dokumen e-ticket PDF: ' + err.message);
+    }
   }
-});
+);
 
 // Dedicated print endpoint for printing Kwitansi
 app.get('/api/bookings/:bookingNumber/print', (req: Request, res: Response) => {
@@ -689,7 +765,7 @@ app.post('/api/admin/bookings/:id/whatsapp-invoice', requireAdmin, (req: Request
   });
 });
 
-// Admin Delete Booking
+// Admin Delete Booking (with POST fallback)
 app.delete('/api/admin/bookings/:id', requireAdmin, (req: Request, res: Response) => {
   const { id } = req.params;
   const ok = dbStore.deleteBooking(id);
@@ -700,10 +776,34 @@ app.delete('/api/admin/bookings/:id', requireAdmin, (req: Request, res: Response
   }
 });
 
-// Delete Activity from Package Itinerary Day
+app.post('/api/admin/bookings/:id/delete', requireAdmin, (req: Request, res: Response) => {
+  const { id } = req.params;
+  const ok = dbStore.deleteBooking(id);
+  if (ok) {
+    res.json({ success: true, message: 'Pesanan booking berhasil dihapus dari sistem.' });
+  } else {
+    res.status(404).json({ success: false, error: 'Booking tidak ditemukan.' });
+  }
+});
+
+// Delete Activity from Package Itinerary Day (supports query & body & POST fallback)
 app.delete('/api/admin/packages/:id/activities', requireAdmin, (req: Request, res: Response) => {
   const { id } = req.params;
-  const { day, activityIndex } = req.body;
+  const day = req.body?.day ?? req.query?.day;
+  const activityIndex = req.body?.activityIndex ?? req.query?.activityIndex;
+
+  const ok = dbStore.deleteActivityFromPackage(id, Number(day), Number(activityIndex));
+  if (ok) {
+    res.json({ success: true, message: 'Aktivitas berhasil dihapus dari itinerary.' });
+  } else {
+    res.status(400).json({ success: false, error: 'Gagal menghapus aktivitas atau indeks tidak ditemukan.' });
+  }
+});
+
+app.post('/api/admin/packages/:id/activities/delete', requireAdmin, (req: Request, res: Response) => {
+  const { id } = req.params;
+  const day = req.body?.day ?? req.query?.day;
+  const activityIndex = req.body?.activityIndex ?? req.query?.activityIndex;
 
   const ok = dbStore.deleteActivityFromPackage(id, Number(day), Number(activityIndex));
   if (ok) {
@@ -716,13 +816,13 @@ app.delete('/api/admin/packages/:id/activities', requireAdmin, (req: Request, re
 // Add Activity to Package Itinerary Day
 app.post('/api/admin/packages/:id/activities', requireAdmin, (req: Request, res: Response) => {
   const { id } = req.params;
-  const { day, activityText } = req.body;
+  const { day, activityText, title } = req.body;
 
   if (!activityText || !activityText.trim()) {
     return res.status(400).json({ success: false, error: 'Teks aktivitas wajib diisi.' });
   }
 
-  const ok = dbStore.addActivityToPackage(id, Number(day), activityText);
+  const ok = dbStore.addActivityToPackage(id, Number(day), activityText, title);
   if (ok) {
     res.json({ success: true, message: 'Aktivitas berhasil ditambahkan ke itinerary.' });
   } else {
@@ -730,13 +830,54 @@ app.post('/api/admin/packages/:id/activities', requireAdmin, (req: Request, res:
   }
 });
 
-// Admin Delete Package
+// Add Day to Itinerary
+app.post('/api/admin/packages/:id/days', requireAdmin, (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { day, title } = req.body;
+  const ok = dbStore.addDayToPackage(id, Number(day) || 1, title);
+  if (ok) {
+    res.json({ success: true, message: 'Hari rencana perjalanan berhasil ditambahkan.' });
+  } else {
+    res.status(400).json({ success: false, error: 'Gagal menambahkan hari ke itinerary.' });
+  }
+});
+
+// Delete Day from Itinerary
+app.delete('/api/admin/packages/:id/days/:day', requireAdmin, (req: Request, res: Response) => {
+  const { id, day } = req.params;
+  const ok = dbStore.deleteDayFromPackage(id, Number(day));
+  if (ok) {
+    res.json({ success: true, message: 'Hari itinerary berhasil dihapus.' });
+  } else {
+    res.status(400).json({ success: false, error: 'Gagal menghapus hari itinerary.' });
+  }
+});
+
+app.post('/api/admin/packages/:id/days/:day/delete', requireAdmin, (req: Request, res: Response) => {
+  const { id, day } = req.params;
+  const ok = dbStore.deleteDayFromPackage(id, Number(day));
+  if (ok) {
+    res.json({ success: true, message: 'Hari itinerary berhasil dihapus.' });
+  } else {
+    res.status(400).json({ success: false, error: 'Gagal menghapus hari itinerary.' });
+  }
+});
+
+// Admin Delete Package (with POST fallback)
 app.delete('/api/admin/packages/:id', requireAdmin, (req: Request, res: Response) => {
   const { id } = req.params;
-  const index = dbStore.packages.findIndex(p => p.id === id);
-  if (index !== -1) {
-    dbStore.packages.splice(index, 1);
-    dbStore.saveToDisk();
+  const ok = dbStore.deletePackage(id);
+  if (ok) {
+    res.json({ success: true, message: 'Paket wisata berhasil dihapus.' });
+  } else {
+    res.status(404).json({ success: false, error: 'Paket tidak ditemukan.' });
+  }
+});
+
+app.post('/api/admin/packages/:id/delete', requireAdmin, (req: Request, res: Response) => {
+  const { id } = req.params;
+  const ok = dbStore.deletePackage(id);
+  if (ok) {
     res.json({ success: true, message: 'Paket wisata berhasil dihapus.' });
   } else {
     res.status(404).json({ success: false, error: 'Paket tidak ditemukan.' });
@@ -774,6 +915,17 @@ app.post('/api/admin/articles', requireAdmin, (req: Request, res: Response) => {
 });
 
 app.delete('/api/admin/articles/:id', requireAdmin, (req: Request, res: Response) => {
+  const index = dbStore.articles.findIndex(a => a.id === req.params.id);
+  if (index !== -1) {
+    dbStore.articles.splice(index, 1);
+    dbStore.saveToDisk();
+    res.json({ success: true, message: 'Artikel berhasil dihapus.' });
+  } else {
+    res.status(404).json({ success: false, error: 'Artikel tidak ditemukan.' });
+  }
+});
+
+app.post('/api/admin/articles/:id/delete', requireAdmin, (req: Request, res: Response) => {
   const index = dbStore.articles.findIndex(a => a.id === req.params.id);
   if (index !== -1) {
     dbStore.articles.splice(index, 1);
@@ -827,6 +979,17 @@ app.put('/api/admin/gallery/:id', requireAdmin, (req: Request, res: Response) =>
 });
 
 app.delete('/api/admin/gallery/:id', requireAdmin, (req: Request, res: Response) => {
+  const index = dbStore.gallery.findIndex(g => g.id === req.params.id);
+  if (index !== -1) {
+    dbStore.gallery.splice(index, 1);
+    dbStore.saveToDisk();
+    res.json({ success: true, message: 'Foto galeri berhasil dihapus.' });
+  } else {
+    res.status(404).json({ success: false, error: 'Item galeri tidak ditemukan.' });
+  }
+});
+
+app.post('/api/admin/gallery/:id/delete', requireAdmin, (req: Request, res: Response) => {
   const index = dbStore.gallery.findIndex(g => g.id === req.params.id);
   if (index !== -1) {
     dbStore.gallery.splice(index, 1);

@@ -18,7 +18,8 @@ import type {
   CreateBookingRequest,
   Article,
   GalleryItem,
-  PageViewEvent
+  PageViewEvent,
+  Testimonial
 } from './types.ts';
 
 const DATA_DIR = path.resolve(process.cwd(), 'data');
@@ -80,6 +81,38 @@ class GarutJourneyStore {
   articles: Article[] = [];
   gallery: GalleryItem[] = [];
   pageViews: PageViewEvent[] = [];
+  testimonials: Testimonial[] = [
+    {
+      id: 'testi-1',
+      name: 'Rian Pratama',
+      role: 'Travel Enthusiast & Fotografer',
+      city: 'Jakarta Selatan',
+      text: 'Trip Papandayan 2H1M bersama Garut Journey sangat berkesan. Pemandu Kang Asep sangat memahami titik sunrise terbaik di Hutan Mati dan Tegal Alun. Makanan liwet hangat di camp Pondok Saladah luar biasa lezat.',
+      package: 'Eksplorasi Gunung Papandayan',
+      rating: 5,
+      createdAt: '2026-09-15T08:00:00.000Z'
+    },
+    {
+      id: 'testi-2',
+      name: 'Dr. Sarah Nurhaliza',
+      role: 'Family Trip Organizer',
+      city: 'Bandung',
+      text: 'Kami memesan paket Kamojang untuk reuni keluarga termasuk orang tua lansia. Mobil HiAce sangat nyaman, sopir tepat waktu, dan sauna uap alami Kawah Kamojang benar-benar menyegarkan.',
+      package: 'Relaksasi Geothermal Kamojang',
+      rating: 5,
+      createdAt: '2026-09-28T10:30:00.000Z'
+    },
+    {
+      id: 'testi-3',
+      name: 'Michael Tanuwijaya',
+      role: 'Content Creator',
+      city: 'Surabaya',
+      text: 'Booking online sangat praktis dan pembayaran Midtrans aman instan. Dokumentasi drone yang disediakan tim sangat profesional. Garut Journey benar-benar operator lokal terpercaya.',
+      package: 'Curug Sanghyang Taraje Trip',
+      rating: 5,
+      createdAt: '2026-10-05T14:15:00.000Z'
+    }
+  ];
   addons: AddonOption[] = [
     {
       id: 'drone-doc',
@@ -130,6 +163,20 @@ class GarutJourneyStore {
     bankAccountNumber: '148-092-8899',
     bankAccountHolder: 'PT Garut Journey Nusantara',
     paymentTimeoutMinutes: 60,
+
+    // Website Colors Theme
+    primaryColor: '#0F3827',
+    primaryDarkColor: '#0A261A',
+    primaryHoverColor: '#17523A',
+    accentColor: '#C8A951',
+    accentHoverColor: '#B89940',
+
+    // WhatsApp Message Templates
+    whatsappTemplateBooking: 'Halo Tim Garut Journey, saya baru saja membuat pesanan #{bookingNumber} untuk paket {packageName}. Mohon informasi tindak lanjutnya. Terima kasih!',
+    whatsappTemplateInvoice: '*INVOICE & E-TICKET RESMI GARUT JOURNEY*\nNomor Pesanan: #{bookingNumber}\nNama Tamu: {customerName}\nPaket: {packageName}\nTanggal Trip: {departureDate}\nPeserta: {participantsCount} Orang\nStatus Pembayaran: {status}\nTotal Biaya: Rp {totalAmount}\nSudah Dibayar: Rp {paidAmount}\nSisa Pelunasan: Rp {remainingBalance}\n\nE-Ticket Digital: {ticketUrl}\n\n{customNote}\nTerima kasih telah mempercayakan liburan Garut Anda bersama kami!',
+    whatsappTemplateHelp: 'Halo Admin Garut Journey, saya ingin konfirmasi pesanan wisata:\n- No. Booking: {bookingNumber}\n- Atas Nama: {customerName}\n- Paket: {packageName}\nMohon informasi persiapan perjalanannya. Terima kasih!',
+    whatsappTemplateGeneral: 'Halo Tim Garut Journey, saya ingin konsultasi paket wisata Garut.',
+
     metaTitle: 'Garut Journey – Jelajahi Keindahan Wisata Garut',
     metaDescription: 'Temukan pengalaman wisata Garut yang berkesan melalui paket perjalanan praktis, nyaman, dan mudah dipesan secara online. Papandayan, Kamojang, Bagendit.',
     metaKeywords: 'Wisata Garut, Paket Wisata Garut, Tour Garut, Garut City Tour, Private Trip Garut, Papandayan Tour',
@@ -192,6 +239,7 @@ class GarutJourneyStore {
         articles: this.articles,
         gallery: this.gallery,
         addons: this.addons,
+        testimonials: this.testimonials,
         pageViews: this.pageViews.slice(-5000), // Keep last 5000 views
         siteSettings: this.siteSettings
       };
@@ -219,6 +267,9 @@ class GarutJourneyStore {
           this.gallery = state.gallery || [];
           if (state.addons && Array.isArray(state.addons) && state.addons.length > 0) {
             this.addons = state.addons;
+          }
+          if (state.testimonials && Array.isArray(state.testimonials) && state.testimonials.length > 0) {
+            this.testimonials = state.testimonials;
           }
           this.pageViews = state.pageViews || [];
           if (state.siteSettings) {
@@ -1489,7 +1540,7 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
   }
 
   deleteActivityFromPackage(packageId: string, day: number, activityIndex: number): boolean {
-    const pkg = this.packages.find(p => p.id === packageId);
+    const pkg = this.packages.find(p => p.id === packageId || p.slug === packageId);
     if (!pkg) return false;
 
     const dayItem = pkg.itinerary.find(it => it.day === day);
@@ -1503,8 +1554,8 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
     return true;
   }
 
-  addActivityToPackage(packageId: string, day: number, newActivityText: string): boolean {
-    const pkg = this.packages.find(p => p.id === packageId);
+  addActivityToPackage(packageId: string, day: number, newActivityText: string, title?: string): boolean {
+    const pkg = this.packages.find(p => p.id === packageId || p.slug === packageId);
     if (!pkg) return false;
 
     let dayItem = pkg.itinerary.find(it => it.day === day);
@@ -1512,13 +1563,54 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
       dayItem = {
         id: 'itin-' + Date.now(),
         day,
-        title: `Hari ke-${day}`,
+        title: title || `Hari ke-${day}`,
         activities: []
       };
       pkg.itinerary.push(dayItem);
+      pkg.itinerary.sort((a, b) => a.day - b.day);
+    } else if (title) {
+      dayItem.title = title;
     }
 
     dayItem.activities.push(newActivityText.trim());
+    pkg.updatedAt = new Date().toISOString();
+    this.saveToDisk();
+    return true;
+  }
+
+  addDayToPackage(packageId: string, day: number, title?: string): boolean {
+    const pkg = this.packages.find(p => p.id === packageId || p.slug === packageId);
+    if (!pkg) return false;
+
+    const existing = pkg.itinerary.find(it => it.day === day);
+    if (existing) {
+      if (title) existing.title = title;
+    } else {
+      pkg.itinerary.push({
+        id: 'itin-' + Date.now() + '-' + day,
+        day,
+        title: title || `Hari ke-${day}`,
+        activities: []
+      });
+      pkg.itinerary.sort((a, b) => a.day - b.day);
+    }
+
+    if (day > pkg.durationDays) {
+      pkg.durationDays = day;
+    }
+    pkg.updatedAt = new Date().toISOString();
+    this.saveToDisk();
+    return true;
+  }
+
+  deleteDayFromPackage(packageId: string, day: number): boolean {
+    const pkg = this.packages.find(p => p.id === packageId || p.slug === packageId);
+    if (!pkg) return false;
+
+    const idx = pkg.itinerary.findIndex(it => it.day === day);
+    if (idx === -1) return false;
+
+    pkg.itinerary.splice(idx, 1);
     pkg.updatedAt = new Date().toISOString();
     this.saveToDisk();
     return true;
@@ -1535,8 +1627,28 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
     const pkgName = booking.tourPackage?.name || 'Private Trip Garut';
     const dateTrip = booking.departureDate || '-';
     const baseAppUrl = process.env.APP_URL || 'https://garutjourney.id';
+    const ticketUrl = `${baseAppUrl}/tiket/${booking.bookingNumber}`;
+    const cleanPhone = booking.customerPhone.replace(/[^0-9]/g, '');
+    const intlPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.slice(1) : cleanPhone;
 
-    const rawText = `*-----------------------------------------*
+    let rawText = '';
+    const customTpl = this.siteSettings.whatsappTemplateInvoice;
+
+    if (customTpl && customTpl.includes('{bookingNumber}')) {
+      rawText = customTpl
+        .replace(/\{bookingNumber\}/g, booking.bookingNumber)
+        .replace(/\{customerName\}/g, booking.customerName)
+        .replace(/\{packageName\}/g, pkgName)
+        .replace(/\{departureDate\}/g, dateTrip)
+        .replace(/\{participantsCount\}/g, String(booking.participantsCount))
+        .replace(/\{status\}/g, statusLabel)
+        .replace(/\{totalAmount\}/g, booking.totalAmount.toLocaleString('id-ID'))
+        .replace(/\{paidAmount\}/g, (booking.paidAmount || (isLunas ? booking.totalAmount : booking.dpAmount)).toLocaleString('id-ID'))
+        .replace(/\{remainingBalance\}/g, booking.remainingBalance.toLocaleString('id-ID'))
+        .replace(/\{ticketUrl\}/g, ticketUrl)
+        .replace(/\{customNote\}/g, customNote ? `*Catatan Admin:* ${customNote}\n\n` : '');
+    } else {
+      rawText = `*-----------------------------------------*
 *KWITANSI & INVOICE RESMI*
 *PT GARUT JOURNEY NUSANTARA*
 *-----------------------------------------*
@@ -1564,11 +1676,9 @@ ${this.siteSettings.officeAddress}
 WhatsApp CS: +${this.siteSettings.whatsappNumber}
 
 Terima kasih telah mempercayakan perjalanan Anda bersama Garut Journey!`;
+    }
 
-    const cleanPhone = booking.customerPhone.replace(/[^0-9]/g, '');
-    const intlPhone = cleanPhone.startsWith('0') ? '62' + cleanPhone.slice(1) : cleanPhone;
     const url = `https://wa.me/${intlPhone}?text=${encodeURIComponent(rawText)}`;
-
     return { url, rawText, phone: intlPhone };
   }
 
@@ -1752,9 +1862,12 @@ Terima kasih telah mempercayakan perjalanan Anda bersama Garut Journey!`;
     return { clearedEvents, clearedViews };
   }
 
-  // --- DELETE BOOKING ---
+  // --- DELETE BOOKING (Robust case-insensitive match) ---
   deleteBooking(bookingId: string): boolean {
-    const idx = this.bookings.findIndex(b => b.id === bookingId || b.bookingNumber === bookingId);
+    const cleanId = (bookingId || '').trim().toLowerCase();
+    const idx = this.bookings.findIndex(
+      b => b.id.toLowerCase() === cleanId || b.bookingNumber.toLowerCase() === cleanId
+    );
     if (idx === -1) return false;
     const target = this.bookings[idx];
     this.bookings.splice(idx, 1);
@@ -1764,18 +1877,85 @@ Terima kasih telah mempercayakan perjalanan Anda bersama Garut Journey!`;
     return true;
   }
 
-  // --- UPDATE PACKAGE ---
+  // --- UPDATE PACKAGE (Robust matching by ID or Slug, numeric conversions) ---
   updatePackage(id: string, data: Partial<TourPackage>): TourPackage | null {
-    const pkg = this.packages.find(p => p.id === id);
+    const pkg = this.packages.find(p => p.id === id || p.slug === id);
     if (!pkg) return null;
+
+    if (data.basePrice !== undefined) {
+      data.basePrice = Number(data.basePrice) || pkg.basePrice;
+    }
+    if (data.durationDays !== undefined) {
+      data.durationDays = Number(data.durationDays) || pkg.durationDays;
+    }
+    if (data.durationNights !== undefined) {
+      data.durationNights = Number(data.durationNights) || 0;
+    }
+    if (data.minParticipants !== undefined) {
+      data.minParticipants = Number(data.minParticipants) || 1;
+    }
+    if (data.maxParticipants !== undefined) {
+      data.maxParticipants = Number(data.maxParticipants) || 20;
+    }
+
     Object.assign(pkg, data, { updatedAt: new Date().toISOString() });
     this.saveToDisk();
     return pkg;
   }
 
+  // --- DELETE PACKAGE ---
+  deletePackage(id: string): boolean {
+    const idx = this.packages.findIndex(p => p.id === id || p.slug === id);
+    if (idx === -1) return false;
+    const target = this.packages[idx];
+    this.packages.splice(idx, 1);
+    this.packageImages = this.packageImages.filter(img => img.packageId !== target.id);
+    this.saveToDisk();
+    return true;
+  }
+
+  // --- TESTIMONIALS (CERITA PENGALAMAN TAMU) CRUD ---
+  getTestimonials(): Testimonial[] {
+    return this.testimonials;
+  }
+
+  createTestimonial(data: Partial<Testimonial>): Testimonial {
+    const newTestimonial: Testimonial = {
+      id: 'testi-' + Date.now(),
+      name: data.name || 'Tamu Garut Journey',
+      role: data.role || 'Wisatawan',
+      city: data.city || 'Indonesia',
+      text: data.text || '',
+      package: data.package || 'Eksplorasi Wisata Garut',
+      rating: data.rating || 5,
+      avatarUrl: data.avatarUrl || '',
+      createdAt: new Date().toISOString()
+    };
+    this.testimonials.unshift(newTestimonial);
+    this.saveToDisk();
+    return newTestimonial;
+  }
+
+  updateTestimonial(id: string, data: Partial<Testimonial>): Testimonial | null {
+    const item = this.testimonials.find(t => t.id === id);
+    if (!item) return null;
+    Object.assign(item, data);
+    this.saveToDisk();
+    return item;
+  }
+
+  deleteTestimonial(id: string): boolean {
+    const idx = this.testimonials.findIndex(t => t.id === id);
+    if (idx === -1) return false;
+    this.testimonials.splice(idx, 1);
+    this.saveToDisk();
+    return true;
+  }
+
   // --- UPDATE BOOKING ---
   updateBooking(id: string, data: Partial<Booking>): Booking | null {
-    const booking = this.bookings.find(b => b.id === id || b.bookingNumber === id);
+    const cleanId = (id || '').trim().toLowerCase();
+    const booking = this.bookings.find(b => b.id.toLowerCase() === cleanId || b.bookingNumber.toLowerCase() === cleanId);
     if (!booking) return null;
     Object.assign(booking, data, { updatedAt: new Date().toISOString() });
     this.saveToDisk();

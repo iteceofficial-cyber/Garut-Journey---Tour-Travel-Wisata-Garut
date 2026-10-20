@@ -203,6 +203,18 @@ export interface AddonOption {
   isActive: boolean;
 }
 
+export interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  city: string;
+  text: string;
+  package: string;
+  rating?: number;
+  avatarUrl?: string;
+  createdAt?: string;
+}
+
 export interface SiteSettings {
   id: string;
   companyName: string;
@@ -220,6 +232,19 @@ export interface SiteSettings {
   bankAccountHolder: string;
   paymentTimeoutMinutes: number;
   
+  // Website Colors Theme Customization
+  primaryColor?: string;
+  primaryDarkColor?: string;
+  primaryHoverColor?: string;
+  accentColor?: string;
+  accentHoverColor?: string;
+
+  // WhatsApp Message Templates
+  whatsappTemplateBooking?: string;
+  whatsappTemplateInvoice?: string;
+  whatsappTemplateHelp?: string;
+  whatsappTemplateGeneral?: string;
+
   // Website SEO & Meta
   metaTitle?: string;
   metaDescription?: string;

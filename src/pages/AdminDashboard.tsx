@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { TourPackage, Article, GalleryItem, SiteSettings, AddonOption, PriceTier } from '../types.js';
+import type { TourPackage, Article, GalleryItem, SiteSettings, AddonOption, PriceTier, Testimonial } from '../types.js';
 import {
   ShieldCheck,
   TrendingUp,
@@ -44,9 +44,12 @@ import {
   ArrowRight,
   ChevronRight,
   Upload,
-  Tag
+  Tag,
+  Palette,
+  Star
 } from 'lucide-react';
 import { analyzeArticleSEO, autoOptimizeArticleSEO, type ArticleSEOAnalysis } from '../utils/seo.js';
+import { downloadBookingPdf, PRESET_THEMES, applyThemeColors } from '../utils/theme.js';
 
 interface AdminDashboardProps {
   onLogout: () => void;
@@ -54,7 +57,7 @@ interface AdminDashboardProps {
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'analytics' | 'bookings' | 'packages' | 'addons' | 'articles' | 'gallery' | 'branding_legality' | 'seo' | 'payments'
+    'overview' | 'analytics' | 'bookings' | 'packages' | 'addons' | 'testimonials' | 'articles' | 'gallery' | 'theme_colors' | 'branding_legality' | 'seo' | 'payments'
   >('overview');
 
   const [metrics, setMetrics] = useState<any>(null);
@@ -62,6 +65,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [bookings, setBookings] = useState<any[]>([]);
   const [packages, setPackages] = useState<TourPackage[]>([]);
   const [addons, setAddons] = useState<AddonOption[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [articles, setArticles] = useState<Article[]>([]);
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [paymentEvents, setPaymentEvents] = useState<any[]>([]);
@@ -72,6 +76,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [bookingSearch, setBookingSearch] = useState('');
   const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
   const [invoiceCustomNote, setInvoiceCustomNote] = useState('');
+  const [adminDownloadingPdf, setAdminDownloadingPdf] = useState(false);
 
   // WhatsApp Invoice result state
   const [generatedInvoice, setGeneratedInvoice] = useState<{
@@ -88,8 +93,51 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [packageSaving, setPackageSaving] = useState(false);
   const [newActivityDay, setNewActivityDay] = useState(1);
   const [newActivityText, setNewActivityText] = useState('');
+  const [newDayNum, setNewDayNum] = useState<number>(2);
+  const [newDayTitle, setNewDayTitle] = useState('');
+  const [showAddDayModal, setShowAddDayModal] = useState(false);
   const [adminPackageSearch, setAdminPackageSearch] = useState('');
   const [adminPackageCategory, setAdminPackageCategory] = useState('Semua');
+
+  // New Package Creation state
+  const [showNewPackageModal, setShowNewPackageModal] = useState(false);
+  const [newPkgName, setNewPkgName] = useState('');
+  const [newPkgCategory, setNewPkgCategory] = useState('Gunung & Alam');
+  const [newPkgDestArea, setNewPkgDestArea] = useState('Garut, Jawa Barat');
+  const [newPkgBasePrice, setNewPkgBasePrice] = useState<number>(550000);
+  const [newPkgDays, setNewPkgDays] = useState<number>(1);
+  const [newPkgNights, setNewPkgNights] = useState<number>(0);
+  const [newPkgShortDesc, setNewPkgShortDesc] = useState('');
+  const [newPkgDesc, setNewPkgDesc] = useState('');
+
+  // Testimonials (Cerita Tamu) state
+  const [showNewTestimonialModal, setShowNewTestimonialModal] = useState(false);
+  const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null);
+  const [testiName, setTestiName] = useState('');
+  const [testiRole, setTestiRole] = useState('Wisatawan');
+  const [testiCity, setTestiCity] = useState('Jakarta');
+  const [testiPackage, setTestiPackage] = useState('Eksplorasi Gunung Papandayan');
+  const [testiRating, setTestiRating] = useState(5);
+  const [testiText, setTestiText] = useState('');
+  const [testiAvatar, setTestiAvatar] = useState('');
+  const [testiSaving, setTestiSaving] = useState(false);
+
+  // Website Theme Colors state
+  const [primaryColor, setPrimaryColor] = useState('#0F3827');
+  const [primaryDarkColor, setPrimaryDarkColor] = useState('#0A261A');
+  const [primaryHoverColor, setPrimaryHoverColor] = useState('#17523A');
+  const [accentColor, setAccentColor] = useState('#C8A951');
+  const [accentHoverColor, setAccentHoverColor] = useState('#B89940');
+  const [themeSaving, setThemeSaving] = useState(false);
+  const [themeSuccessMsg, setThemeSuccessMsg] = useState('');
+
+  // WhatsApp Message Templates state
+  const [waTemplateBooking, setWaTemplateBooking] = useState('');
+  const [waTemplateInvoice, setWaTemplateInvoice] = useState('');
+  const [waTemplateHelp, setWaTemplateHelp] = useState('');
+  const [waTemplateGeneral, setWaTemplateGeneral] = useState('');
+  const [waSaving, setWaSaving] = useState(false);
+  const [waSuccessMsg, setWaSuccessMsg] = useState('');
 
   // File Upload Helper State
   const [uploadingImage, setUploadingImage] = useState(false);

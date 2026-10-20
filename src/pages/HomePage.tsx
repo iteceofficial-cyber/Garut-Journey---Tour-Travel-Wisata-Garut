@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import type { TourPackage, GalleryItem } from '../types.js';
+import type { TourPackage, GalleryItem, Testimonial } from '../types.js';
 import { PackageCard } from '../components/PackageCard.js';
 import { updateSEO } from '../utils/seo.js';
 import { useLanguage } from '../context/LanguageContext.tsx';
@@ -38,6 +38,18 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
   const [isPaused, setIsPaused] = useState(false);
   const [showTripDropdown, setShowTripDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+
+  useEffect(() => {
+    fetch('/api/testimonials')
+      .then(res => res.json())
+      .then(json => {
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          setTestimonials(json.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Close trip dropdown on outside click
   useEffect(() => {
@@ -194,29 +206,37 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
   const activeGalleryItem = galleryItems[currentSlide] || galleryItems[0];
   const activeImgUrl = activeGalleryItem?.imageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg';
 
-  const testimonials = [
+  const defaultTestimonials: Testimonial[] = [
     {
+      id: 'testi-1',
       name: 'Rian Pratama',
       role: 'Travel Enthusiast & Fotografer',
       city: 'Jakarta Selatan',
       text: 'Trip Papandayan 2H1M bersama Garut Journey sangat berkesan. Pemandu Kang Asep sangat memahami titik sunrise terbaik di Hutan Mati dan Tegal Alun. Makanan liwet hangat di camp Pondok Saladah luar biasa lezat.',
-      package: 'Eksplorasi Gunung Papandayan'
+      package: 'Eksplorasi Gunung Papandayan',
+      rating: 5
     },
     {
+      id: 'testi-2',
       name: 'Dr. Sarah Nurhaliza',
       role: 'Family Trip Organizer',
       city: 'Bandung',
       text: 'Kami memesan paket Kamojang untuk reuni keluarga termasuk orang tua lansia. Mobil HiAce sangat nyaman, sopir tepat waktu, dan sauna uap alami Kawah Kamojang benar-benar menyegarkan.',
-      package: 'Relaksasi Geothermal Kamojang'
+      package: 'Relaksasi Geothermal Kamojang',
+      rating: 5
     },
     {
+      id: 'testi-3',
       name: 'Michael Tanuwijaya',
       role: 'Content Creator',
       city: 'Surabaya',
       text: 'Booking online sangat praktis dan pembayaran Midtrans aman instan. Dokumentasi drone yang disediakan tim sangat profesional. Garut Journey benar-benar operator lokal terpercaya.',
-      package: 'Curug Sanghyang Taraje Trip'
+      package: 'Curug Sanghyang Taraje Trip',
+      rating: 5
     }
   ];
+
+  const displayedTestimonials = testimonials && testimonials.length > 0 ? testimonials : defaultTestimonials;
 
   const faqs = [
     {
@@ -677,20 +697,40 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((testi, idx) => (
-            <div key={idx} className="bg-white p-6 rounded-xl border border-stone-200 shadow-2xs flex flex-col justify-between">
+          {displayedTestimonials.map((testi, idx) => (
+            <div key={testi.id || idx} className="bg-white p-6 rounded-2xl border border-stone-200 shadow-2xs flex flex-col justify-between hover:shadow-md transition-shadow">
               <div className="space-y-3">
-                <div className="text-[11px] font-semibold text-[#C8A951] uppercase tracking-wider">
-                  {testi.package}
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-semibold text-[#C8A951] uppercase tracking-wider">
+                    {testi.package}
+                  </span>
+                  <div className="flex text-amber-400 text-xs">
+                    {Array.from({ length: testi.rating || 5 }).map((_, sIdx) => (
+                      <span key={sIdx}>★</span>
+                    ))}
+                  </div>
                 </div>
                 <p className="text-xs text-stone-700 leading-relaxed italic">
                   "{testi.text}"
                 </p>
               </div>
 
-              <div className="pt-4 mt-4 border-t border-stone-100">
-                <div className="font-semibold text-xs text-stone-900">{testi.name}</div>
-                <div className="text-[11px] text-stone-500">{testi.role} · {testi.city}</div>
+              <div className="pt-4 mt-4 border-t border-stone-100 flex items-center gap-3">
+                {testi.avatarUrl ? (
+                  <img
+                    src={testi.avatarUrl}
+                    alt={testi.name}
+                    className="w-9 h-9 rounded-full object-cover border border-stone-200"
+                  />
+                ) : (
+                  <div className="w-9 h-9 rounded-full bg-[#0F3827] text-white flex items-center justify-center font-bold text-xs uppercase">
+                    {testi.name.slice(0, 2)}
+                  </div>
+                )}
+                <div>
+                  <div className="font-semibold text-xs text-stone-900">{testi.name}</div>
+                  <div className="text-[11px] text-stone-500">{testi.role} · {testi.city}</div>
+                </div>
               </div>
             </div>
           ))}

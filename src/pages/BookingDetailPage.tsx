@@ -14,8 +14,10 @@ import {
   Compass,
   ArrowRight,
   Receipt,
-  Download
+  Download,
+  Loader2
 } from 'lucide-react';
+import { downloadBookingPdf } from '../utils/theme.js';
 
 interface BookingDetailPageProps {
   bookingNumber: string;
@@ -26,6 +28,7 @@ interface BookingDetailPageProps {
 export const BookingDetailPage: React.FC<BookingDetailPageProps> = ({ bookingNumber, token, navigate }) => {
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -272,16 +275,19 @@ export const BookingDetailPage: React.FC<BookingDetailPageProps> = ({ bookingNum
 
           <div className="flex items-center gap-2.5 flex-wrap">
             {/* Direct PDF Download (no login needed) */}
-            <a
-              href={`/api/bookings/${booking.bookingNumber}/pdf`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-lg flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors"
+            <button
+              onClick={() => downloadBookingPdf(booking.bookingNumber, () => setDownloadingPdf(true), () => setDownloadingPdf(false))}
+              disabled={downloadingPdf}
+              className="px-4 py-2 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-lg flex items-center gap-1.5 cursor-pointer shadow-xs transition-colors disabled:opacity-50"
               title="Unduh file E-Ticket PDF langsung tanpa login"
             >
-              <Download className="w-4 h-4 text-[#C8A951]" />
-              <span>Unduh E-Ticket (PDF)</span>
-            </a>
+              {downloadingPdf ? (
+                <Loader2 className="w-4 h-4 text-[#C8A951] animate-spin" />
+              ) : (
+                <Download className="w-4 h-4 text-[#C8A951]" />
+              )}
+              <span>{downloadingPdf ? 'Mengunduh PDF...' : 'Unduh E-Ticket (PDF)'}</span>
+            </button>
 
             <button
               onClick={handlePrint}

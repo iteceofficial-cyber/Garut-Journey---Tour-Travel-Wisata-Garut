@@ -503,16 +503,20 @@ export const BookingModal: React.FC<BookingModalProps> = ({ pkg, isOpen, onClose
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-stone-700 mb-1">
-                  {t('emailLabel')}
+                <label className="block text-xs font-medium text-stone-700 mb-1 flex items-center justify-between">
+                  <span>Alamat Email</span>
+                  <span className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded">Opsional / Tidak Wajib</span>
                 </label>
                 <input
                   type="email"
-                  placeholder={t('emailPlaceholder')}
+                  placeholder="nama@email.com (Kosongkan jika hanya via WhatsApp)"
                   value={customerEmail}
                   onChange={(e) => setCustomerEmail(e.target.value)}
                   className="w-full text-xs rounded-lg border border-stone-300 px-3 py-2 bg-white text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
                 />
+                <p className="text-[10px] text-stone-500 mt-1">
+                  E-ticket dan kwitansi resmi langsung bisa diunduh dan dikirim via WhatsApp.
+                </p>
               </div>
 
               <div>

@@ -18,6 +18,7 @@ import { AdminDashboard } from './pages/AdminDashboard.js';
 import { AdminLogin } from './components/AdminLogin.js';
 
 import { updateFavicon } from './utils/seo.js';
+import { applyThemeColors } from './utils/theme.js';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(window.location.pathname || '/');
@@ -66,6 +67,7 @@ export default function App() {
       .then(json => {
         if (json.success && json.data) {
           setSiteSettings(json.data);
+          applyThemeColors(json.data);
           if (json.data.faviconUrl) {
             updateFavicon(json.data.faviconUrl);
           }
