@@ -51,10 +51,15 @@ export const PackageCard: React.FC<PackageCardProps> = ({ pkg, onSelect }) => {
       <div className="p-5 flex flex-col flex-1 justify-between gap-4">
         <div className="space-y-2">
           {/* Metadata */}
-          <div className="flex items-center gap-2 text-xs text-stone-500 font-medium">
-            <span className="text-[#0F3827] uppercase tracking-wider text-[11px] font-semibold">{pkg.category}</span>
-            <span aria-hidden="true">·</span>
-            <span>Min. {pkg.minParticipants} Pax</span>
+          <div className="flex items-center justify-between text-xs text-stone-500 font-medium">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[#0F3827] uppercase tracking-wider text-[11px] font-semibold">{pkg.category}</span>
+              <span aria-hidden="true">·</span>
+              <span>100% Private</span>
+            </div>
+            <span className="text-[10px] text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold border border-emerald-200">
+              Pilihan 1–20 Pax
+            </span>
           </div>
 
           {/* Title */}

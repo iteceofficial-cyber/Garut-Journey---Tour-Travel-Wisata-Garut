@@ -1,4 +1,4 @@
-import type { Booking, SiteSettings } from './types.js';
+import type { Booking, SiteSettings } from './types.ts';
 
 export function generateETicketHtml(booking: Booking, settings?: SiteSettings): string {
   const isLunas = booking.paymentTier === 'full' || booking.remainingBalance <= 0;

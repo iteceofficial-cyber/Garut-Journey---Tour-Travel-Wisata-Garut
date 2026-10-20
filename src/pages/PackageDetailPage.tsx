@@ -13,7 +13,8 @@ import {
   ChevronRight,
   PhoneCall,
   Sparkles,
-  ArrowLeft
+  ArrowLeft,
+  Tag
 } from 'lucide-react';
 
 interface PackageDetailPageProps {
@@ -271,6 +272,56 @@ export const PackageDetailPage: React.FC<PackageDetailPageProps> = ({ pkg, onBac
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                 <span>Pemandu, armada, dan jadwal eksklusif untuk grup Anda</span>
               </div>
+            </div>
+
+            {/* Tiered Pricing List (Pilihan Harga Berdasarkan Jumlah Peserta) */}
+            <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-stone-900 flex items-center gap-1.5">
+                  <Tag className="w-3.5 h-3.5 text-[#0F3827]" />
+                  <span>Pilihan Harga Berdasarkan Jumlah Peserta:</span>
+                </span>
+                <span className="text-[10px] text-[#0F3827] font-semibold bg-emerald-100/70 px-1.5 py-0.5 rounded">
+                  All-In Private
+                </span>
+              </div>
+
+              {(() => {
+                const defaultTiers = [
+                  { minParticipants: 1, maxParticipants: 1, pricePerPerson: Math.round((pkg.basePrice * 1.95) / 5000) * 5000, label: '1 Orang (Solo Private)' },
+                  { minParticipants: 2, maxParticipants: 2, pricePerPerson: Math.round((pkg.basePrice * 1.35) / 5000) * 5000, label: '2 Orang (Duo / Berdua)' },
+                  { minParticipants: 3, maxParticipants: 3, pricePerPerson: Math.round((pkg.basePrice * 1.12) / 5000) * 5000, label: '3 Orang (Trio / Bertiga)' },
+                  { minParticipants: 4, maxParticipants: 5, pricePerPerson: pkg.basePrice, label: '4–5 Orang (Rombongan Kecil)' },
+                  { minParticipants: 6, maxParticipants: 10, pricePerPerson: Math.round((pkg.basePrice * 0.86) / 5000) * 5000, label: '6–10 Orang (Hemat Rombongan)' },
+                  { minParticipants: 11, maxParticipants: 20, pricePerPerson: Math.round((pkg.basePrice * 0.75) / 5000) * 5000, label: '11–20 Orang (Grup Besar)' }
+                ];
+                const activeTiers = pkg.priceTiers && pkg.priceTiers.length > 0 ? pkg.priceTiers : defaultTiers;
+
+                return (
+                  <div className="space-y-1.5">
+                    {activeTiers.map((tier, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between p-2 rounded-lg bg-white border border-stone-200/80 text-xs hover:border-[#0F3827] transition-all"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-900 text-[10px] font-bold flex items-center justify-center shrink-0">
+                            {tier.minParticipants === tier.maxParticipants ? tier.minParticipants : `${tier.minParticipants}p`}
+                          </span>
+                          <span className="font-medium text-stone-800">{tier.label}</span>
+                        </div>
+                        <span className="font-mono font-bold text-[#0F3827]">
+                          Rp {tier.pricePerPerson.toLocaleString('id-ID')}
+                          <span className="text-[10px] text-stone-400 font-normal"> /org</span>
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+              <p className="text-[10px] text-stone-500 italic">
+                *Semakin banyak jumlah rombongan Anda, harga per orang semakin hemat karena biaya operasional armada privat & pemandu dibagi bersama.
+              </p>
             </div>
 
             {/* Primary Action Button */}

@@ -1,7 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import type { TourPackage, AddonOption, PaymentTier } from '../types.js';
-import { Calendar, Users, Check, AlertCircle, X, ShieldCheck, Tag, ArrowRight, CreditCard } from 'lucide-react';
+import type { TourPackage, AddonOption, PaymentTier, PriceTier } from '../types.js';
+import { Calendar, Users, Check, AlertCircle, X, ShieldCheck, Tag, ArrowRight, CreditCard, FileCheck, ChevronDown, ChevronUp } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext.tsx';
+
+export function getPackageTierPrice(pkg: TourPackage, count: number): { pricePerPerson: number; label: string } {
+  const pCount = Math.max(1, count || 1);
+  if (pkg.priceTiers && pkg.priceTiers.length > 0) {
+    const sorted = [...pkg.priceTiers].sort((a, b) => a.minParticipants - b.minParticipants);
+    const matched = sorted.find(t => pCount >= t.minParticipants && pCount <= t.maxParticipants);
+    if (matched) return { pricePerPerson: matched.pricePerPerson, label: matched.label };
+    if (pCount < sorted[0].minParticipants) return { pricePerPerson: sorted[0].pricePerPerson, label: sorted[0].label };
+    return { pricePerPerson: sorted[sorted.length - 1].pricePerPerson, label: sorted[sorted.length - 1].label };
+  }
+  if (pCount === 1) return { pricePerPerson: Math.round((pkg.basePrice * 1.95) / 5000) * 5000, label: '1 Orang (Solo Private)' };
+  if (pCount === 2) return { pricePerPerson: Math.round((pkg.basePrice * 1.35) / 5000) * 5000, label: '2 Orang (Duo / Berdua)' };
+  if (pCount === 3) return { pricePerPerson: Math.round((pkg.basePrice * 1.12) / 5000) * 5000, label: '3 Orang (Trio / Bertiga)' };
+  if (pCount <= 5) return { pricePerPerson: pkg.basePrice, label: '4–5 Orang (Rombongan Kecil)' };
+  if (pCount <= 10) return { pricePerPerson: Math.round((pkg.basePrice * 0.86) / 5000) * 5000, label: '6–10 Orang (Hemat Rombongan)' };
+  return { pricePerPerson: Math.round((pkg.basePrice * 0.75) / 5000) * 5000, label: '11–20 Orang (Grup Besar)' };
+}
 
 interface BookingModalProps {
   pkg: TourPackage;
@@ -22,6 +39,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({ pkg, isOpen, onClose
 
   // Payment Tier: Full (Lunas) vs DP (Baru DP 30%)
   const [paymentTier, setPaymentTier] = useState<PaymentTier>('full');
+
+  // Terms and conditions agreement state
+  const [agreedTerms, setAgreedTerms] = useState(false);
+  const [showFullTerms, setShowFullTerms] = useState(false);
 
   // Addons state
   const [addons, setAddons] = useState<AddonOption[]>([]);
@@ -57,7 +78,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({ pkg, isOpen, onClose
 
   if (!isOpen) return null;
 
-  const unitPrice = pkg.basePrice;
+  const tierInfo = getPackageTierPrice(pkg, participantsCount);
+  const unitPrice = tierInfo.pricePerPerson;
   const subtotal = unitPrice * participantsCount;
 
   let addonTotal = 0;
@@ -127,6 +149,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({ pkg, isOpen, onClose
     const targetDate = customDate;
     if (!targetDate) {
       setSubmitError('Pilih tanggal keberangkatan terlebih dahulu.');
+      return;
+    }
+
+    if (!agreedTerms) {
+      setSubmitError('Anda wajib mencentang persetujuan Syarat & Ketentuan Pemesanan sebelum melanjutkan.');
       return;
     }
 
@@ -245,36 +272,91 @@ export const BookingModal: React.FC<BookingModalProps> = ({ pkg, isOpen, onClose
             </div>
           </div>
 
-            {/* Participants & Pickup */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-              <div>
-                <label className="block text-xs font-medium text-stone-700 mb-1">
-                  Jumlah Tamu Peserta
+            {/* Participants & Tiered Pricing Selection */}
+            <div className="space-y-3 pt-2">
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-semibold text-stone-800">
+                  Jumlah Peserta & Pilihan Harga ({pkg.tripType || 'Private Trip'})
                 </label>
-                <input
-                  type="number"
-                  min={pkg.minParticipants || 1}
-                  max={pkg.maxParticipants || 30}
-                  value={participantsCount}
-                  onChange={(e) => setParticipantsCount(Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full text-xs rounded-lg border border-stone-300 px-3 py-2 bg-white text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
-                  required
-                />
+                <span className="text-[11px] font-mono font-bold text-[#0F3827] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  Rp {tierInfo.pricePerPerson.toLocaleString('id-ID')} / orang
+                </span>
               </div>
 
-              <div>
-                <label className="block text-xs font-medium text-stone-700 mb-1">
-                  Titik Penjemputan di Garut
-                </label>
-                <select
-                  value={pickupLocation}
-                  onChange={(e) => setPickupLocation(e.target.value)}
-                  className="w-full text-xs rounded-lg border border-stone-300 px-3 py-2 bg-white text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
-                >
-                  {(pkg.pickupPoints || ['Stasiun Kereta Api Garut', 'Hotel di Garut Kota']).map((point, idx) => (
-                    <option key={idx} value={point}>{point}</option>
-                  ))}
-                </select>
+              {/* Quick Selectable Participant Buttons */}
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-1.5">
+                {[
+                  { count: 1, label: '1 Org (Solo)' },
+                  { count: 2, label: '2 Org (Duo)' },
+                  { count: 3, label: '3 Org (Trio)' },
+                  { count: 4, label: '4 Org' },
+                  { count: 5, label: '5 Org' },
+                  { count: 6, label: '6+ Org (Grup)' }
+                ].map(opt => {
+                  const isSelected = participantsCount === opt.count;
+                  const optTier = getPackageTierPrice(pkg, opt.count);
+                  return (
+                    <button
+                      key={opt.count}
+                      type="button"
+                      onClick={() => setParticipantsCount(opt.count)}
+                      className={`p-2 rounded-xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
+                        isSelected
+                          ? 'border-[#0F3827] bg-[#F3F8F5] ring-2 ring-[#0F3827]'
+                          : 'border-stone-200 bg-white hover:border-stone-300'
+                      }`}
+                    >
+                      <span className={`text-xs font-bold ${isSelected ? 'text-[#0F3827]' : 'text-stone-800'}`}>
+                        {opt.label}
+                      </span>
+                      <span className="text-[10px] font-mono text-stone-500 mt-0.5">
+                        Rp {Math.round(optTier.pricePerPerson / 1000)}k
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Detailed custom input and pickup location */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                <div>
+                  <label className="block text-[11px] font-medium text-stone-600 mb-1">
+                    Atau Ketik Jumlah Peserta Kustom:
+                  </label>
+                  <div className="relative">
+                    <Users className="w-4 h-4 text-[#0F3827] absolute left-3 top-2.5 pointer-events-none" />
+                    <input
+                      type="number"
+                      min={1}
+                      max={pkg.maxParticipants || 30}
+                      value={participantsCount}
+                      onChange={(e) => setParticipantsCount(Math.max(1, parseInt(e.target.value) || 1))}
+                      className="w-full text-xs font-bold rounded-lg border border-stone-300 pl-9 pr-3 py-2 bg-white text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
+                      required
+                    />
+                  </div>
+                  <span className="text-[10px] text-stone-500 mt-0.5 block">
+                    Kategori: <strong>{tierInfo.label}</strong>
+                  </span>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-medium text-stone-600 mb-1">
+                    Titik Penjemputan di Garut:
+                  </label>
+                  <select
+                    value={pickupLocation}
+                    onChange={(e) => setPickupLocation(e.target.value)}
+                    className="w-full text-xs rounded-lg border border-stone-300 px-3 py-2 bg-white text-stone-900 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
+                  >
+                    {(pkg.pickupPoints || ['Stasiun Kereta Api Garut', 'Hotel di Garut Kota']).map((point, idx) => (
+                      <option key={idx} value={point}>{point}</option>
+                    ))}
+                  </select>
+                  <span className="text-[10px] text-stone-500 mt-0.5 block">
+                    Driver jemput langsung ke lokasi Anda
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -482,6 +564,68 @@ export const BookingModal: React.FC<BookingModalProps> = ({ pkg, isOpen, onClose
                 <span>{promoError}</span>
               </p>
             )}
+          </div>
+
+          {/* Step 6: Syarat & Ketentuan Pemesanan (Wajib Disetujui) */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-2">
+              <h3 className="text-xs uppercase tracking-wider font-semibold text-stone-800">
+                6. Syarat & Ketentuan Pemesanan
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowFullTerms(!showFullTerms)}
+                className="text-[11px] text-[#0F3827] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+              >
+                <span>{showFullTerms ? 'Tutup Rincian' : 'Lihat Ketentuan Lengkap'}</span>
+                {showFullTerms ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+
+            <div className={`p-4 rounded-xl border transition-all text-xs space-y-3 ${
+              !agreedTerms && submitError ? 'border-rose-400 bg-rose-50/70 ring-1 ring-rose-400' : 'border-stone-200 bg-stone-50'
+            }`}>
+              <div className="space-y-2 text-stone-700">
+                <div className="flex items-start gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                  <span><strong>100% Private Trip Eksklusif:</strong> Perjalanan Anda tidak digabung dengan rombongan peserta lain.</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                  <span><strong>Jadwal Fleksibel:</strong> Tanggal dan jam penjemputan disesuaikan sepenuhnya dengan pesanan Anda.</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                  <span><strong>Skema Pembayaran Resmi:</strong> Pembayaran aman via Midtrans Snap dengan pilihan Lunas 100% atau DP 30%.</span>
+                </div>
+                {showFullTerms && (
+                  <div className="pt-2 border-t border-stone-200 space-y-1.5 text-[11px] text-stone-600 animate-in fade-in duration-150">
+                    <p>• <strong>Reschedule Tanggal:</strong> Bebas biaya perubahan jadwal maksimal H-3 sebelum keberangkatan dengan konfirmasi ke Customer Service Garut Journey.</p>
+                    <p>• <strong>Pelestarian Alam:</strong> Dilarang keras merusak ekosistem alam, memetik bunga Edelweiss di Gunung Papandayan, dan wajib membawa kembali sampah.</p>
+                    <p>• <strong>Kesehatan & Keselamatan:</strong> Peserta wajib mematuhi instruksi pemandu lokal bersertifikat HPI demi keselamatan bersama.</p>
+                    <p>• <strong>Pelunasan Tagihan DP:</strong> Jika memilih opsi Bayar DP 30%, sisa pembayaran dilunasi saat penjemputan armada di Garut sebelum tour dimulai.</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="pt-2.5 border-t border-stone-200">
+                <label className="flex items-start gap-2.5 cursor-pointer text-xs font-semibold text-stone-900 select-none">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={agreedTerms}
+                    onChange={(e) => {
+                      setAgreedTerms(e.target.checked);
+                      if (e.target.checked) setSubmitError('');
+                    }}
+                    className="mt-0.5 h-4 w-4 rounded border-stone-300 text-[#0F3827] focus:ring-[#0F3827] cursor-pointer"
+                  />
+                  <span>
+                    Saya telah membaca, memahami, dan menyetujui seluruh <span className="text-[#0F3827] underline">Syarat & Ketentuan Pemesanan</span> serta Kebijakan Privasi Garut Journey. <span className="text-rose-500">*</span>
+                  </span>
+                </label>
+              </div>
+            </div>
           </div>
 
           {/* Pricing Breakdown Card */}

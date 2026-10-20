@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { TourPackage, Article, GalleryItem, SiteSettings, AddonOption } from '../types.js';
+import type { TourPackage, Article, GalleryItem, SiteSettings, AddonOption, PriceTier } from '../types.js';
 import {
   ShieldCheck,
   TrendingUp,
@@ -42,7 +42,9 @@ import {
   Eye,
   Compass,
   ArrowRight,
-  ChevronRight
+  ChevronRight,
+  Upload,
+  Tag
 } from 'lucide-react';
 import { analyzeArticleSEO, autoOptimizeArticleSEO, type ArticleSEOAnalysis } from '../utils/seo.js';
 
@@ -80,12 +82,24 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [copiedInvoice, setCopiedInvoice] = useState(false);
   const [sendingInvoice, setSendingInvoice] = useState(false);
 
-  // Package activity / itinerary editing & search
+  // Package activity / itinerary editing, package editing & search
   const [selectedPackageForActivities, setSelectedPackageForActivities] = useState<TourPackage | null>(null);
+  const [editingPackage, setEditingPackage] = useState<TourPackage | null>(null);
+  const [packageSaving, setPackageSaving] = useState(false);
   const [newActivityDay, setNewActivityDay] = useState(1);
   const [newActivityText, setNewActivityText] = useState('');
   const [adminPackageSearch, setAdminPackageSearch] = useState('');
   const [adminPackageCategory, setAdminPackageCategory] = useState('Semua');
+
+  // File Upload Helper State
+  const [uploadingImage, setUploadingImage] = useState(false);
+
+  // Article inline image insertion & preview state
+  const [showInlineImageModal, setShowInlineImageModal] = useState(false);
+  const [inlineImgUrl, setInlineImgUrl] = useState('');
+  const [inlineImgCaption, setInlineImgCaption] = useState('');
+  const [targetArticleForInline, setTargetArticleForInline] = useState<'new' | 'edit'>('new');
+  const [articlePreviewMode, setArticlePreviewMode] = useState(false);
 
   // Layanan Tambahan (Add-ons) state
   const [showNewAddonModal, setShowNewAddonModal] = useState(false);
@@ -395,6 +409,126 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     setEditArtFocusKeyword(art.keywords?.split(',')[0]?.trim() || '');
   };
 
+  // Reusable File Upload to Server Disk (/api/upload -> /uploads/...)
+  const uploadFileToServer = async (file: File): Promise<string | null> => {
+    setUploadingImage(true);
+    try {
+      const base64Data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken
+        },
+        body: JSON.stringify({
+          image: base64Data,
+          filename: file.name
+        })
+      });
+
+      const json = await res.json();
+      if (json.success && json.url) {
+        return json.url;
+      } else {
+        alert(json.error || 'Gagal mengupload gambar.');
+        return null;
+      }
+    } catch (err: any) {
+      alert('Gagal menghubungi server upload: ' + err.message);
+      return null;
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  // Package Tier Editing Handlers
+  const handleOpenEditPackage = (pkg: TourPackage) => {
+    const defaultTiers: PriceTier[] = [
+      { minParticipants: 1, maxParticipants: 1, pricePerPerson: Math.round((pkg.basePrice * 1.95) / 5000) * 5000, label: '1 Orang (Solo Private)' },
+      { minParticipants: 2, maxParticipants: 2, pricePerPerson: Math.round((pkg.basePrice * 1.35) / 5000) * 5000, label: '2 Orang (Duo / Berdua)' },
+      { minParticipants: 3, maxParticipants: 3, pricePerPerson: Math.round((pkg.basePrice * 1.12) / 5000) * 5000, label: '3 Orang (Trio / Bertiga)' },
+      { minParticipants: 4, maxParticipants: 5, pricePerPerson: pkg.basePrice, label: '4–5 Orang (Rombongan Kecil)' },
+      { minParticipants: 6, maxParticipants: 10, pricePerPerson: Math.round((pkg.basePrice * 0.86) / 5000) * 5000, label: '6–10 Orang (Hemat Rombongan)' },
+      { minParticipants: 11, maxParticipants: 20, pricePerPerson: Math.round((pkg.basePrice * 0.75) / 5000) * 5000, label: '11–20 Orang (Grup Besar)' }
+    ];
+    setEditingPackage({
+      ...pkg,
+      priceTiers: pkg.priceTiers && pkg.priceTiers.length > 0 ? JSON.parse(JSON.stringify(pkg.priceTiers)) : defaultTiers
+    });
+  };
+
+  const handleAutoCalculatePackageTiers = () => {
+    if (!editingPackage) return;
+    const bp = Number(editingPackage.basePrice) || 300000;
+    const computedTiers: PriceTier[] = [
+      { minParticipants: 1, maxParticipants: 1, pricePerPerson: Math.round((bp * 1.95) / 5000) * 5000, label: '1 Orang (Solo Private)' },
+      { minParticipants: 2, maxParticipants: 2, pricePerPerson: Math.round((bp * 1.35) / 5000) * 5000, label: '2 Orang (Duo / Berdua)' },
+      { minParticipants: 3, maxParticipants: 3, pricePerPerson: Math.round((bp * 1.12) / 5000) * 5000, label: '3 Orang (Trio / Bertiga)' },
+      { minParticipants: 4, maxParticipants: 5, pricePerPerson: bp, label: '4–5 Orang (Rombongan Kecil)' },
+      { minParticipants: 6, maxParticipants: 10, pricePerPerson: Math.round((bp * 0.86) / 5000) * 5000, label: '6–10 Orang (Hemat Rombongan)' },
+      { minParticipants: 11, maxParticipants: 20, pricePerPerson: Math.round((bp * 0.75) / 5000) * 5000, label: '11–20 Orang (Grup Besar)' }
+    ];
+    setEditingPackage({
+      ...editingPackage,
+      priceTiers: computedTiers
+    });
+  };
+
+  const handleSaveEditPackage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingPackage) return;
+    setPackageSaving(true);
+    try {
+      const res = await fetch(`/api/admin/packages/${editingPackage.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken
+        },
+        body: JSON.stringify(editingPackage)
+      });
+      const json = await res.json();
+      if (json.success) {
+        setEditingPackage(null);
+        fetchAllData();
+        alert('Data paket wisata & pilihan harga bertingkat berhasil disimpan secara permanen!');
+      } else {
+        alert(json.error || 'Gagal menyimpan paket.');
+      }
+    } catch {
+      alert('Koneksi server gagal.');
+    } finally {
+      setPackageSaving(false);
+    }
+  };
+
+  // Insert Inline Image into Article Content (Markdown format: ![caption](url))
+  const handleInsertInlineImage = (url: string, caption: string) => {
+    const cleanUrl = url.trim();
+    if (!cleanUrl) return;
+    const cleanCaption = (caption || 'Pemandangan Garut').trim();
+    const markdownImg = `\n\n![${cleanCaption}](${cleanUrl})\n\n`;
+
+    if (targetArticleForInline === 'new') {
+      setArtContent(prev => prev + markdownImg);
+    } else if (editingArticle) {
+      setEditingArticle({
+        ...editingArticle,
+        content: editingArticle.content + markdownImg
+      });
+    }
+    setShowInlineImageModal(false);
+    setInlineImgUrl('');
+    setInlineImgCaption('');
+  };
+
+  // SEO Optimization with 100% Green Guarantee
   const handleAutoOptimizeNewArticle = () => {
     if (!artTitle.trim() && !artContent.trim()) {
       alert('Isi judul atau konten artikel terlebih dahulu sebelum koreksi SEO.');
@@ -406,9 +540,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       category: artCategory,
       focusKeyword: artFocusKeyword
     });
+    setArtFocusKeyword(result.optimizedFocusKeyword);
+    setArtTitle(result.optimizedTitle);
     setArtMetaTitle(result.optimizedTitle);
     setArtMetaDesc(result.optimizedDescription);
     setArtKeywords(result.suggestedKeywords);
+    setArtContent(result.optimizedContent);
     setArtReadTime(result.readTimeMinutes);
   };
 
@@ -420,10 +557,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       category: editingArticle.category,
       focusKeyword: editArtFocusKeyword
     });
+    setEditArtFocusKeyword(result.optimizedFocusKeyword);
     setEditingArticle({
       ...editingArticle,
+      title: result.optimizedTitle,
       metaTitle: result.optimizedTitle,
       metaDescription: result.optimizedDescription,
+      content: result.optimizedContent,
       keywords: result.suggestedKeywords,
       readTimeMinutes: result.readTimeMinutes
     });
@@ -1621,17 +1761,58 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
                   <p className="text-xs text-stone-600 line-clamp-2">{pkg.shortDescription}</p>
 
-                  <div className="pt-2 border-t flex items-center justify-between">
+                  {/* Tiered pricing preview */}
+                  <div className="p-2.5 bg-stone-50 rounded-xl border border-stone-200/80 text-[11px] space-y-1.5">
+                    <div className="flex items-center justify-between font-semibold text-stone-700">
+                      <span className="flex items-center gap-1">
+                        <Tag className="w-3.5 h-3.5 text-[#0F3827]" />
+                        <span>Pilihan Harga Pax:</span>
+                      </span>
+                      <span className="text-[#0F3827] text-[10px] font-bold bg-emerald-100/70 px-1.5 py-0.5 rounded">
+                        {pkg.priceTiers?.length || 6} Pilihan
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-1 text-[10px] text-stone-600 font-mono">
+                      {(pkg.priceTiers && pkg.priceTiers.length > 0
+                        ? pkg.priceTiers
+                        : [
+                            { label: '1 Org', pricePerPerson: Math.round(pkg.basePrice * 1.95) },
+                            { label: '2 Org', pricePerPerson: Math.round(pkg.basePrice * 1.35) },
+                            { label: '3 Org', pricePerPerson: Math.round(pkg.basePrice * 1.12) },
+                            { label: '4-5 Org', pricePerPerson: pkg.basePrice }
+                          ]
+                      ).slice(0, 4).map((pt, pIdx) => (
+                        <span key={pIdx} className="bg-white px-1.5 py-0.5 rounded border border-stone-200">
+                          {pt.label.split(' ')[0]}: Rp {Math.round(pt.pricePerPerson / 1000)}k
+                        </span>
+                      ))}
+                      {(pkg.priceTiers?.length || 0) > 4 && (
+                        <span className="text-stone-400 self-center text-[9px]">+{(pkg.priceTiers?.length || 0) - 4} lainnya</span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t flex items-center justify-between gap-2">
                     <span className="text-xs text-stone-500 font-medium">
                       {pkg.itinerary?.length || 0} Hari Itinerary
                     </span>
-                    <button
-                      onClick={() => setSelectedPackageForActivities(pkg)}
-                      className="px-3 py-1.5 bg-[#0F3827] hover:bg-[#17523A] text-white text-xs font-semibold rounded-lg flex items-center gap-1 cursor-pointer"
-                    >
-                      <Layers className="w-3.5 h-3.5" />
-                      <span>Kelola Aktivitas</span>
-                    </button>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => handleOpenEditPackage(pkg)}
+                        className="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-semibold rounded-lg flex items-center gap-1 cursor-pointer transition-colors"
+                        title="Edit Paket & Pilihan Harga Bertingkat"
+                      >
+                        <Edit3 className="w-3.5 h-3.5 text-amber-700" />
+                        <span>Edit Harga & Paket</span>
+                      </button>
+                      <button
+                        onClick={() => setSelectedPackageForActivities(pkg)}
+                        className="px-2.5 py-1.5 bg-[#0F3827] hover:bg-[#17523A] text-white text-xs font-semibold rounded-lg flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        <Layers className="w-3.5 h-3.5" />
+                        <span>Aktivitas</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

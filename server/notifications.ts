@@ -1,4 +1,4 @@
-import type { Booking } from './types.js';
+import type { Booking } from './types.ts';
 
 export interface EmailLog {
   id: string;

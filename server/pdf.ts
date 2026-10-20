@@ -1,5 +1,5 @@
 import PDFDocument from 'pdfkit';
-import type { Booking, SiteSettings } from './types.js';
+import type { Booking, SiteSettings } from './types.ts';
 
 /**
  * Generates an official, publication-quality PDF E-Ticket & Kwitansi

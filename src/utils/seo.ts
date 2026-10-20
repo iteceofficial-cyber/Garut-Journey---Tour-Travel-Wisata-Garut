@@ -277,52 +277,101 @@ export function autoOptimizeArticleSEO(params: {
   optimizedTitle: string;
   optimizedDescription: string;
   suggestedKeywords: string;
+  optimizedFocusKeyword: string;
+  optimizedContent: string;
   readTimeMinutes: number;
 } {
   const { title, content, category, focusKeyword } = params;
-  const kw = focusKeyword?.trim() || title.split(/[:\-\–]/)[0].trim();
+  
+  // 1. Determine optimal Focus Keyword (clean, concise, 2-3 words)
+  let kw = (focusKeyword || '').trim();
+  if (!kw || kw.length < 3) {
+    const titleLower = title.toLowerCase();
+    if (titleLower.includes('papandayan')) kw = 'Gunung Papandayan';
+    else if (titleLower.includes('kamojang')) kw = 'Kawah Kamojang';
+    else if (titleLower.includes('bagendit')) kw = 'Situ Bagendit';
+    else if (titleLower.includes('taraje')) kw = 'Curug Taraje';
+    else if (titleLower.includes('darajat') || titleLower.includes('bodas')) kw = 'Kawah Talaga Bodas';
+    else if (titleLower.includes('santolo')) kw = 'Pantai Santolo';
+    else if (titleLower.includes('kuliner')) kw = 'Kuliner Garut';
+    else {
+      const parts = title.split(/[:\-\–]/)[0].trim().split(/\s+/).filter(w => w.length > 2);
+      kw = parts.slice(0, 2).join(' ') || 'Wisata Garut';
+    }
+  }
 
-  // Craft optimized Meta Title (50-60 chars)
-  let optTitle = title.trim();
-  if (kw && !optTitle.toLowerCase().includes(kw.toLowerCase())) {
-    optTitle = `${kw} – ${optTitle}`;
+  // 2. Craft optimized Title (strictly 42–65 chars, keyword included)
+  let cleanTitle = title.trim();
+  // Strip trailing brand if exists to rebuild cleanly
+  cleanTitle = cleanTitle.replace(/\s*\|\s*Garut Journey/gi, '').trim();
+  if (!cleanTitle.toLowerCase().includes(kw.toLowerCase())) {
+    cleanTitle = `${kw} - ${cleanTitle}`;
   }
-  if (!optTitle.includes('Garut Journey')) {
-    optTitle = `${optTitle} | Garut Journey`;
-  }
+  let optTitle = `${cleanTitle} | Garut Journey`;
   if (optTitle.length > 65) {
-    optTitle = optTitle.slice(0, 62) + '...';
+    const budget = 65 - ' | Garut Journey'.length;
+    cleanTitle = cleanTitle.slice(0, budget).trim();
+    optTitle = `${cleanTitle} | Garut Journey`;
+  }
+  if (optTitle.length < 38) {
+    optTitle = `Panduan Wisata ${optTitle}`;
   }
 
-  // Craft optimized Meta Description (140-155 chars)
-  const cleanContent = content.replace(/[#*`\-_>]/g, ' ').replace(/\s+/g, ' ').trim();
-  let optDesc = '';
-  if (kw) {
-    optDesc = `Panduan lengkap ${kw}: informasi rute terbaik, fasilitas, tips wisata Garut, dan rekomendasi pengalaman berkesan bersama Garut Journey.`;
-  } else {
-    optDesc = cleanContent.slice(0, 140) + '... Baca panduan resmi wisata Garut selengkapnya di Garut Journey.';
+  // 3. Craft optimized Meta Description (strictly 125–155 chars, keyword included)
+  let optDesc = `Panduan lengkap wisata ${kw} di Garut: rekomendasi rute terbaik, fasilitas, info tiket, dan tips liburan nyaman bersama tim resmi Garut Journey.`;
+  if (optDesc.length < 118) {
+    optDesc = `Simak ulasan dan panduan lengkap ${kw} di Garut: info tiket masuk, rute perjalanan, fasilitas terbaru, dan tips liburan berkesan bersama Garut Journey.`;
   }
-  if (optDesc.length > 155) {
-    optDesc = optDesc.slice(0, 150) + '...';
+  if (optDesc.length > 162) {
+    optDesc = optDesc.slice(0, 155).trim() + '.';
   }
 
-  // Keywords suggestions
+  // 4. Ensure optimized content contains keyword in first paragraph, headings, and sufficient length (>=260 words)
+  let optContent = content.trim();
+  if (!optContent) {
+    optContent = `Jelajahi keindahan dan pesona ${kw} bersama tim pemandu resmi Garut Journey dalam ulasan lengkap ini.\n\n## Pesona Alam & Daya Tarik Utama\n${kw} merupakan salah satu magnet pariwisata unggulan di Kabupaten Garut dengan panorama alam yang menawan dan udara pegunungan yang sangat sejuk. Wisatawan dapat menikmati keasrian alam, berfoto di berbagai sudut estetik, dan merasakan kenyamanan liburan privat tanpa gangguan.\n\n## Fasilitas & Persiapan Perjalanan\nUntuk menjamin kelancaran trip Anda, pastikan membawa perlengkapan pribadi, pakaian ganti, serta alas kaki yang nyaman untuk trekking santai. Garut Journey menyediakan paket 100% private trip all-in dengan armada prima dan pemandu lokal berpengalaman.`;
+  }
+
+  // Check keyword in opening paragraph
+  const words = optContent.split(/\s+/).filter(Boolean);
+  const first100 = words.slice(0, 100).join(' ').toLowerCase();
+  if (!first100.includes(kw.toLowerCase())) {
+    optContent = `Jelajahi keindahan dan pesona ${kw} bersama tim pemandu resmi Garut Journey dalam ulasan perjalanan berikut ini.\n\n` + optContent;
+  }
+
+  // Check heading structure
+  const hasHeadings = /^(#{2,4}\s|.*\n={2,}|.*\n-{2,})/m.test(optContent);
+  if (!hasHeadings) {
+    optContent = `## Daya Tarik & Keindahan Utama\n\n` + optContent + `\n\n## Panduan & Tips Terbaik Berkunjung\nPastikan untuk merencanakan waktu kunjungan di pagi hari dan memanfaatkan layanan pemandu profesional untuk pengalaman wisata yang lebih berkesan.`;
+  }
+
+  // Check word count (minimum 260 words for strong ranking)
+  const currentWordCount = optContent.split(/\s+/).filter(Boolean).length;
+  if (currentWordCount < 260) {
+    const extraContent = `\n\n## Fasilitas Wisata & Rekomendasi Persiapan\nKawasan wisata ${kw} ini telah dilengkapi dengan berbagai fasilitas pendukung seperti area parkir luas, saung istirahat, toilet bersih, dan warung kuliner tradisional Sunda. Mengunjungi destinasi ini bersama keluarga atau rombongan sahabat akan memberikan relaksasi optimal dari hiruk-pikuk rutinitas perkotaan.\n\n## Waktu Terbaik untuk Berkunjung\nWaktu paling direkomendasikan adalah pada pagi hari pukul 07.30 hingga 11.00 WIB ketika udara masih sangat sejuk dan pencahayaan matahari sangat ideal untuk fotografi lanskap alam. Hubungi tim Garut Journey untuk paket private trip dengan jadwal tanggal yang fleksibel dan layanan all-in.`;
+    optContent += extraContent;
+  }
+
+  // 5. Keywords suggestions
   const keywordsList = [
     kw,
     'Wisata Garut',
     'Paket Tour Garut',
     category || 'Tour Garut',
     'Liburan Garut',
+    'Private Trip Garut',
     'Garut Journey'
   ].filter(Boolean);
 
-  const words = content.trim().split(/\s+/).filter(Boolean);
-  const readTimeMinutes = Math.max(1, Math.round(words.length / 200));
+  const finalWords = optContent.split(/\s+/).filter(Boolean);
+  const readTimeMinutes = Math.max(1, Math.round(finalWords.length / 200));
 
   return {
     optimizedTitle: optTitle,
     optimizedDescription: optDesc,
     suggestedKeywords: Array.from(new Set(keywordsList)).join(', '),
+    optimizedFocusKeyword: kw,
+    optimizedContent: optContent,
     readTimeMinutes
   };
 }

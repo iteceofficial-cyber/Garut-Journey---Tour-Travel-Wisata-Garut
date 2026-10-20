@@ -12,7 +12,7 @@
  */
 
 import assert from 'node:assert';
-import { dbStore, VERIFIED_ADDONS } from '../server/db.js';
+import { dbStore, VERIFIED_ADDONS } from '../server/db.ts';
 
 console.log('>>> RUNNING GARUT JOURNEY INTEGRATION TESTS <<<\n');
 
@@ -62,7 +62,9 @@ async function runTests() {
     assert.strictEqual(res.success, true, 'Private trip booking should succeed');
     assert.strictEqual(res.booking?.departureDate, targetDate, 'Departure date should match consumer choice');
     assert.strictEqual(res.booking?.participantsCount, 3);
-    assert.strictEqual(res.booking?.subtotal, pkg.basePrice * 3);
+    const expectedTier = pkg.priceTiers?.find(t => 3 >= t.minParticipants && 3 <= t.maxParticipants);
+    const expectedUnitPrice = expectedTier ? expectedTier.pricePerPerson : pkg.basePrice;
+    assert.strictEqual(res.booking?.subtotal, expectedUnitPrice * 3);
   });
 
   // --- TEST 3: Access Token Security ---

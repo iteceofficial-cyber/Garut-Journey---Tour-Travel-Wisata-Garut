@@ -44,11 +44,11 @@
           "day": 1,
           "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
           "activities": [
+            "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
             "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
             "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan",
             "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
-            "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
-            "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat"
+            "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan"
           ]
         },
         {
@@ -75,7 +75,7 @@
       "isPublished": true,
       "featuredOrder": 1,
       "createdAt": "2026-10-19T18:22:34.455Z",
-      "updatedAt": "2026-10-20T11:50:47.337Z",
+      "updatedAt": "2026-10-20T12:24:35.208Z",
       "images": [
         {
           "id": "img-1",
@@ -84,6 +84,44 @@
           "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
           "sortOrder": 1,
           "isPrimary": true
+        }
+      ],
+      "priceTiers": [
+        {
+          "minParticipants": 1,
+          "maxParticipants": 1,
+          "pricePerPerson": 1075000,
+          "label": "1 Orang (Solo Private)"
+        },
+        {
+          "minParticipants": 2,
+          "maxParticipants": 2,
+          "pricePerPerson": 745000,
+          "label": "2 Orang (Duo / Berdua)"
+        },
+        {
+          "minParticipants": 3,
+          "maxParticipants": 3,
+          "pricePerPerson": 615000,
+          "label": "3 Orang (Trio / Bertiga)"
+        },
+        {
+          "minParticipants": 4,
+          "maxParticipants": 5,
+          "pricePerPerson": 550000,
+          "label": "4–5 Orang (Rombongan Kecil)"
+        },
+        {
+          "minParticipants": 6,
+          "maxParticipants": 10,
+          "pricePerPerson": 475000,
+          "label": "6–10 Orang (Hemat Rombongan)"
+        },
+        {
+          "minParticipants": 11,
+          "maxParticipants": 20,
+          "pricePerPerson": 415000,
+          "label": "11–20 Orang (Grup Besar)"
         }
       ]
     },
@@ -147,6 +185,44 @@
           "altText": "Danau geothermal dan hutan pinus berkabut Kawah Kamojang Garut",
           "sortOrder": 1,
           "isPrimary": true
+        }
+      ],
+      "priceTiers": [
+        {
+          "minParticipants": 1,
+          "maxParticipants": 1,
+          "pricePerPerson": 625000,
+          "label": "1 Orang (Solo Private)"
+        },
+        {
+          "minParticipants": 2,
+          "maxParticipants": 2,
+          "pricePerPerson": 430000,
+          "label": "2 Orang (Duo / Berdua)"
+        },
+        {
+          "minParticipants": 3,
+          "maxParticipants": 3,
+          "pricePerPerson": 360000,
+          "label": "3 Orang (Trio / Bertiga)"
+        },
+        {
+          "minParticipants": 4,
+          "maxParticipants": 5,
+          "pricePerPerson": 320000,
+          "label": "4–5 Orang (Rombongan Kecil)"
+        },
+        {
+          "minParticipants": 6,
+          "maxParticipants": 10,
+          "pricePerPerson": 275000,
+          "label": "6–10 Orang (Hemat Rombongan)"
+        },
+        {
+          "minParticipants": 11,
+          "maxParticipants": 20,
+          "pricePerPerson": 240000,
+          "label": "11–20 Orang (Grup Besar)"
         }
       ]
     },
@@ -213,6 +289,44 @@
           "sortOrder": 1,
           "isPrimary": true
         }
+      ],
+      "priceTiers": [
+        {
+          "minParticipants": 1,
+          "maxParticipants": 1,
+          "pricePerPerson": 555000,
+          "label": "1 Orang (Solo Private)"
+        },
+        {
+          "minParticipants": 2,
+          "maxParticipants": 2,
+          "pricePerPerson": 385000,
+          "label": "2 Orang (Duo / Berdua)"
+        },
+        {
+          "minParticipants": 3,
+          "maxParticipants": 3,
+          "pricePerPerson": 320000,
+          "label": "3 Orang (Trio / Bertiga)"
+        },
+        {
+          "minParticipants": 4,
+          "maxParticipants": 5,
+          "pricePerPerson": 285000,
+          "label": "4–5 Orang (Rombongan Kecil)"
+        },
+        {
+          "minParticipants": 6,
+          "maxParticipants": 10,
+          "pricePerPerson": 245000,
+          "label": "6–10 Orang (Hemat Rombongan)"
+        },
+        {
+          "minParticipants": 11,
+          "maxParticipants": 20,
+          "pricePerPerson": 215000,
+          "label": "11–20 Orang (Grup Besar)"
+        }
       ]
     },
     {
@@ -276,6 +390,44 @@
           "sortOrder": 1,
           "isPrimary": true
         }
+      ],
+      "priceTiers": [
+        {
+          "minParticipants": 1,
+          "maxParticipants": 1,
+          "pricePerPerson": 730000,
+          "label": "1 Orang (Solo Private)"
+        },
+        {
+          "minParticipants": 2,
+          "maxParticipants": 2,
+          "pricePerPerson": 505000,
+          "label": "2 Orang (Duo / Berdua)"
+        },
+        {
+          "minParticipants": 3,
+          "maxParticipants": 3,
+          "pricePerPerson": 420000,
+          "label": "3 Orang (Trio / Bertiga)"
+        },
+        {
+          "minParticipants": 4,
+          "maxParticipants": 5,
+          "pricePerPerson": 375000,
+          "label": "4–5 Orang (Rombongan Kecil)"
+        },
+        {
+          "minParticipants": 6,
+          "maxParticipants": 10,
+          "pricePerPerson": 325000,
+          "label": "6–10 Orang (Hemat Rombongan)"
+        },
+        {
+          "minParticipants": 11,
+          "maxParticipants": 20,
+          "pricePerPerson": 280000,
+          "label": "11–20 Orang (Grup Besar)"
+        }
       ]
     },
     {
@@ -338,6 +490,44 @@
           "altText": "Kawah Talaga Bodas dan Pemandian Air Panas Alami Darajat Pass Garut",
           "sortOrder": 1,
           "isPrimary": true
+        }
+      ],
+      "priceTiers": [
+        {
+          "minParticipants": 1,
+          "maxParticipants": 1,
+          "pricePerPerson": 605000,
+          "label": "1 Orang (Solo Private)"
+        },
+        {
+          "minParticipants": 2,
+          "maxParticipants": 2,
+          "pricePerPerson": 420000,
+          "label": "2 Orang (Duo / Berdua)"
+        },
+        {
+          "minParticipants": 3,
+          "maxParticipants": 3,
+          "pricePerPerson": 345000,
+          "label": "3 Orang (Trio / Bertiga)"
+        },
+        {
+          "minParticipants": 4,
+          "maxParticipants": 5,
+          "pricePerPerson": 310000,
+          "label": "4–5 Orang (Rombongan Kecil)"
+        },
+        {
+          "minParticipants": 6,
+          "maxParticipants": 10,
+          "pricePerPerson": 265000,
+          "label": "6–10 Orang (Hemat Rombongan)"
+        },
+        {
+          "minParticipants": 11,
+          "maxParticipants": 20,
+          "pricePerPerson": 235000,
+          "label": "11–20 Orang (Grup Besar)"
         }
       ]
     },
@@ -415,6 +605,44 @@
           "sortOrder": 1,
           "isPrimary": true
         }
+      ],
+      "priceTiers": [
+        {
+          "minParticipants": 1,
+          "maxParticipants": 1,
+          "pricePerPerson": 945000,
+          "label": "1 Orang (Solo Private)"
+        },
+        {
+          "minParticipants": 2,
+          "maxParticipants": 2,
+          "pricePerPerson": 655000,
+          "label": "2 Orang (Duo / Berdua)"
+        },
+        {
+          "minParticipants": 3,
+          "maxParticipants": 3,
+          "pricePerPerson": 545000,
+          "label": "3 Orang (Trio / Bertiga)"
+        },
+        {
+          "minParticipants": 4,
+          "maxParticipants": 5,
+          "pricePerPerson": 485000,
+          "label": "4–5 Orang (Rombongan Kecil)"
+        },
+        {
+          "minParticipants": 6,
+          "maxParticipants": 10,
+          "pricePerPerson": 415000,
+          "label": "6–10 Orang (Hemat Rombongan)"
+        },
+        {
+          "minParticipants": 11,
+          "maxParticipants": 20,
+          "pricePerPerson": 365000,
+          "label": "11–20 Orang (Grup Besar)"
+        }
       ]
     },
     {
@@ -476,6 +704,44 @@
           "altText": "Garut City Tour Sentra Kerajinan Kulit Sukaregang dan Dodol Garut",
           "sortOrder": 1,
           "isPrimary": true
+        }
+      ],
+      "priceTiers": [
+        {
+          "minParticipants": 1,
+          "maxParticipants": 1,
+          "pricePerPerson": 490000,
+          "label": "1 Orang (Solo Private)"
+        },
+        {
+          "minParticipants": 2,
+          "maxParticipants": 2,
+          "pricePerPerson": 340000,
+          "label": "2 Orang (Duo / Berdua)"
+        },
+        {
+          "minParticipants": 3,
+          "maxParticipants": 3,
+          "pricePerPerson": 280000,
+          "label": "3 Orang (Trio / Bertiga)"
+        },
+        {
+          "minParticipants": 4,
+          "maxParticipants": 5,
+          "pricePerPerson": 250000,
+          "label": "4–5 Orang (Rombongan Kecil)"
+        },
+        {
+          "minParticipants": 6,
+          "maxParticipants": 10,
+          "pricePerPerson": 215000,
+          "label": "6–10 Orang (Hemat Rombongan)"
+        },
+        {
+          "minParticipants": 11,
+          "maxParticipants": 20,
+          "pricePerPerson": 190000,
+          "label": "11–20 Orang (Grup Besar)"
         }
       ]
     }
@@ -3740,10 +4006,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T12:01:22.780Z",
       "createdAt": "2026-10-20T11:01:22.781Z",
-      "updatedAt": "2026-10-20T11:01:22.781Z",
+      "updatedAt": "2026-10-20T12:01:45.802Z",
       "items": [
         {
           "id": "item-a32e3043-0037-4c88-95a6-6aca4df09f2c",
@@ -3817,7 +4083,8 @@
             "isPrimary": true
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-52e409dc-e7d6-475a-aa03-c21a8d64e7b8",
@@ -3839,10 +4106,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T12:01:22.784Z",
       "createdAt": "2026-10-20T11:01:22.784Z",
-      "updatedAt": "2026-10-20T11:01:22.784Z",
+      "updatedAt": "2026-10-20T12:01:45.802Z",
       "items": [
         {
           "id": "item-c92d29ae-1edc-479e-86de-8ab0e8bffc6c",
@@ -3930,7 +4197,8 @@
             "isPrimary": true
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-4bb28a54-2b59-4c07-a1a4-933cbc5d3aec",
@@ -4180,10 +4448,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T12:15:31.381Z",
       "createdAt": "2026-10-20T11:15:31.381Z",
-      "updatedAt": "2026-10-20T11:15:31.381Z",
+      "updatedAt": "2026-10-20T12:15:57.331Z",
       "items": [
         {
           "id": "item-d1a1a4c3-5687-4f99-aaba-9a77d6fabe10",
@@ -4257,7 +4525,8 @@
             "isPrimary": true
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-f563bce1-1b59-4234-8cd3-c4b79da1cd23",
@@ -4279,10 +4548,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T12:15:31.386Z",
       "createdAt": "2026-10-20T11:15:31.386Z",
-      "updatedAt": "2026-10-20T11:15:31.386Z",
+      "updatedAt": "2026-10-20T12:15:57.331Z",
       "items": [
         {
           "id": "item-cdf650ef-ee4a-4aa1-96b8-13010378bd9d",
@@ -4370,7 +4639,8 @@
             "isPrimary": true
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-65b0f712-58b8-43e7-afdc-f972f0e3d229",
@@ -5039,6 +5309,2374 @@
         ]
       },
       "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
+    },
+    {
+      "id": "book-7f921e61-cd2a-4e71-b667-d2d1be0f2705",
+      "bookingNumber": "GJ-2610-1C25",
+      "accessToken": "gj_sec_f24e2f32aa1d694e71bb675add5f7d92ce059cd4",
+      "customerName": "Keluarga Budi",
+      "customerPhone": "081234567890",
+      "customerEmail": "budi@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-11-25",
+      "packageId": "pkg-kamojang",
+      "participantsCount": 3,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1080000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1080000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "pending_payment",
+      "paymentExpiry": "2026-10-20T13:22:14.212Z",
+      "createdAt": "2026-10-20T12:22:14.212Z",
+      "updatedAt": "2026-10-20T12:22:14.212Z",
+      "items": [
+        {
+          "id": "item-59f0ce51-d0fb-4f3c-b4cd-a0df9010b0f5",
+          "bookingId": "book-7f921e61-cd2a-4e71-b667-d2d1be0f2705",
+          "itemType": "package",
+          "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (3 Pax - 3 Orang (Trio / Bertiga))",
+          "unitPrice": 360000,
+          "quantity": 3,
+          "subtotal": 1080000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-kamojang",
+        "slug": "relaksasi-geothermal-kawah-kamojang",
+        "name": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus",
+        "category": "Keluarga & Relaksasi",
+        "shortDescription": "Nikmati uap alami Kawah Kereta Api bersejarah, sauna bumi alami, dan keasrian danau kawah di ketinggian sejuk.",
+        "description": "Kawah Kamojang merupakan ladang geothermal tertua di Indonesia yang dikelilingi hutan pinus pegunungan asri. Suhu udara 16-20°C yang sangat sejuk dipadukan dengan sensasi sauna uap alami Kawah Hujan dan semburan Kawah Kereta Api.",
+        "durationDays": 1,
+        "durationNights": 0,
+        "basePrice": 320000,
+        "minParticipants": 1,
+        "maxParticipants": 15,
+        "destinationArea": "Kamojang, Samarang",
+        "inclusions": [
+          "Kendaraan privat AC ber-AC sesuai jumlah peserta",
+          "Driver berpengalaman merangkap tour guide lokal",
+          "Tiket masuk Kawasan Wisata Kawah Kamojang",
+          "Tiket Danau Pangkalan & Kawah Cibeureum",
+          "Makan siang prasmanan masakan Sunda di Saung Kuring Kamojang",
+          "Uji coba terapi uap belerang alami (sauna bumi)",
+          "Air mineral kemasan selama tour"
+        ],
+        "exclusions": [
+          "Pengeluaran pribadi & belanja oleh-oleh kopi Kamojang",
+          "Tips sukarela untuk driver/guide"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-2-1",
+            "day": 1,
+            "title": "Satu Hari Jelajah Kamojang Geothermal & Pinus",
+            "activities": [
+              "08.00 - Penjemputan di hotel / penginapan Garut Kota",
+              "09.15 - Tiba di gerbang Kamojang, menyusuri jalur kanopi pinus yang rindang",
+              "10.00 - Atraksi Kawah Kereta Api dengan peluit uap bertekanan tinggi",
+              "11.15 - Relaksasi di Kawah Hujan (sauna alami untuk pernapasan & kulit)",
+              "12.30 - Makan siang lezat dengan Nasi Liwet Sunda, gurame goreng, dan lalapan segar",
+              "14.00 - Singgah ke Danau Cibeureum dan perkebunan teh tertata rapi",
+              "16.00 - Mampir belanja kopi arabika Kamojang khas perkebunan lokal",
+              "17.30 - Kembali ke hotel di Garut. Program selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Semua Hotel & Villa di Garut Kota / Tarogong / Cipanas",
+          "Stasiun Garut"
+        ],
+        "termsAndConditions": "Disarankan mengenakan jaket ringan dan pakaian yang nyaman. Aman untuk semua usia termasuk anak-anak dan lansia.",
+        "isPublished": true,
+        "featuredOrder": 2,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-19T18:22:34.455Z",
+        "images": [
+          {
+            "id": "img-2",
+            "packageId": "pkg-kamojang",
+            "imageUrl": "/src/assets/images/tour_kamojang_pine_1792431915131.jpg",
+            "altText": "Danau geothermal dan hutan pinus berkabut Kawah Kamojang Garut",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 625000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 430000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 360000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 320000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 275000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 240000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "book-5aae2a58-6f25-4f32-b876-6c4839f3a60b",
+      "bookingNumber": "GJ-2610-DE5D",
+      "accessToken": "gj_sec_8e0cb967799a970baa94f753bebef6481d5b3a19",
+      "customerName": "Budi Santoso",
+      "customerPhone": "0833333333",
+      "customerEmail": "budi@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-12-01",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 1,
+      "pickupLocation": "Hotel Santika Garut",
+      "subtotal": 1075000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1075000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "pending_payment",
+      "paymentExpiry": "2026-10-20T13:22:14.220Z",
+      "createdAt": "2026-10-20T12:22:14.220Z",
+      "updatedAt": "2026-10-20T12:22:14.220Z",
+      "items": [
+        {
+          "id": "item-c1ae2c9e-a241-4294-b52e-63e056daf4b1",
+          "bookingId": "book-5aae2a58-6f25-4f32-b876-6c4839f3a60b",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (1 Pax - 1 Orang (Solo Private))",
+          "unitPrice": 1075000,
+          "quantity": 1,
+          "subtotal": 1075000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan",
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:22:14.232Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "book-0118126a-bd04-4f71-95db-2a91567fb88e",
+      "bookingNumber": "GJ-2610-1850",
+      "accessToken": "gj_sec_29cadc770badb5a0a813fb25de46fd63a5cc227c",
+      "customerName": "Doni Pratama",
+      "customerPhone": "081299998888",
+      "customerEmail": "doni@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-12-10",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 2,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1490000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1490000,
+      "paymentTier": "dp",
+      "dpAmount": 447000,
+      "paidAmount": 447000,
+      "remainingBalance": 1043000,
+      "status": "confirmed",
+      "paymentExpiry": "2026-10-20T13:22:14.223Z",
+      "createdAt": "2026-10-20T12:22:14.223Z",
+      "updatedAt": "2026-10-20T12:22:14.226Z",
+      "items": [
+        {
+          "id": "item-2285efcb-ec74-48af-a01c-03c2860bc123",
+          "bookingId": "book-0118126a-bd04-4f71-95db-2a91567fb88e",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+          "unitPrice": 745000,
+          "quantity": 2,
+          "subtotal": 1490000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan",
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:22:14.232Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "confirmedAt": "2026-10-20T12:22:14.226Z"
+    },
+    {
+      "id": "book-c328f079-b617-4f88-8c4a-b12d28320705",
+      "bookingNumber": "GJ-2610-D551",
+      "accessToken": "gj_sec_835cc6fa80ca73a7de270134a899cfe9e9f2b304",
+      "customerName": "Stale Customer",
+      "customerPhone": "0899999999",
+      "customerEmail": "stale@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-11-30",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 2,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1490000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1490000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "expired",
+      "paymentExpiry": "2026-10-20T11:22:14.244Z",
+      "createdAt": "2026-10-20T12:22:14.241Z",
+      "updatedAt": "2026-10-20T12:22:14.245Z",
+      "items": [
+        {
+          "id": "item-6889ce19-b67c-4b51-8d8c-8d4fbe01363d",
+          "bookingId": "book-c328f079-b617-4f88-8c4a-b12d28320705",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+          "unitPrice": 745000,
+          "quantity": 2,
+          "subtotal": 1490000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan",
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:22:14.232Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
+    },
+    {
+      "id": "book-b3050de8-2d76-4654-aa44-57c30ec8f6b9",
+      "bookingNumber": "GJ-2610-FA45",
+      "accessToken": "gj_sec_9177416b32c4f7f4990596ca5968df6d6b9b0a35",
+      "customerName": "Keluarga Budi",
+      "customerPhone": "081234567890",
+      "customerEmail": "budi@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-11-25",
+      "packageId": "pkg-kamojang",
+      "participantsCount": 3,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1080000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1080000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "pending_payment",
+      "paymentExpiry": "2026-10-20T13:22:23.118Z",
+      "createdAt": "2026-10-20T12:22:23.119Z",
+      "updatedAt": "2026-10-20T12:22:23.119Z",
+      "items": [
+        {
+          "id": "item-b399341f-f8fb-40f6-9c82-f6c8013f68e1",
+          "bookingId": "book-b3050de8-2d76-4654-aa44-57c30ec8f6b9",
+          "itemType": "package",
+          "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (3 Pax - 3 Orang (Trio / Bertiga))",
+          "unitPrice": 360000,
+          "quantity": 3,
+          "subtotal": 1080000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-kamojang",
+        "slug": "relaksasi-geothermal-kawah-kamojang",
+        "name": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus",
+        "category": "Keluarga & Relaksasi",
+        "shortDescription": "Nikmati uap alami Kawah Kereta Api bersejarah, sauna bumi alami, dan keasrian danau kawah di ketinggian sejuk.",
+        "description": "Kawah Kamojang merupakan ladang geothermal tertua di Indonesia yang dikelilingi hutan pinus pegunungan asri. Suhu udara 16-20°C yang sangat sejuk dipadukan dengan sensasi sauna uap alami Kawah Hujan dan semburan Kawah Kereta Api.",
+        "durationDays": 1,
+        "durationNights": 0,
+        "basePrice": 320000,
+        "minParticipants": 1,
+        "maxParticipants": 15,
+        "destinationArea": "Kamojang, Samarang",
+        "inclusions": [
+          "Kendaraan privat AC ber-AC sesuai jumlah peserta",
+          "Driver berpengalaman merangkap tour guide lokal",
+          "Tiket masuk Kawasan Wisata Kawah Kamojang",
+          "Tiket Danau Pangkalan & Kawah Cibeureum",
+          "Makan siang prasmanan masakan Sunda di Saung Kuring Kamojang",
+          "Uji coba terapi uap belerang alami (sauna bumi)",
+          "Air mineral kemasan selama tour"
+        ],
+        "exclusions": [
+          "Pengeluaran pribadi & belanja oleh-oleh kopi Kamojang",
+          "Tips sukarela untuk driver/guide"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-2-1",
+            "day": 1,
+            "title": "Satu Hari Jelajah Kamojang Geothermal & Pinus",
+            "activities": [
+              "08.00 - Penjemputan di hotel / penginapan Garut Kota",
+              "09.15 - Tiba di gerbang Kamojang, menyusuri jalur kanopi pinus yang rindang",
+              "10.00 - Atraksi Kawah Kereta Api dengan peluit uap bertekanan tinggi",
+              "11.15 - Relaksasi di Kawah Hujan (sauna alami untuk pernapasan & kulit)",
+              "12.30 - Makan siang lezat dengan Nasi Liwet Sunda, gurame goreng, dan lalapan segar",
+              "14.00 - Singgah ke Danau Cibeureum dan perkebunan teh tertata rapi",
+              "16.00 - Mampir belanja kopi arabika Kamojang khas perkebunan lokal",
+              "17.30 - Kembali ke hotel di Garut. Program selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Semua Hotel & Villa di Garut Kota / Tarogong / Cipanas",
+          "Stasiun Garut"
+        ],
+        "termsAndConditions": "Disarankan mengenakan jaket ringan dan pakaian yang nyaman. Aman untuk semua usia termasuk anak-anak dan lansia.",
+        "isPublished": true,
+        "featuredOrder": 2,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-19T18:22:34.455Z",
+        "images": [
+          {
+            "id": "img-2",
+            "packageId": "pkg-kamojang",
+            "imageUrl": "/src/assets/images/tour_kamojang_pine_1792431915131.jpg",
+            "altText": "Danau geothermal dan hutan pinus berkabut Kawah Kamojang Garut",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 625000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 430000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 360000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 320000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 275000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 240000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "book-d08e825d-e2f2-417d-b7fb-dc97cbb6647e",
+      "bookingNumber": "GJ-2610-66D6",
+      "accessToken": "gj_sec_c960270c427a7c7ad0c642ff078a85d9b39b7411",
+      "customerName": "Budi Santoso",
+      "customerPhone": "0833333333",
+      "customerEmail": "budi@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-12-01",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 1,
+      "pickupLocation": "Hotel Santika Garut",
+      "subtotal": 1075000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1075000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "pending_payment",
+      "paymentExpiry": "2026-10-20T13:22:23.126Z",
+      "createdAt": "2026-10-20T12:22:23.126Z",
+      "updatedAt": "2026-10-20T12:22:23.126Z",
+      "items": [
+        {
+          "id": "item-84cf46e1-6b15-40fb-aefa-c4995a7ed9eb",
+          "bookingId": "book-d08e825d-e2f2-417d-b7fb-dc97cbb6647e",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (1 Pax - 1 Orang (Solo Private))",
+          "unitPrice": 1075000,
+          "quantity": 1,
+          "subtotal": 1075000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:22:23.142Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "book-ede3f992-586f-4873-9228-b6a4cea644f5",
+      "bookingNumber": "GJ-2610-D2F4",
+      "accessToken": "gj_sec_f5f9e53155ec1a00bbfa69599c4a606767c76ba8",
+      "customerName": "Doni Pratama",
+      "customerPhone": "081299998888",
+      "customerEmail": "doni@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-12-10",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 2,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1490000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1490000,
+      "paymentTier": "dp",
+      "dpAmount": 447000,
+      "paidAmount": 447000,
+      "remainingBalance": 1043000,
+      "status": "confirmed",
+      "paymentExpiry": "2026-10-20T13:22:23.130Z",
+      "createdAt": "2026-10-20T12:22:23.130Z",
+      "updatedAt": "2026-10-20T12:22:23.134Z",
+      "items": [
+        {
+          "id": "item-e3b17f2f-5b15-4dc1-b5d6-81a0f9a428e7",
+          "bookingId": "book-ede3f992-586f-4873-9228-b6a4cea644f5",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+          "unitPrice": 745000,
+          "quantity": 2,
+          "subtotal": 1490000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:22:23.142Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "confirmedAt": "2026-10-20T12:22:23.134Z"
+    },
+    {
+      "id": "book-e78011f1-94d5-42e9-9998-ceca037b5bb5",
+      "bookingNumber": "GJ-2610-F1F2",
+      "accessToken": "gj_sec_8f2994110b3bcdb7df5c9ace59c37520fd80e4d7",
+      "customerName": "Stale Customer",
+      "customerPhone": "0899999999",
+      "customerEmail": "stale@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-11-30",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 2,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1490000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1490000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "expired",
+      "paymentExpiry": "2026-10-20T11:22:23.155Z",
+      "createdAt": "2026-10-20T12:22:23.152Z",
+      "updatedAt": "2026-10-20T12:22:23.155Z",
+      "items": [
+        {
+          "id": "item-af5d4bd8-20e0-4db2-bc80-239ebcf028b8",
+          "bookingId": "book-e78011f1-94d5-42e9-9998-ceca037b5bb5",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+          "unitPrice": 745000,
+          "quantity": 2,
+          "subtotal": 1490000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:22:23.142Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
+    },
+    {
+      "id": "book-7a113ada-3e75-4165-a169-1a78843c30d9",
+      "bookingNumber": "GJ-2610-B77A",
+      "accessToken": "gj_sec_c30bd941783f523849912a6cb3e7bb69b07a8c05",
+      "customerName": "Keluarga Budi",
+      "customerPhone": "081234567890",
+      "customerEmail": "budi@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-11-25",
+      "packageId": "pkg-kamojang",
+      "participantsCount": 3,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1080000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1080000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "pending_payment",
+      "paymentExpiry": "2026-10-20T13:24:29.080Z",
+      "createdAt": "2026-10-20T12:24:29.081Z",
+      "updatedAt": "2026-10-20T12:24:29.081Z",
+      "items": [
+        {
+          "id": "item-621c2a19-dd72-4c2e-ad9c-b9811f310f1b",
+          "bookingId": "book-7a113ada-3e75-4165-a169-1a78843c30d9",
+          "itemType": "package",
+          "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (3 Pax - 3 Orang (Trio / Bertiga))",
+          "unitPrice": 360000,
+          "quantity": 3,
+          "subtotal": 1080000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-kamojang",
+        "slug": "relaksasi-geothermal-kawah-kamojang",
+        "name": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus",
+        "category": "Keluarga & Relaksasi",
+        "shortDescription": "Nikmati uap alami Kawah Kereta Api bersejarah, sauna bumi alami, dan keasrian danau kawah di ketinggian sejuk.",
+        "description": "Kawah Kamojang merupakan ladang geothermal tertua di Indonesia yang dikelilingi hutan pinus pegunungan asri. Suhu udara 16-20°C yang sangat sejuk dipadukan dengan sensasi sauna uap alami Kawah Hujan dan semburan Kawah Kereta Api.",
+        "durationDays": 1,
+        "durationNights": 0,
+        "basePrice": 320000,
+        "minParticipants": 1,
+        "maxParticipants": 15,
+        "destinationArea": "Kamojang, Samarang",
+        "inclusions": [
+          "Kendaraan privat AC ber-AC sesuai jumlah peserta",
+          "Driver berpengalaman merangkap tour guide lokal",
+          "Tiket masuk Kawasan Wisata Kawah Kamojang",
+          "Tiket Danau Pangkalan & Kawah Cibeureum",
+          "Makan siang prasmanan masakan Sunda di Saung Kuring Kamojang",
+          "Uji coba terapi uap belerang alami (sauna bumi)",
+          "Air mineral kemasan selama tour"
+        ],
+        "exclusions": [
+          "Pengeluaran pribadi & belanja oleh-oleh kopi Kamojang",
+          "Tips sukarela untuk driver/guide"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-2-1",
+            "day": 1,
+            "title": "Satu Hari Jelajah Kamojang Geothermal & Pinus",
+            "activities": [
+              "08.00 - Penjemputan di hotel / penginapan Garut Kota",
+              "09.15 - Tiba di gerbang Kamojang, menyusuri jalur kanopi pinus yang rindang",
+              "10.00 - Atraksi Kawah Kereta Api dengan peluit uap bertekanan tinggi",
+              "11.15 - Relaksasi di Kawah Hujan (sauna alami untuk pernapasan & kulit)",
+              "12.30 - Makan siang lezat dengan Nasi Liwet Sunda, gurame goreng, dan lalapan segar",
+              "14.00 - Singgah ke Danau Cibeureum dan perkebunan teh tertata rapi",
+              "16.00 - Mampir belanja kopi arabika Kamojang khas perkebunan lokal",
+              "17.30 - Kembali ke hotel di Garut. Program selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Semua Hotel & Villa di Garut Kota / Tarogong / Cipanas",
+          "Stasiun Garut"
+        ],
+        "termsAndConditions": "Disarankan mengenakan jaket ringan dan pakaian yang nyaman. Aman untuk semua usia termasuk anak-anak dan lansia.",
+        "isPublished": true,
+        "featuredOrder": 2,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-19T18:22:34.455Z",
+        "images": [
+          {
+            "id": "img-2",
+            "packageId": "pkg-kamojang",
+            "imageUrl": "/src/assets/images/tour_kamojang_pine_1792431915131.jpg",
+            "altText": "Danau geothermal dan hutan pinus berkabut Kawah Kamojang Garut",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 625000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 430000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 360000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 320000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 275000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 240000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "book-dde86f15-f945-41cc-adce-1444b6b5f45e",
+      "bookingNumber": "GJ-2610-FB06",
+      "accessToken": "gj_sec_1cbe20b935990d2739599de8000fc0b438e36ab6",
+      "customerName": "Budi Santoso",
+      "customerPhone": "0833333333",
+      "customerEmail": "budi@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-12-01",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 1,
+      "pickupLocation": "Hotel Santika Garut",
+      "subtotal": 1075000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1075000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "pending_payment",
+      "paymentExpiry": "2026-10-20T13:24:29.087Z",
+      "createdAt": "2026-10-20T12:24:29.087Z",
+      "updatedAt": "2026-10-20T12:24:29.087Z",
+      "items": [
+        {
+          "id": "item-5c4c3667-87e5-46b2-8053-05c6f0bcf707",
+          "bookingId": "book-dde86f15-f945-41cc-adce-1444b6b5f45e",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (1 Pax - 1 Orang (Solo Private))",
+          "unitPrice": 1075000,
+          "quantity": 1,
+          "subtotal": 1075000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan",
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:24:29.107Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "book-e907a636-8bf4-4d2b-852e-15eb47951999",
+      "bookingNumber": "GJ-2610-6F40",
+      "accessToken": "gj_sec_ebbd88209782484933673ec3b745d228c7c52d71",
+      "customerName": "Doni Pratama",
+      "customerPhone": "081299998888",
+      "customerEmail": "doni@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-12-10",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 2,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1490000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1490000,
+      "paymentTier": "dp",
+      "dpAmount": 447000,
+      "paidAmount": 447000,
+      "remainingBalance": 1043000,
+      "status": "confirmed",
+      "paymentExpiry": "2026-10-20T13:24:29.091Z",
+      "createdAt": "2026-10-20T12:24:29.091Z",
+      "updatedAt": "2026-10-20T12:24:29.097Z",
+      "items": [
+        {
+          "id": "item-36cfe7d5-8ffd-4e7b-bf32-ad32f3b2c4a5",
+          "bookingId": "book-e907a636-8bf4-4d2b-852e-15eb47951999",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+          "unitPrice": 745000,
+          "quantity": 2,
+          "subtotal": 1490000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan",
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:24:29.107Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "confirmedAt": "2026-10-20T12:24:29.097Z"
+    },
+    {
+      "id": "book-53ba3812-8a31-4e02-ba38-b12a9c1a2278",
+      "bookingNumber": "GJ-2610-49DB",
+      "accessToken": "gj_sec_bfc04b18fecb478887660c8ad6ababaad909f6ab",
+      "customerName": "Stale Customer",
+      "customerPhone": "0899999999",
+      "customerEmail": "stale@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-11-30",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 2,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1490000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1490000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "expired",
+      "paymentExpiry": "2026-10-20T11:24:29.119Z",
+      "createdAt": "2026-10-20T12:24:29.116Z",
+      "updatedAt": "2026-10-20T12:24:29.120Z",
+      "items": [
+        {
+          "id": "item-c4852977-29e2-46b8-8ff1-a863de98ef81",
+          "bookingId": "book-53ba3812-8a31-4e02-ba38-b12a9c1a2278",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+          "unitPrice": 745000,
+          "quantity": 2,
+          "subtotal": 1490000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan",
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:24:29.107Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
+    },
+    {
+      "id": "book-49feb30a-f3ca-4944-ab87-d205bd06a02a",
+      "bookingNumber": "GJ-2610-989B",
+      "accessToken": "gj_sec_24fb8c26bfe9a7b1fb91fe1d47c0c2d764d17362",
+      "customerName": "Keluarga Budi",
+      "customerPhone": "081234567890",
+      "customerEmail": "budi@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-11-25",
+      "packageId": "pkg-kamojang",
+      "participantsCount": 3,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1080000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1080000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "pending_payment",
+      "paymentExpiry": "2026-10-20T13:24:35.181Z",
+      "createdAt": "2026-10-20T12:24:35.182Z",
+      "updatedAt": "2026-10-20T12:24:35.182Z",
+      "items": [
+        {
+          "id": "item-7c02d63a-b4c1-444a-be88-6d0512838487",
+          "bookingId": "book-49feb30a-f3ca-4944-ab87-d205bd06a02a",
+          "itemType": "package",
+          "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (3 Pax - 3 Orang (Trio / Bertiga))",
+          "unitPrice": 360000,
+          "quantity": 3,
+          "subtotal": 1080000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-kamojang",
+        "slug": "relaksasi-geothermal-kawah-kamojang",
+        "name": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus",
+        "category": "Keluarga & Relaksasi",
+        "shortDescription": "Nikmati uap alami Kawah Kereta Api bersejarah, sauna bumi alami, dan keasrian danau kawah di ketinggian sejuk.",
+        "description": "Kawah Kamojang merupakan ladang geothermal tertua di Indonesia yang dikelilingi hutan pinus pegunungan asri. Suhu udara 16-20°C yang sangat sejuk dipadukan dengan sensasi sauna uap alami Kawah Hujan dan semburan Kawah Kereta Api.",
+        "durationDays": 1,
+        "durationNights": 0,
+        "basePrice": 320000,
+        "minParticipants": 1,
+        "maxParticipants": 15,
+        "destinationArea": "Kamojang, Samarang",
+        "inclusions": [
+          "Kendaraan privat AC ber-AC sesuai jumlah peserta",
+          "Driver berpengalaman merangkap tour guide lokal",
+          "Tiket masuk Kawasan Wisata Kawah Kamojang",
+          "Tiket Danau Pangkalan & Kawah Cibeureum",
+          "Makan siang prasmanan masakan Sunda di Saung Kuring Kamojang",
+          "Uji coba terapi uap belerang alami (sauna bumi)",
+          "Air mineral kemasan selama tour"
+        ],
+        "exclusions": [
+          "Pengeluaran pribadi & belanja oleh-oleh kopi Kamojang",
+          "Tips sukarela untuk driver/guide"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-2-1",
+            "day": 1,
+            "title": "Satu Hari Jelajah Kamojang Geothermal & Pinus",
+            "activities": [
+              "08.00 - Penjemputan di hotel / penginapan Garut Kota",
+              "09.15 - Tiba di gerbang Kamojang, menyusuri jalur kanopi pinus yang rindang",
+              "10.00 - Atraksi Kawah Kereta Api dengan peluit uap bertekanan tinggi",
+              "11.15 - Relaksasi di Kawah Hujan (sauna alami untuk pernapasan & kulit)",
+              "12.30 - Makan siang lezat dengan Nasi Liwet Sunda, gurame goreng, dan lalapan segar",
+              "14.00 - Singgah ke Danau Cibeureum dan perkebunan teh tertata rapi",
+              "16.00 - Mampir belanja kopi arabika Kamojang khas perkebunan lokal",
+              "17.30 - Kembali ke hotel di Garut. Program selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Semua Hotel & Villa di Garut Kota / Tarogong / Cipanas",
+          "Stasiun Garut"
+        ],
+        "termsAndConditions": "Disarankan mengenakan jaket ringan dan pakaian yang nyaman. Aman untuk semua usia termasuk anak-anak dan lansia.",
+        "isPublished": true,
+        "featuredOrder": 2,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-19T18:22:34.455Z",
+        "images": [
+          {
+            "id": "img-2",
+            "packageId": "pkg-kamojang",
+            "imageUrl": "/src/assets/images/tour_kamojang_pine_1792431915131.jpg",
+            "altText": "Danau geothermal dan hutan pinus berkabut Kawah Kamojang Garut",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 625000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 430000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 360000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 320000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 275000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 240000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "book-e5e24ffc-60c7-48a4-8927-3149a3c8701e",
+      "bookingNumber": "GJ-2610-C2DC",
+      "accessToken": "gj_sec_3e93998bc143d5ab087dfdcc2016500ebf65fc06",
+      "customerName": "Budi Santoso",
+      "customerPhone": "0833333333",
+      "customerEmail": "budi@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-12-01",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 1,
+      "pickupLocation": "Hotel Santika Garut",
+      "subtotal": 1075000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1075000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "pending_payment",
+      "paymentExpiry": "2026-10-20T13:24:35.187Z",
+      "createdAt": "2026-10-20T12:24:35.187Z",
+      "updatedAt": "2026-10-20T12:24:35.187Z",
+      "items": [
+        {
+          "id": "item-c2f544d3-ebb3-4406-9386-fbcdeb8d3cc2",
+          "bookingId": "book-e5e24ffc-60c7-48a4-8927-3149a3c8701e",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (1 Pax - 1 Orang (Solo Private))",
+          "unitPrice": 1075000,
+          "quantity": 1,
+          "subtotal": 1075000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan",
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:24:35.208Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      }
+    },
+    {
+      "id": "book-5aafc3d4-1040-49f2-9f89-3af10e4f5585",
+      "bookingNumber": "GJ-2610-48AC",
+      "accessToken": "gj_sec_00463b9cb5194e2a08166174793fa794355caa4a",
+      "customerName": "Doni Pratama",
+      "customerPhone": "081299998888",
+      "customerEmail": "doni@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-12-10",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 2,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1490000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1490000,
+      "paymentTier": "dp",
+      "dpAmount": 447000,
+      "paidAmount": 447000,
+      "remainingBalance": 1043000,
+      "status": "confirmed",
+      "paymentExpiry": "2026-10-20T13:24:35.191Z",
+      "createdAt": "2026-10-20T12:24:35.191Z",
+      "updatedAt": "2026-10-20T12:24:35.195Z",
+      "items": [
+        {
+          "id": "item-4aea45fd-585b-4ee6-9ebd-2554754d5c28",
+          "bookingId": "book-5aafc3d4-1040-49f2-9f89-3af10e4f5585",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+          "unitPrice": 745000,
+          "quantity": 2,
+          "subtotal": 1490000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan",
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:24:35.208Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "confirmedAt": "2026-10-20T12:24:35.195Z"
+    },
+    {
+      "id": "book-782fe7b6-2cc9-44f1-97aa-2a14cbc2fb14",
+      "bookingNumber": "GJ-2610-681A",
+      "accessToken": "gj_sec_86fc02fdd670b3a9ddd4533724c402db192375d4",
+      "customerName": "Stale Customer",
+      "customerPhone": "0899999999",
+      "customerEmail": "stale@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-11-30",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 2,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1490000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1490000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "expired",
+      "paymentExpiry": "2026-10-20T11:24:35.221Z",
+      "createdAt": "2026-10-20T12:24:35.217Z",
+      "updatedAt": "2026-10-20T12:24:35.221Z",
+      "items": [
+        {
+          "id": "item-07243231-70c6-400a-af4a-2706b374b4f4",
+          "bookingId": "book-782fe7b6-2cc9-44f1-97aa-2a14cbc2fb14",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+          "unitPrice": 745000,
+          "quantity": 2,
+          "subtotal": 1490000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan",
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-20T12:24:35.208Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     }
   ],
   "bookingItems": [
@@ -5419,6 +8057,150 @@
       "unitPrice": 550000,
       "quantity": 2,
       "subtotal": 1100000
+    },
+    {
+      "id": "item-59f0ce51-d0fb-4f3c-b4cd-a0df9010b0f5",
+      "bookingId": "book-7f921e61-cd2a-4e71-b667-d2d1be0f2705",
+      "itemType": "package",
+      "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (3 Pax - 3 Orang (Trio / Bertiga))",
+      "unitPrice": 360000,
+      "quantity": 3,
+      "subtotal": 1080000
+    },
+    {
+      "id": "item-c1ae2c9e-a241-4294-b52e-63e056daf4b1",
+      "bookingId": "book-5aae2a58-6f25-4f32-b876-6c4839f3a60b",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (1 Pax - 1 Orang (Solo Private))",
+      "unitPrice": 1075000,
+      "quantity": 1,
+      "subtotal": 1075000
+    },
+    {
+      "id": "item-2285efcb-ec74-48af-a01c-03c2860bc123",
+      "bookingId": "book-0118126a-bd04-4f71-95db-2a91567fb88e",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+      "unitPrice": 745000,
+      "quantity": 2,
+      "subtotal": 1490000
+    },
+    {
+      "id": "item-6889ce19-b67c-4b51-8d8c-8d4fbe01363d",
+      "bookingId": "book-c328f079-b617-4f88-8c4a-b12d28320705",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+      "unitPrice": 745000,
+      "quantity": 2,
+      "subtotal": 1490000
+    },
+    {
+      "id": "item-b399341f-f8fb-40f6-9c82-f6c8013f68e1",
+      "bookingId": "book-b3050de8-2d76-4654-aa44-57c30ec8f6b9",
+      "itemType": "package",
+      "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (3 Pax - 3 Orang (Trio / Bertiga))",
+      "unitPrice": 360000,
+      "quantity": 3,
+      "subtotal": 1080000
+    },
+    {
+      "id": "item-84cf46e1-6b15-40fb-aefa-c4995a7ed9eb",
+      "bookingId": "book-d08e825d-e2f2-417d-b7fb-dc97cbb6647e",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (1 Pax - 1 Orang (Solo Private))",
+      "unitPrice": 1075000,
+      "quantity": 1,
+      "subtotal": 1075000
+    },
+    {
+      "id": "item-e3b17f2f-5b15-4dc1-b5d6-81a0f9a428e7",
+      "bookingId": "book-ede3f992-586f-4873-9228-b6a4cea644f5",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+      "unitPrice": 745000,
+      "quantity": 2,
+      "subtotal": 1490000
+    },
+    {
+      "id": "item-af5d4bd8-20e0-4db2-bc80-239ebcf028b8",
+      "bookingId": "book-e78011f1-94d5-42e9-9998-ceca037b5bb5",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+      "unitPrice": 745000,
+      "quantity": 2,
+      "subtotal": 1490000
+    },
+    {
+      "id": "item-621c2a19-dd72-4c2e-ad9c-b9811f310f1b",
+      "bookingId": "book-7a113ada-3e75-4165-a169-1a78843c30d9",
+      "itemType": "package",
+      "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (3 Pax - 3 Orang (Trio / Bertiga))",
+      "unitPrice": 360000,
+      "quantity": 3,
+      "subtotal": 1080000
+    },
+    {
+      "id": "item-5c4c3667-87e5-46b2-8053-05c6f0bcf707",
+      "bookingId": "book-dde86f15-f945-41cc-adce-1444b6b5f45e",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (1 Pax - 1 Orang (Solo Private))",
+      "unitPrice": 1075000,
+      "quantity": 1,
+      "subtotal": 1075000
+    },
+    {
+      "id": "item-36cfe7d5-8ffd-4e7b-bf32-ad32f3b2c4a5",
+      "bookingId": "book-e907a636-8bf4-4d2b-852e-15eb47951999",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+      "unitPrice": 745000,
+      "quantity": 2,
+      "subtotal": 1490000
+    },
+    {
+      "id": "item-c4852977-29e2-46b8-8ff1-a863de98ef81",
+      "bookingId": "book-53ba3812-8a31-4e02-ba38-b12a9c1a2278",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+      "unitPrice": 745000,
+      "quantity": 2,
+      "subtotal": 1490000
+    },
+    {
+      "id": "item-7c02d63a-b4c1-444a-be88-6d0512838487",
+      "bookingId": "book-49feb30a-f3ca-4944-ab87-d205bd06a02a",
+      "itemType": "package",
+      "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (3 Pax - 3 Orang (Trio / Bertiga))",
+      "unitPrice": 360000,
+      "quantity": 3,
+      "subtotal": 1080000
+    },
+    {
+      "id": "item-c2f544d3-ebb3-4406-9386-fbcdeb8d3cc2",
+      "bookingId": "book-e5e24ffc-60c7-48a4-8927-3149a3c8701e",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (1 Pax - 1 Orang (Solo Private))",
+      "unitPrice": 1075000,
+      "quantity": 1,
+      "subtotal": 1075000
+    },
+    {
+      "id": "item-4aea45fd-585b-4ee6-9ebd-2554754d5c28",
+      "bookingId": "book-5aafc3d4-1040-49f2-9f89-3af10e4f5585",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+      "unitPrice": 745000,
+      "quantity": 2,
+      "subtotal": 1490000
+    },
+    {
+      "id": "item-07243231-70c6-400a-af4a-2706b374b4f4",
+      "bookingId": "book-782fe7b6-2cc9-44f1-97aa-2a14cbc2fb14",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+      "unitPrice": 745000,
+      "quantity": 2,
+      "subtotal": 1490000
     }
   ],
   "payments": [
@@ -5547,6 +8329,54 @@
       "isProcessed": true,
       "processedAt": "2026-10-20T11:50:47.340Z",
       "createdAt": "2026-10-20T11:50:47.340Z"
+    },
+    {
+      "id": "evt-038f1b04-628a-4f81-8136-e30112567df3",
+      "orderId": "GJ-TEST-IDEMPOTENT-1792498934236",
+      "eventId": "evt-1792498934236",
+      "eventType": "payment.settlement",
+      "payload": {
+        "transaction_status": "settlement"
+      },
+      "isProcessed": true,
+      "processedAt": "2026-10-20T12:22:14.236Z",
+      "createdAt": "2026-10-20T12:22:14.236Z"
+    },
+    {
+      "id": "evt-df7d94d6-88a2-4fca-b576-8a7c4ae8b6d0",
+      "orderId": "GJ-TEST-IDEMPOTENT-1792498943146",
+      "eventId": "evt-1792498943147",
+      "eventType": "payment.settlement",
+      "payload": {
+        "transaction_status": "settlement"
+      },
+      "isProcessed": true,
+      "processedAt": "2026-10-20T12:22:23.147Z",
+      "createdAt": "2026-10-20T12:22:23.147Z"
+    },
+    {
+      "id": "evt-3f4ccfca-0936-4ad7-a79c-c03565594809",
+      "orderId": "GJ-TEST-IDEMPOTENT-1792499069111",
+      "eventId": "evt-1792499069111",
+      "eventType": "payment.settlement",
+      "payload": {
+        "transaction_status": "settlement"
+      },
+      "isProcessed": true,
+      "processedAt": "2026-10-20T12:24:29.112Z",
+      "createdAt": "2026-10-20T12:24:29.112Z"
+    },
+    {
+      "id": "evt-66667824-84bf-4b88-bd0e-77fdd2a2a93b",
+      "orderId": "GJ-TEST-IDEMPOTENT-1792499075211",
+      "eventId": "evt-1792499075211",
+      "eventType": "payment.settlement",
+      "payload": {
+        "transaction_status": "settlement"
+      },
+      "isProcessed": true,
+      "processedAt": "2026-10-20T12:24:35.212Z",
+      "createdAt": "2026-10-20T12:24:35.212Z"
     }
   ],
   "articles": [
@@ -5972,6 +8802,86 @@
       "ip": "114.124.50.2",
       "deviceType": "desktop",
       "timestamp": "2026-10-20T11:50:47.356Z"
+    },
+    {
+      "id": "pv-1792497659709-yrpc",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "ip": "157.10.107.45, 169.254.169.126",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-20T12:00:59.709Z"
+    },
+    {
+      "id": "pv-1792497709214-w4ch",
+      "path": "/admin",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+      "ip": "157.10.107.45, 169.254.169.126",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-20T12:01:49.214Z"
+    },
+    {
+      "id": "pv-1792498934248-cyey",
+      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
+      "userAgent": "Mozilla/5.0 (iPhone)",
+      "ip": "114.124.50.1",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-20T12:22:14.248Z"
+    },
+    {
+      "id": "pv-1792498934251-ybqu",
+      "path": "/artikel",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
+      "ip": "114.124.50.2",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-20T12:22:14.252Z"
+    },
+    {
+      "id": "pv-1792498943159-guy7",
+      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
+      "userAgent": "Mozilla/5.0 (iPhone)",
+      "ip": "114.124.50.1",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-20T12:22:23.159Z"
+    },
+    {
+      "id": "pv-1792498943162-p5ps",
+      "path": "/artikel",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
+      "ip": "114.124.50.2",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-20T12:22:23.162Z"
+    },
+    {
+      "id": "pv-1792499069125-ymvt",
+      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
+      "userAgent": "Mozilla/5.0 (iPhone)",
+      "ip": "114.124.50.1",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-20T12:24:29.125Z"
+    },
+    {
+      "id": "pv-1792499069130-35bp",
+      "path": "/artikel",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
+      "ip": "114.124.50.2",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-20T12:24:29.130Z"
+    },
+    {
+      "id": "pv-1792499075226-fgjr",
+      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
+      "userAgent": "Mozilla/5.0 (iPhone)",
+      "ip": "114.124.50.1",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-20T12:24:35.226Z"
+    },
+    {
+      "id": "pv-1792499075231-jt14",
+      "path": "/artikel",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
+      "ip": "114.124.50.2",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-20T12:24:35.231Z"
     }
   ],
   "siteSettings": {

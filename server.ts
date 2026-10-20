@@ -1,18 +1,20 @@
 import express, { type Request, type Response } from 'express';
 import path from 'node:path';
+import fs from 'node:fs';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
 import { z } from 'zod';
-import { dbStore, VERIFIED_ADDONS } from './server/db.js';
-import { paymentService } from './server/midtrans.js';
+import { dbStore, VERIFIED_ADDONS } from './server/db.ts';
+import { paymentService } from './server/midtrans.ts';
 import {
   sendBookingCreatedEmail,
   sendPaymentSuccessEmail,
   generateWhatsAppLink,
   emailLogs
-} from './server/notifications.js';
-import { generateETicketHtml } from './server/eticket.js';
-import { generateETicketPdfBuffer } from './server/pdf.js';
+} from './server/notifications.ts';
+import { generateETicketHtml } from './server/eticket.ts';
+import { generateETicketPdfBuffer } from './server/pdf.ts';
 
 dotenv.config();
 
@@ -23,8 +25,15 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const isDev = process.env.NODE_ENV !== 'production';
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Ensure data/uploads directory exists and is publicly served
+const UPLOADS_DIR = path.resolve(process.cwd(), 'data', 'uploads');
+if (!fs.existsSync(UPLOADS_DIR)) {
+  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+}
+app.use('/uploads', express.static(UPLOADS_DIR));
+
+app.use(express.json({ limit: '15mb' }));
+app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
 // --- INPUT VALIDATION SCHEMAS (ZOD) ---
 
@@ -68,6 +77,60 @@ function requireAdmin(req: Request, res: Response, next: Function) {
   }
   return res.status(401).json({ error: 'Akses ditolak: Autentikasi admin diperlukan.' });
 }
+
+// ==========================================
+// UPLOAD API ENDPOINTS (PERMANENT STORAGE)
+// ==========================================
+
+app.post('/api/upload', (req: Request, res: Response) => {
+  try {
+    const { image, filename } = req.body;
+    if (!image || typeof image !== 'string') {
+      return res.status(400).json({ success: false, error: 'Data gambar base64 wajib diisi.' });
+    }
+
+    // Match base64 data URI format: data:image/png;base64,...
+    const matches = image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    let buffer: Buffer;
+    let ext = 'jpg';
+
+    if (matches && matches.length === 3) {
+      const mime = matches[1].toLowerCase();
+      if (mime.includes('png')) ext = 'png';
+      else if (mime.includes('webp')) ext = 'webp';
+      else if (mime.includes('gif')) ext = 'gif';
+      else if (mime.includes('svg')) ext = 'svg';
+      else ext = 'jpg';
+      buffer = Buffer.from(matches[2], 'base64');
+    } else {
+      buffer = Buffer.from(image, 'base64');
+    }
+
+    if (buffer.length > 10 * 1024 * 1024) {
+      return res.status(400).json({ success: false, error: 'Ukuran file gambar maksimal 10MB.' });
+    }
+
+    const safeBase = (filename || 'upload')
+      .replace(/[^a-zA-Z0-9_-]/g, '_')
+      .slice(0, 30);
+    const uniqueName = `upload_${Date.now()}_${crypto.randomBytes(4).toString('hex')}_${safeBase}.${ext}`;
+    const filePath = path.join(UPLOADS_DIR, uniqueName);
+
+    fs.writeFileSync(filePath, buffer);
+    const publicUrl = `/uploads/${uniqueName}`;
+
+    res.status(201).json({
+      success: true,
+      url: publicUrl,
+      filename: uniqueName,
+      size: buffer.length,
+      message: 'Gambar berhasil disimpan secara permanen.'
+    });
+  } catch (err: any) {
+    console.error('[Upload] Error saving image:', err);
+    res.status(500).json({ success: false, error: 'Gagal memproses upload gambar: ' + err.message });
+  }
+});
 
 // ==========================================
 // PUBLIC API ENDPOINTS
@@ -347,6 +410,48 @@ app.post('/api/track-visit', (req: Request, res: Response) => {
   }
 });
 
+// Image Upload Endpoint (Permanent storage across sessions/devices)
+app.post('/api/upload', (req: Request, res: Response) => {
+  try {
+    const { image, dataUrl } = req.body;
+    const rawData = image || dataUrl;
+    if (!rawData || typeof rawData !== 'string') {
+      return res.status(400).json({ success: false, error: 'Data gambar wajib disertakan (Base64 atau Data URL).' });
+    }
+
+    const matches = rawData.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    let buffer: Buffer;
+    let ext = 'jpg';
+
+    if (matches && matches.length === 3) {
+      const mime = matches[1];
+      if (mime.includes('png')) ext = 'png';
+      else if (mime.includes('webp')) ext = 'webp';
+      else if (mime.includes('gif')) ext = 'gif';
+      else if (mime.includes('svg')) ext = 'svg';
+      else ext = 'jpg';
+      buffer = Buffer.from(matches[2], 'base64');
+    } else {
+      buffer = Buffer.from(rawData, 'base64');
+    }
+
+    const uniqueId = `img_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`;
+    const safeFilename = `${uniqueId}.${ext}`;
+    const filePath = path.join(UPLOADS_DIR, safeFilename);
+
+    fs.writeFileSync(filePath, buffer);
+    const publicUrl = `/uploads/${safeFilename}`;
+
+    return res.status(201).json({
+      success: true,
+      url: publicUrl,
+      filename: safeFilename
+    });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: 'Gagal mengunggah gambar: ' + err.message });
+  }
+});
+
 // 8. Midtrans Snap Token
 app.post('/api/payments/snap-token', async (req: Request, res: Response) => {
   try {
@@ -552,6 +657,19 @@ app.patch('/api/admin/bookings/:id/status', requireAdmin, (req: Request, res: Re
   res.json({ success: true, message: 'Status operasional berhasil diperbarui.', data: booking });
 });
 
+// Admin Update Booking Full Details
+app.put('/api/admin/bookings/:id', requireAdmin, (req: Request, res: Response) => {
+  try {
+    const updated = dbStore.updateBooking(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Booking tidak ditemukan.' });
+    }
+    res.json({ success: true, message: 'Data pesanan berhasil diperbarui.', data: updated });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // Generate WhatsApp Invoice for Customer
 app.post('/api/admin/bookings/:id/whatsapp-invoice', requireAdmin, (req: Request, res: Response) => {
   const { id } = req.params;
@@ -748,12 +866,30 @@ app.post('/api/admin/packages', requireAdmin, (req: Request, res: Response) => {
       isPublished: data.isPublished !== undefined ? data.isPublished : true,
       featuredOrder: Number(data.featuredOrder) || 0,
       tripType: 'private' as const,
+      priceTiers: data.priceTiers || dbStore.generateDefaultPriceTiers(Number(data.basePrice)),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
     dbStore.packages.push(newPkg);
     dbStore.saveToDisk();
     res.status(201).json({ success: true, data: newPkg });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin Update Package
+app.put('/api/admin/packages/:id', requireAdmin, (req: Request, res: Response) => {
+  try {
+    const data = req.body;
+    if (data.priceTiers && !Array.isArray(data.priceTiers)) {
+      delete data.priceTiers;
+    }
+    const updated = dbStore.updatePackage(req.params.id, data);
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Paket wisata tidak ditemukan.' });
+    }
+    res.json({ success: true, data: updated, message: 'Paket wisata berhasil diperbarui.' });
   } catch (err: any) {
     res.status(500).json({ success: false, error: err.message });
   }

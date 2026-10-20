@@ -29,6 +29,13 @@ export interface ItineraryItem {
   activities: string[];
 }
 
+export interface PriceTier {
+  minParticipants: number;
+  maxParticipants: number;
+  pricePerPerson: number;
+  label: string;
+}
+
 export interface TourPackage {
   id: string;
   slug: string;
@@ -39,6 +46,7 @@ export interface TourPackage {
   durationDays: number;
   durationNights: number;
   basePrice: number;
+  priceTiers?: PriceTier[];
   minParticipants: number;
   maxParticipants: number;
   destinationArea: string;

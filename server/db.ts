@@ -14,11 +14,12 @@ import type {
   Promotion,
   SiteSettings,
   TourPackage,
+  PriceTier,
   CreateBookingRequest,
   Article,
   GalleryItem,
   PageViewEvent
-} from './types.js';
+} from './types.ts';
 
 const DATA_DIR = path.resolve(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'database.json');
@@ -49,6 +50,23 @@ export const VERIFIED_ADDONS: Record<string, { name: string; price: number; unit
     description: 'Kemasan eksklusif oleh-oleh legendaris Garut langsung siap dibawa pulang'
   }
 };
+
+export function getPackagePricePerPerson(pkg: TourPackage, participants: number): { pricePerPerson: number; tierLabel: string } {
+  const count = Math.max(1, participants || 1);
+  if (pkg.priceTiers && pkg.priceTiers.length > 0) {
+    const sorted = [...pkg.priceTiers].sort((a, b) => a.minParticipants - b.minParticipants);
+    const matched = sorted.find(t => count >= t.minParticipants && count <= t.maxParticipants);
+    if (matched) {
+      return { pricePerPerson: matched.pricePerPerson, tierLabel: matched.label };
+    }
+    if (count < sorted[0].minParticipants) {
+      return { pricePerPerson: sorted[0].pricePerPerson, tierLabel: sorted[0].label };
+    }
+    const last = sorted[sorted.length - 1];
+    return { pricePerPerson: last.pricePerPerson, tierLabel: last.label };
+  }
+  return { pricePerPerson: pkg.basePrice, tierLabel: 'Tarif Standar' };
+}
 
 class GarutJourneyStore {
   profiles: Profile[] = [];
@@ -225,6 +243,14 @@ class GarutJourneyStore {
             if (!pkg.images || pkg.images.length === 0) {
               pkg.images = this.packageImages.filter(img => img.packageId === pkg.id);
             }
+            if (!pkg.priceTiers || pkg.priceTiers.length === 0) {
+              const stdPkg = standardPackages.find(sp => sp.id === pkg.id);
+              if (stdPkg && stdPkg.priceTiers && stdPkg.priceTiers.length > 0) {
+                pkg.priceTiers = stdPkg.priceTiers;
+              } else {
+                pkg.priceTiers = this.generateDefaultPriceTiers(pkg.basePrice);
+              }
+            }
           }
           this.saveToDisk();
           console.log('[Garut Journey] Database restored from disk with full package catalog.');
@@ -235,6 +261,17 @@ class GarutJourneyStore {
       console.warn('Failed to load database from disk:', e);
     }
     return false;
+  }
+
+  public generateDefaultPriceTiers(basePrice: number): PriceTier[] {
+    return [
+      { minParticipants: 1, maxParticipants: 1, pricePerPerson: Math.round((basePrice * 1.95) / 5000) * 5000, label: '1 Orang (Solo Private)' },
+      { minParticipants: 2, maxParticipants: 2, pricePerPerson: Math.round((basePrice * 1.35) / 5000) * 5000, label: '2 Orang (Duo / Berdua)' },
+      { minParticipants: 3, maxParticipants: 3, pricePerPerson: Math.round((basePrice * 1.12) / 5000) * 5000, label: '3 Orang (Trio / Bertiga)' },
+      { minParticipants: 4, maxParticipants: 5, pricePerPerson: basePrice, label: '4–5 Orang (Rombongan Kecil)' },
+      { minParticipants: 6, maxParticipants: 10, pricePerPerson: Math.round((basePrice * 0.86) / 5000) * 5000, label: '6–10 Orang (Hemat Rombongan)' },
+      { minParticipants: 11, maxParticipants: 20, pricePerPerson: Math.round((basePrice * 0.75) / 5000) * 5000, label: '11–20 Orang (Grup Besar)' }
+    ];
   }
 
   public getStandardCuratedPackages(): TourPackage[] {
@@ -248,6 +285,7 @@ class GarutJourneyStore {
       durationDays: 2,
       durationNights: 1,
       basePrice: 550000,
+      priceTiers: this.generateDefaultPriceTiers(550000),
       minParticipants: 1,
       maxParticipants: 20,
       destinationArea: 'Papandayan, Cisurupan',
@@ -319,6 +357,7 @@ class GarutJourneyStore {
       durationDays: 1,
       durationNights: 0,
       basePrice: 320000,
+      priceTiers: this.generateDefaultPriceTiers(320000),
       minParticipants: 1,
       maxParticipants: 15,
       destinationArea: 'Kamojang, Samarang',
@@ -374,6 +413,7 @@ class GarutJourneyStore {
       durationDays: 1,
       durationNights: 0,
       basePrice: 285000,
+      priceTiers: this.generateDefaultPriceTiers(285000),
       minParticipants: 1,
       maxParticipants: 25,
       destinationArea: 'Banyuresmi & Leles',
@@ -431,6 +471,7 @@ class GarutJourneyStore {
       durationDays: 1,
       durationNights: 0,
       basePrice: 375000,
+      priceTiers: this.generateDefaultPriceTiers(375000),
       minParticipants: 2,
       maxParticipants: 16,
       destinationArea: 'Pamulihan, Garut Selatan',
@@ -486,6 +527,7 @@ class GarutJourneyStore {
       durationDays: 1,
       durationNights: 0,
       basePrice: 310000,
+      priceTiers: this.generateDefaultPriceTiers(310000),
       minParticipants: 1,
       maxParticipants: 20,
       destinationArea: 'Darajat & Wanaraja',
@@ -540,6 +582,7 @@ class GarutJourneyStore {
       durationDays: 2,
       durationNights: 1,
       basePrice: 485000,
+      priceTiers: this.generateDefaultPriceTiers(485000),
       minParticipants: 2,
       maxParticipants: 16,
       destinationArea: 'Cikelet, Garut Selatan',
@@ -607,6 +650,7 @@ class GarutJourneyStore {
       durationDays: 1,
       durationNights: 0,
       basePrice: 250000,
+      priceTiers: this.generateDefaultPriceTiers(250000),
       minParticipants: 1,
       maxParticipants: 20,
       destinationArea: 'Garut Kota & Sukaregang',
@@ -1184,7 +1228,8 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
       return { success: false, error: 'Jumlah peserta minimal 1 orang.' };
     }
 
-    const unitPrice = pkg.basePrice;
+    const priceCalculation = getPackagePricePerPerson(pkg, participants);
+    const unitPrice = priceCalculation.pricePerPerson;
     const subtotal = unitPrice * participants;
 
     let addonTotal = 0;
@@ -1274,7 +1319,7 @@ Di Kawah Hujan, semburan uap air panas alami menyelimuti tubuh bagaikan ruang sa
       id: 'item-' + crypto.randomUUID(),
       bookingId: newBooking.id,
       itemType: 'package',
-      itemName: `${pkg.name} (${participants} Pax Private)`,
+      itemName: `${pkg.name} (${participants} Pax - ${priceCalculation.tierLabel})`,
       unitPrice,
       quantity: participants,
       subtotal
@@ -1717,6 +1762,24 @@ Terima kasih telah mempercayakan perjalanan Anda bersama Garut Journey!`;
     this.payments = this.payments.filter(p => p.bookingId !== target.id);
     this.saveToDisk();
     return true;
+  }
+
+  // --- UPDATE PACKAGE ---
+  updatePackage(id: string, data: Partial<TourPackage>): TourPackage | null {
+    const pkg = this.packages.find(p => p.id === id);
+    if (!pkg) return null;
+    Object.assign(pkg, data, { updatedAt: new Date().toISOString() });
+    this.saveToDisk();
+    return pkg;
+  }
+
+  // --- UPDATE BOOKING ---
+  updateBooking(id: string, data: Partial<Booking>): Booking | null {
+    const booking = this.bookings.find(b => b.id === id || b.bookingNumber === id);
+    if (!booking) return null;
+    Object.assign(booking, data, { updatedAt: new Date().toISOString() });
+    this.saveToDisk();
+    return booking;
   }
 }
 

@@ -135,8 +135,102 @@ export const ArticleDetailPage: React.FC<ArticleDetailPageProps> = ({ slug, navi
           {article.summary}
         </div>
 
-        <div className="space-y-4 font-sans text-stone-700 whitespace-pre-line leading-relaxed text-xs sm:text-sm">
-          {article.content}
+        {/* Rich Article Body with Inline Image Support */}
+        <div className="space-y-5 font-sans text-stone-700 leading-relaxed text-sm">
+          {(() => {
+            const lines = article.content.split('\n');
+            const blocks: React.ReactNode[] = [];
+            let currentParagraph: string[] = [];
+
+            const flushParagraph = () => {
+              if (currentParagraph.length > 0) {
+                const text = currentParagraph.join(' ').trim();
+                if (text) {
+                  blocks.push(
+                    <p key={`p-${blocks.length}`} className="leading-relaxed text-stone-700">
+                      {text}
+                    </p>
+                  );
+                }
+                currentParagraph = [];
+              }
+            };
+
+            lines.forEach((line, idx) => {
+              const trimmed = line.trim();
+
+              // Check for markdown image: ![caption](url)
+              const imgMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
+              if (imgMatch) {
+                flushParagraph();
+                const alt = imgMatch[1] || article.title;
+                const src = imgMatch[2];
+                blocks.push(
+                  <figure key={`img-${idx}`} className="my-6 rounded-2xl overflow-hidden border border-stone-200 bg-stone-50 shadow-sm">
+                    <img
+                      src={src}
+                      alt={alt}
+                      referrerPolicy="no-referrer"
+                      className="w-full max-h-[480px] object-cover hover:scale-[1.01] transition-transform duration-300"
+                    />
+                    {alt && alt !== 'image' && (
+                      <figcaption className="p-3 text-center text-xs text-stone-500 bg-stone-50 border-t border-stone-200/80 italic flex items-center justify-center gap-1.5">
+                        <span>📷 {alt}</span>
+                      </figcaption>
+                    )}
+                  </figure>
+                );
+                return;
+              }
+
+              // Check for H2: ## Heading
+              if (trimmed.startsWith('## ')) {
+                flushParagraph();
+                blocks.push(
+                  <h2 key={`h2-${idx}`} className="font-serif-luxury text-xl sm:text-2xl font-bold text-stone-900 pt-5 pb-1 border-b border-stone-100 flex items-center gap-2">
+                    <span className="w-1.5 h-6 bg-[#C8A951] rounded-full inline-block"></span>
+                    <span>{trimmed.replace(/^##\s+/, '')}</span>
+                  </h2>
+                );
+                return;
+              }
+
+              // Check for H3: ### Subheading
+              if (trimmed.startsWith('### ')) {
+                flushParagraph();
+                blocks.push(
+                  <h3 key={`h3-${idx}`} className="font-serif-luxury text-lg font-bold text-[#0F3827] pt-3">
+                    {trimmed.replace(/^###\s+/, '')}
+                  </h3>
+                );
+                return;
+              }
+
+              // Check for bullet list: - Item or * Item
+              if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+                flushParagraph();
+                const bulletText = trimmed.replace(/^[-*]\s+/, '');
+                blocks.push(
+                  <div key={`li-${idx}`} className="flex items-start gap-2.5 pl-2 text-stone-700">
+                    <span className="text-[#C8A951] font-bold text-base leading-none">•</span>
+                    <span>{bulletText}</span>
+                  </div>
+                );
+                return;
+              }
+
+              // Empty line signals paragraph separation
+              if (!trimmed) {
+                flushParagraph();
+                return;
+              }
+
+              currentParagraph.push(trimmed);
+            });
+
+            flushParagraph();
+            return blocks;
+          })()}
         </div>
       </div>
 

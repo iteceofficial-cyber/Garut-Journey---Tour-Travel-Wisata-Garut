@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
-import type { Booking, PaymentStatus } from './types.js';
-import { dbStore } from './db.js';
+import type { Booking, PaymentStatus } from './types.ts';
+import { dbStore } from './db.ts';
 
 export interface PaymentGateway {
   createTransaction(booking: Booking): Promise<{
