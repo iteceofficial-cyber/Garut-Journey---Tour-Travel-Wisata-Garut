@@ -1030,10 +1030,22 @@ app.post('/api/admin/packages', requireAdmin, (req: Request, res: Response) => {
       featuredOrder: Number(data.featuredOrder) || 0,
       tripType: 'private' as const,
       priceTiers: data.priceTiers || dbStore.generateDefaultPriceTiers(Number(data.basePrice)),
+      images: Array.isArray(data.images) && data.images.length > 0
+        ? data.images
+        : [
+            {
+              id: 'img-' + Date.now(),
+              packageId: 'pkg-' + Date.now(),
+              imageUrl: data.imageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg',
+              altText: data.name,
+              sortOrder: 1,
+              isPrimary: true
+            }
+          ],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    dbStore.packages.push(newPkg);
+    dbStore.packages.push(newPkg as any);
     dbStore.saveToDisk();
     res.status(201).json({ success: true, data: newPkg });
   } catch (err: any) {

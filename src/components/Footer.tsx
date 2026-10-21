@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { SiteSettings } from '../types.js';
-import { Compass, Phone, Mail, MapPin, ExternalLink, Clock, ShieldCheck, Lock } from 'lucide-react';
+import { Compass, Phone, Mail, MapPin, ExternalLink, Clock, Lock } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext.tsx';
 
 interface FooterProps {
@@ -78,18 +78,6 @@ export const Footer: React.FC<FooterProps> = ({ navigate, siteSettings: propSett
             <div className="text-[11px] text-stone-400 space-y-0.5">
               <p>Operasional oleh <strong className="text-stone-300">{settings?.companyName || 'PT Garut Journey Nusantara'}</strong></p>
               {settings?.nibNumber && <p className="font-mono text-stone-500">NIB: {settings.nibNumber}</p>}
-            </div>
-
-            {/* Clear, accessible Portal Admin button in brand column */}
-            <div className="pt-2">
-              <button
-                onClick={() => navigate('/admin')}
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-stone-900/90 hover:bg-stone-800 border border-stone-700/80 text-stone-300 hover:text-white text-xs font-medium transition-all shadow-xs cursor-pointer group"
-                title="Akses Portal Administrator Garut Journey"
-              >
-                <ShieldCheck className="w-4 h-4 text-[#C8A951] group-hover:scale-110 transition-transform" />
-                <span>Portal Admin (Kelola Web & Tour)</span>
-              </button>
             </div>
           </div>
 

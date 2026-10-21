@@ -215,6 +215,24 @@ export interface Testimonial {
   createdAt?: string;
 }
 
+export interface WhyChooseFeature {
+  id: string;
+  title: string;
+  description: string;
+  icon?: string;
+}
+
+export interface PopularTripPreset {
+  label: string;
+  query: string;
+  category: string;
+}
+
+export interface FAQItem {
+  q: string;
+  a: string;
+}
+
 export interface SiteSettings {
   id: string;
   companyName: string;
@@ -230,6 +248,16 @@ export interface SiteSettings {
   bankName: string;
   bankAccountNumber: string;
   bankAccountHolder: string;
+  bankBranch?: string;
+  qrisImageUrl?: string;
+  paymentInstructions?: string;
+  additionalBankAccounts?: {
+    id: string;
+    bankName: string;
+    accountNumber: string;
+    accountHolder: string;
+    branch?: string;
+  }[];
   paymentTimeoutMinutes: number;
   
   // Website Colors Theme Customization
@@ -256,6 +284,35 @@ export interface SiteSettings {
   // Editable footer lists
   featuredDestinations: string[];
   infoAndPolicies: { label: string; path: string }[];
+
+  // Homepage (Dashboard Awal) Customization
+  heroBadge?: string;
+  heroMainTitle?: string;
+  heroMainSubtitle?: string;
+  heroSearchPlaceholder?: string;
+  heroPopularTrips?: PopularTripPreset[];
+  trustIndicators?: { title: string }[];
+  heroShowcaseBadge?: string;
+
+  packagesSectionBadge?: string;
+  packagesSectionTitle?: string;
+  packagesSectionBtnText?: string;
+
+  whyChooseBadge?: string;
+  whyChooseTitle?: string;
+  whyChooseFeatures?: WhyChooseFeature[];
+
+  testimonialsSectionBadge?: string;
+  testimonialsSectionTitle?: string;
+
+  faqSectionBadge?: string;
+  faqSectionTitle?: string;
+  faqs?: FAQItem[];
+
+  ctaTitle?: string;
+  ctaSubtitle?: string;
+  ctaButtonText?: string;
+  ctaButtonLink?: string;
 }
 
 export interface CreateBookingRequest {

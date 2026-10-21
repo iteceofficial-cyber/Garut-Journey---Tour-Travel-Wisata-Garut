@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import type { TourPackage, GalleryItem, Testimonial } from '../types.js';
+import type { TourPackage, GalleryItem, Testimonial, SiteSettings } from '../types.js';
 import { PackageCard } from '../components/PackageCard.js';
 import { updateSEO } from '../utils/seo.js';
 import { useLanguage } from '../context/LanguageContext.tsx';
@@ -19,17 +19,22 @@ import {
   Sparkles,
   Camera,
   ExternalLink,
-  ChevronDown
+  ChevronDown,
+  Star,
+  Clock,
+  Heart
 } from 'lucide-react';
 
 interface HomePageProps {
   packages: TourPackage[];
   navigate: (path: string) => void;
   onSelectPackage: (slug: string) => void;
+  siteSettings?: SiteSettings;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelectPackage }) => {
+export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelectPackage, siteSettings }) => {
   const { t, language } = useLanguage();
+  const [settings, setSettings] = useState<SiteSettings | null>(siteSettings || null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Semua');
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
@@ -41,10 +46,27 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 
   useEffect(() => {
+    if (siteSettings) {
+      setSettings(siteSettings);
+    }
+  }, [siteSettings]);
+
+  useEffect(() => {
+    fetch('/api/site-settings')
+      .then(res => res.json())
+      .then(json => {
+        if (json.success && json.data) {
+          setSettings(json.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     fetch('/api/testimonials')
       .then(res => res.json())
       .then(json => {
-        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        if (json.success && Array.isArray(json.data)) {
           setTestimonials(json.data);
         }
       })
@@ -142,7 +164,7 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
   }, [galleryItems.length, isPaused]);
 
   // Clickable popular trip presets as requested by user
-  const popularTripPresets = [
+  const defaultPopularTripPresets = [
     { label: '🏔️ Papandayan', query: 'Papandayan', category: 'Gunung & Alam' },
     { label: '🌋 Kamojang', query: 'Kamojang', category: 'Keluarga & Relaksasi' },
     { label: '🚣 Situ Bagendit', query: 'Situ Bagendit', category: 'Budaya & Sejarah' },
@@ -151,6 +173,10 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
     { label: '🏖️ Pantai Santolo', query: 'Santolo', category: 'Petualangan Alam' },
     { label: '⭐ Semua Paket', query: '', category: 'Semua' }
   ];
+
+  const popularTripPresets = (settings?.heroPopularTrips && settings.heroPopularTrips.length > 0)
+    ? settings.heroPopularTrips
+    : defaultPopularTripPresets;
 
   const handleSelectPreset = (preset: { query: string; category: string }) => {
     setSearchQuery(preset.query);
@@ -238,7 +264,7 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
 
   const displayedTestimonials = testimonials && testimonials.length > 0 ? testimonials : defaultTestimonials;
 
-  const faqs = [
+  const defaultFaqs = [
     {
       q: 'Bagaimana alur pemesanan dan pembayaran di Garut Journey?',
       a: 'Pilih paket dan tanggal keberangkatan yang diinginkan, tentukan jumlah peserta, isi data diri, lalu lanjutkan ke pembayaran resmi via Midtrans Snap. Sistem akan mengunci kapasitas Anda secara otomatis dan mengirimkan E-Ticket ke email Anda.'
@@ -257,6 +283,64 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
     }
   ];
 
+  const activeFaqs = (settings?.faqs && settings.faqs.length > 0) ? settings.faqs : defaultFaqs;
+
+  const defaultTrustIndicators = [
+    { title: t('trustGuide') },
+    { title: t('trustGuaranteedSeat') },
+    { title: t('trustPaymentOptions') }
+  ];
+
+  const activeTrustIndicators = (settings?.trustIndicators && settings.trustIndicators.length > 0)
+    ? settings.trustIndicators
+    : defaultTrustIndicators;
+
+  const defaultWhyChooseFeatures = [
+    {
+      id: 'feat-1',
+      title: t('badgeCertifiedGuide'),
+      description: t('descCertifiedGuide'),
+      icon: 'Users'
+    },
+    {
+      id: 'feat-2',
+      title: t('badgeTransparentPrice'),
+      description: t('descTransparentPrice'),
+      icon: 'Award'
+    },
+    {
+      id: 'feat-3',
+      title: t('badgeEasyBooking'),
+      description: t('descEasyBooking'),
+      icon: 'ShieldCheck'
+    },
+    {
+      id: 'feat-4',
+      title: t('badgePrivateTrip'),
+      description: t('descPrivateTrip'),
+      icon: 'Calendar'
+    }
+  ];
+
+  const activeWhyChooseFeatures = (settings?.whyChooseFeatures && settings.whyChooseFeatures.length > 0)
+    ? settings.whyChooseFeatures
+    : defaultWhyChooseFeatures;
+
+  const renderFeatureIcon = (iconName?: string) => {
+    switch (iconName) {
+      case 'Users': return <Users className="w-5 h-5" />;
+      case 'Award': return <Award className="w-5 h-5" />;
+      case 'ShieldCheck': return <ShieldCheck className="w-5 h-5" />;
+      case 'Calendar': return <Calendar className="w-5 h-5" />;
+      case 'Sparkles': return <Sparkles className="w-5 h-5" />;
+      case 'Star': return <Star className="w-5 h-5" />;
+      case 'Clock': return <Clock className="w-5 h-5" />;
+      case 'Heart': return <Heart className="w-5 h-5" />;
+      case 'Compass': return <Compass className="w-5 h-5" />;
+      default: return <CheckCircle2 className="w-5 h-5" />;
+    }
+  };
+
   return (
     <div className="space-y-20 pb-20">
       {/* Hero Section */}
@@ -271,15 +355,15 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
               <div className="space-y-4">
                 <div className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[#C8A951] font-semibold">
                   <Compass className="w-4 h-4" />
-                  <span>{t('heroBadge')}</span>
+                  <span>{settings?.heroBadge || t('heroBadge')}</span>
                 </div>
 
                 <h1 className="font-serif-luxury text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-stone-100 leading-[1.15] text-balance">
-                  {t('heroMainTitle')}
+                  {settings?.heroMainTitle || t('heroMainTitle')}
                 </h1>
 
                 <p className="text-sm sm:text-base text-stone-300 leading-relaxed max-w-2xl font-light">
-                  {t('heroMainSubtitle')}
+                  {settings?.heroMainSubtitle || t('heroMainSubtitle')}
                 </p>
               </div>
 
@@ -302,7 +386,7 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
                         <Search className="w-4 h-4 text-stone-400 absolute left-3 top-3 pointer-events-none" />
                         <input
                           type="text"
-                          placeholder={t('heroSearchPlaceholder')}
+                          placeholder={settings?.heroSearchPlaceholder || t('heroSearchPlaceholder')}
                           value={searchQuery}
                           onFocus={() => setShowTripDropdown(true)}
                           onChange={(e) => {
@@ -445,18 +529,12 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
 
               {/* Trust Indicators */}
               <div className="flex flex-wrap items-center gap-6 pt-2 text-xs text-stone-300">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#C8A951]" />
-                  <span>{t('trustGuide')}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#C8A951]" />
-                  <span>{t('trustGuaranteedSeat')}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#C8A951]" />
-                  <span>{t('trustPaymentOptions')}</span>
-                </div>
+                {activeTrustIndicators.map((ti, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-[#C8A951]" />
+                    <span>{ti.title}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -480,7 +558,7 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
                 <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-10">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md text-[#C8A951] text-[10px] font-semibold tracking-wider border border-white/10">
                     <Camera className="w-3.5 h-3.5 text-[#C8A951]" />
-                    <span className="uppercase">GALERI FOTO RESMI GARUT</span>
+                    <span className="uppercase">{settings?.heroShowcaseBadge || 'GALERI FOTO RESMI GARUT'}</span>
                   </div>
 
                   {/* Indicator Dots */}
@@ -576,10 +654,10 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
             <span className="text-xs uppercase tracking-wider font-semibold text-[#0F3827]">
-              {t('popularDestinations')}
+              {settings?.packagesSectionBadge || t('popularDestinations')}
             </span>
             <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-              {t('popularDestinationsSub')}
+              {settings?.packagesSectionTitle || t('popularDestinationsSub')}
             </h2>
           </div>
 
@@ -587,7 +665,7 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
             onClick={() => navigate('/paket-wisata')}
             className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-bold text-[#0F3827] hover:text-[#17523A] transition-colors self-start sm:self-auto cursor-pointer"
           >
-            <span>{t('heroBtnExplore')} ({packages.length})</span>
+            <span>{settings?.packagesSectionBtnText || t('heroBtnExplore')} ({packages.length})</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
@@ -626,61 +704,27 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs uppercase tracking-wider font-semibold text-[#0F3827]">
-              {t('whyChooseUs')}
+              {settings?.whyChooseBadge || t('whyChooseUs')}
             </span>
             <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-              {t('whyChooseUsSub')}
+              {settings?.whyChooseTitle || t('whyChooseUsSub')}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-2xs space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-[#E6F0EB] text-[#0F3827] flex items-center justify-center font-bold">
-                <Users className="w-5 h-5" />
+            {activeWhyChooseFeatures.map(feat => (
+              <div key={feat.id} className="bg-white p-6 rounded-xl border border-stone-200 shadow-2xs space-y-3">
+                <div className="w-10 h-10 rounded-lg bg-[#E6F0EB] text-[#0F3827] flex items-center justify-center font-bold">
+                  {renderFeatureIcon(feat.icon)}
+                </div>
+                <h3 className="font-serif-luxury text-base font-bold text-stone-900">
+                  {feat.title}
+                </h3>
+                <p className="text-xs text-stone-600 leading-relaxed">
+                  {feat.description}
+                </p>
               </div>
-              <h3 className="font-serif-luxury text-base font-bold text-stone-900">
-                {t('badgeCertifiedGuide')}
-              </h3>
-              <p className="text-xs text-stone-600 leading-relaxed">
-                {t('descCertifiedGuide')}
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-2xs space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-[#E6F0EB] text-[#0F3827] flex items-center justify-center font-bold">
-                <Award className="w-5 h-5" />
-              </div>
-              <h3 className="font-serif-luxury text-base font-bold text-stone-900">
-                {t('badgeTransparentPrice')}
-              </h3>
-              <p className="text-xs text-stone-600 leading-relaxed">
-                {t('descTransparentPrice')}
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-2xs space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-[#E6F0EB] text-[#0F3827] flex items-center justify-center font-bold">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <h3 className="font-serif-luxury text-base font-bold text-stone-900">
-                {t('badgeEasyBooking')}
-              </h3>
-              <p className="text-xs text-stone-600 leading-relaxed">
-                {t('descEasyBooking')}
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-xl border border-stone-200 shadow-2xs space-y-3">
-              <div className="w-10 h-10 rounded-lg bg-[#E6F0EB] text-[#0F3827] flex items-center justify-center font-bold">
-                <Calendar className="w-5 h-5" />
-              </div>
-              <h3 className="font-serif-luxury text-base font-bold text-stone-900">
-                {t('badgePrivateTrip')}
-              </h3>
-              <p className="text-xs text-stone-600 leading-relaxed">
-                {t('descPrivateTrip')}
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -689,10 +733,10 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <span className="text-xs uppercase tracking-wider font-semibold text-[#0F3827]">
-            {t('testimonialsTitle')}
+            {settings?.testimonialsSectionBadge || t('testimonialsTitle')}
           </span>
           <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-            {t('testimonialsSub')}
+            {settings?.testimonialsSectionTitle || t('testimonialsSub')}
           </h2>
         </div>
 
@@ -741,15 +785,15 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
           <span className="text-xs uppercase tracking-wider font-semibold text-[#0F3827]">
-            {t('faqTitle')}
+            {settings?.faqSectionBadge || t('faqTitle')}
           </span>
           <h2 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-stone-900 mt-1">
-            {t('faqSub')}
+            {settings?.faqSectionTitle || t('faqSub')}
           </h2>
         </div>
 
         <div className="space-y-4">
-          {faqs.map((faq, idx) => (
+          {activeFaqs.map((faq, idx) => (
             <div key={idx} className="bg-white p-5 rounded-xl border border-stone-200 shadow-2xs">
               <h3 className="font-serif-luxury text-base font-bold text-stone-900 flex items-start gap-2.5">
                 <HelpCircle className="w-5 h-5 text-[#0F3827] shrink-0 mt-0.5" />
@@ -768,18 +812,18 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
         <div className="bg-[#0F3827] rounded-2xl p-8 sm:p-12 text-white text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl">
           <div className="space-y-2 max-w-xl">
             <h3 className="font-serif-luxury text-2xl sm:text-3xl font-bold text-stone-100">
-              {t('heroMainTitle')}
+              {settings?.ctaTitle || settings?.heroMainTitle || t('heroMainTitle')}
             </h3>
             <p className="text-xs sm:text-sm text-stone-300">
-              {t('heroMainSubtitle')}
+              {settings?.ctaSubtitle || settings?.heroMainSubtitle || t('heroMainSubtitle')}
             </p>
           </div>
 
           <button
-            onClick={() => navigate('/paket-wisata')}
+            onClick={() => navigate(settings?.ctaButtonLink || '/paket-wisata')}
             className="px-6 py-3.5 bg-[#C8A951] hover:bg-[#B89940] text-stone-950 text-xs uppercase tracking-wider font-bold rounded-lg transition-colors whitespace-nowrap cursor-pointer shadow-md"
           >
-            {t('heroBtnExplore')}
+            {settings?.ctaButtonText || t('heroBtnExplore')}
           </button>
         </div>
       </section>

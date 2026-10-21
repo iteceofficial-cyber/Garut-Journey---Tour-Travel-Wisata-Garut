@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import type { TourPackage, Article, GalleryItem, SiteSettings, AddonOption, PriceTier, Testimonial } from '../types.js';
+import type { TourPackage, Article, GalleryItem, SiteSettings, AddonOption, PriceTier, Testimonial, PopularTripPreset, WhyChooseFeature, FAQItem } from '../types.js';
 import {
   ShieldCheck,
   TrendingUp,
@@ -57,7 +57,7 @@ interface AdminDashboardProps {
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'analytics' | 'bookings' | 'packages' | 'addons' | 'testimonials' | 'articles' | 'gallery' | 'theme_colors' | 'branding_legality' | 'seo' | 'payments'
+    'overview' | 'homepage_editor' | 'analytics' | 'bookings' | 'packages' | 'addons' | 'testimonials' | 'articles' | 'gallery' | 'theme_colors' | 'branding_legality' | 'seo' | 'payments'
   >('overview');
 
   const [metrics, setMetrics] = useState<any>(null);
@@ -109,6 +109,48 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [newPkgNights, setNewPkgNights] = useState<number>(0);
   const [newPkgShortDesc, setNewPkgShortDesc] = useState('');
   const [newPkgDesc, setNewPkgDesc] = useState('');
+  const [newPkgImageUrl, setNewPkgImageUrl] = useState('/src/assets/images/hero_garut_papandayan_1792431914366.jpg');
+  const [newPkgInclusions, setNewPkgInclusions] = useState('Transportasi lokal Garut PP\nTiket masuk resmi & Simaksi\nPemandu lokal bersertifikat HPI\nMakan & air mineral');
+  const [newPkgExclusions, setNewPkgExclusions] = useState('Transportasi dari kota asal ke Garut\nPengeluaran pribadi & belanja oleh-oleh\nTips sukarela untuk pemandu');
+  const [newPkgPickupPoints, setNewPkgPickupPoints] = useState('Stasiun Garut\nTerminal Guntur\nHotel Santika / Favehotel / Area Cipanas');
+  const [packageCreating, setPackageCreating] = useState(false);
+
+  // Homepage Editor States
+  const [heroBadge, setHeroBadge] = useState('');
+  const [heroMainTitle, setHeroMainTitle] = useState('');
+  const [heroMainSubtitle, setHeroMainSubtitle] = useState('');
+  const [heroSearchPlaceholder, setHeroSearchPlaceholder] = useState('');
+  const [heroShowcaseBadge, setHeroShowcaseBadge] = useState('');
+  const [heroPopularTrips, setHeroPopularTrips] = useState<PopularTripPreset[]>([]);
+  const [trustIndicators, setTrustIndicators] = useState<{ title: string }[]>([]);
+  const [packagesSectionBadge, setPackagesSectionBadge] = useState('');
+  const [packagesSectionTitle, setPackagesSectionTitle] = useState('');
+  const [packagesSectionBtnText, setPackagesSectionBtnText] = useState('');
+  const [whyChooseBadge, setWhyChooseBadge] = useState('');
+  const [whyChooseTitle, setWhyChooseTitle] = useState('');
+  const [whyChooseFeatures, setWhyChooseFeatures] = useState<WhyChooseFeature[]>([]);
+  const [testimonialsSectionBadge, setTestimonialsSectionBadge] = useState('');
+  const [testimonialsSectionTitle, setTestimonialsSectionTitle] = useState('');
+  const [faqSectionBadge, setFaqSectionBadge] = useState('');
+  const [faqSectionTitle, setFaqSectionTitle] = useState('');
+  const [homepageFaqs, setHomepageFaqs] = useState<FAQItem[]>([]);
+  const [ctaTitle, setCtaTitle] = useState('');
+  const [ctaSubtitle, setCtaSubtitle] = useState('');
+  const [ctaButtonText, setCtaButtonText] = useState('');
+  const [ctaButtonLink, setCtaButtonLink] = useState('');
+  const [homepageSaving, setHomepageSaving] = useState(false);
+  const [homepageSavedMsg, setHomepageSavedMsg] = useState(false);
+
+  // Homepage Editor Local Add Form States
+  const [newPresetLabel, setNewPresetLabel] = useState('');
+  const [newPresetQuery, setNewPresetQuery] = useState('');
+  const [newPresetCategory, setNewPresetCategory] = useState('Gunung & Alam');
+  const [newTrustTitle, setNewTrustTitle] = useState('');
+  const [newFeatTitle, setNewFeatTitle] = useState('');
+  const [newFeatDesc, setNewFeatDesc] = useState('');
+  const [newFeatIcon, setNewFeatIcon] = useState('Users');
+  const [newFaqQ, setNewFaqQ] = useState('');
+  const [newFaqA, setNewFaqA] = useState('');
 
   // Testimonials (Cerita Tamu) state
   const [showNewTestimonialModal, setShowNewTestimonialModal] = useState(false);
@@ -207,6 +249,26 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [licenseNumber, setLicenseNumber] = useState('');
   const [settingsSavedMessage, setSettingsSavedMessage] = useState(false);
 
+  // Custom In-App Delete Confirmation Modal State (replaces blocked window.confirm)
+  const [deleteConfirm, setDeleteConfirm] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    itemName?: string;
+    onConfirm: () => Promise<void> | void;
+    isDeleting?: boolean;
+  } | null>(null);
+
+  // Custom In-App Notification Toast State (replaces blocked window.alert)
+  const [toastMessage, setToastMessage] = useState<{ text: string; type: 'success' | 'error' | 'info' } | null>(null);
+
+  const showToast = (text: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setToastMessage({ text, type });
+    setTimeout(() => {
+      setToastMessage(prev => (prev?.text === text ? null : prev));
+    }, 4000);
+  };
+
   const adminToken = localStorage.getItem('gj_admin_token') || 'garut-admin-auth-2026';
 
   const fetchAllData = async () => {
@@ -214,7 +276,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     try {
       const headers = { 'x-admin-token': adminToken };
 
-      const [resMetrics, resAnalytics, resBookings, resPackages, resAddons, resEvents, resArticles, resGallery, resSettings] =
+      const [resMetrics, resAnalytics, resBookings, resPackages, resAddons, resEvents, resArticles, resGallery, resTestimonials, resSettings] =
         await Promise.all([
           fetch('/api/admin/metrics', { headers }).then(r => r.json()).catch(() => ({})),
           fetch('/api/admin/analytics', { headers }).then(r => r.json()).catch(() => ({})),
@@ -224,6 +286,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           fetch('/api/admin/payments/events', { headers }).then(r => r.json()).catch(() => ({})),
           fetch('/api/articles').then(r => r.json()).catch(() => ({})),
           fetch('/api/gallery').then(r => r.json()).catch(() => ({})),
+          fetch('/api/testimonials').then(r => r.json()).catch(() => ({})),
           fetch('/api/site-settings').then(r => r.json()).catch(() => ({}))
         ]);
 
@@ -235,26 +298,119 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       if (resEvents.success) setPaymentEvents(resEvents.data);
       if (resArticles.success) setArticles(resArticles.data);
       if (resGallery.success) setGallery(resGallery.data);
+      if (resTestimonials.success && Array.isArray(resTestimonials.data)) setTestimonials(resTestimonials.data);
       if (resSettings.success && resSettings.data) {
-        setSiteSettings(resSettings.data);
-        setLogoUrl(resSettings.data.logoUrl || '');
-        setFaviconUrl(resSettings.data.faviconUrl || '');
-        setFooterDestinations((resSettings.data.featuredDestinations || []).join('\n'));
-        setOfficeAddress(resSettings.data.officeAddress || '');
-        setWhatsappNum(resSettings.data.whatsappNumber || '');
-        setSupportEmail(resSettings.data.supportEmail || '');
-        setServiceHours(resSettings.data.customerServiceHours || '');
-        setCompanyName(resSettings.data.companyName || '');
-        setNibNumber(resSettings.data.nibNumber || '');
-        setLicenseNumber(resSettings.data.licenseNumber || '');
+        const s = resSettings.data;
+        setSiteSettings(s);
+        setLogoUrl(s.logoUrl || '');
+        setFaviconUrl(s.faviconUrl || '');
+        setFooterDestinations((s.featuredDestinations || []).join('\n'));
+        setOfficeAddress(s.officeAddress || '');
+        setWhatsappNum(s.whatsappNumber || '');
+        setSupportEmail(s.supportEmail || '');
+        setServiceHours(s.customerServiceHours || '');
+        setCompanyName(s.companyName || '');
+        setNibNumber(s.nibNumber || '');
+        setLicenseNumber(s.licenseNumber || '');
+
+        // Populate Homepage Editor fields
+        setHeroBadge(s.heroBadge || 'TOUR OPERATOR RESMI GARUT • 100% PRIVATE TRIP');
+        setHeroMainTitle(s.heroMainTitle || 'Jelajahi Pesona Alam Garut yang Menakjubkan');
+        setHeroMainSubtitle(s.heroMainSubtitle || 'Rasakan kemegahan kawah Papandayan, keheningan Kawah Kamojang, dan keindahan Situ Bagendit bersama pemandu profesional dan fasilitas perjalanan terpercaya.');
+        setHeroSearchPlaceholder(s.heroSearchPlaceholder || 'Cari Papandayan, Kamojang, Bagendit, Curug...');
+        setHeroShowcaseBadge(s.heroShowcaseBadge || 'GALERI FOTO RESMI GARUT');
+        setHeroPopularTrips(s.heroPopularTrips || [
+          { label: '🏔️ Papandayan', query: 'Papandayan', category: 'Gunung & Alam' },
+          { label: '🌋 Kamojang', query: 'Kamojang', category: 'Keluarga & Relaksasi' },
+          { label: '🚣 Situ Bagendit', query: 'Situ Bagendit', category: 'Budaya & Sejarah' },
+          { label: '🌊 Curug Taraje', query: 'Curug Sanghyang Taraje', category: 'Petualangan Alam' },
+          { label: '♨️ Darajat Pass', query: 'Darajat', category: 'Keluarga & Relaksasi' },
+          { label: '🏖️ Pantai Santolo', query: 'Santolo', category: 'Petualangan Alam' },
+          { label: '⭐ Semua Paket', query: '', category: 'Semua' }
+        ]);
+        setTrustIndicators(s.trustIndicators || [
+          { title: 'Pemandu Lokal Berlisensi HPI' },
+          { title: 'Jaminan Pasti Berangkat' },
+          { title: 'Metode Bayar Midtrans Aman' }
+        ]);
+        setPackagesSectionBadge(s.packagesSectionBadge || 'Destinasi Paling Populer');
+        setPackagesSectionTitle(s.packagesSectionTitle || 'Pilihan Paket Wisata Unggulan Garut');
+        setPackagesSectionBtnText(s.packagesSectionBtnText || 'Jelajahi Seluruh Paket');
+        setWhyChooseBadge(s.whyChooseBadge || 'Mengapa Garut Journey?');
+        setWhyChooseTitle(s.whyChooseTitle || 'Standar Layanan Wisata Terbaik & Terpercaya');
+        setWhyChooseFeatures(s.whyChooseFeatures || [
+          {
+            id: 'feat-1',
+            title: 'Pemandu Lokal Bersertifikasi',
+            description: 'Didampingi oleh pemandu lokal berlisensi HPI yang memahami setiap sudut rute alam, sejarah, dan titik fotografi terbaik di Garut.',
+            icon: 'Users'
+          },
+          {
+            id: 'feat-2',
+            title: 'Harga Transparan Tanpa Biaya Tersembunyi',
+            description: 'Biaya paket sudah mencakup tiket simaksi resmi, armada transportasi AC, makan, dan fasilitas tanpa pungutan liar di lokasi.',
+            icon: 'Award'
+          },
+          {
+            id: 'feat-3',
+            title: 'Booking Instan & Terverifikasi',
+            description: 'Sistem pemesanan online terintegrasi langsung dengan gateway pembayaran Midtrans dengan konfirmasi instan dan E-Ticket resmi.',
+            icon: 'ShieldCheck'
+          },
+          {
+            id: 'feat-4',
+            title: '100% Private Trip Fleksibel',
+            description: 'Perjalanan privat eksklusif untuk Anda dan rombongan tanpa digabung peserta lain, dengan tanggal dan penjemputan bebas Anda tentukan.',
+            icon: 'Calendar'
+          }
+        ]);
+        setTestimonialsSectionBadge(s.testimonialsSectionBadge || 'Cerita Pengalaman Tamu');
+        setTestimonialsSectionTitle(s.testimonialsSectionTitle || 'Ulasan Nyata dari Wisatawan Garut Journey');
+        setFaqSectionBadge(s.faqSectionBadge || 'Pertanyaan Umum');
+        setFaqSectionTitle(s.faqSectionTitle || 'Informasi Penting Sebelum Memulai Perjalanan');
+        setHomepageFaqs(s.faqs || [
+          {
+            q: 'Bagaimana alur pemesanan dan pembayaran di Garut Journey?',
+            a: 'Pilih paket dan tanggal keberangkatan yang diinginkan, tentukan jumlah peserta, isi data diri, lalu lanjutkan ke pembayaran resmi via Midtrans Snap. Sistem akan mengunci kapasitas Anda secara otomatis dan mengirimkan E-Ticket ke email Anda.'
+          },
+          {
+            q: 'Apakah harga sudah termasuk tiket masuk seluruh objek wisata?',
+            a: 'Ya, seluruh harga paket Garut Journey bersifat transparan dan telah mencakup tiket masuk resmi destinasi (Simaksi Papandayan, Situ Bagendit, Cangkuang, Kawah Kamojang), armada transportasi lokal, pemandu wisata bersertifikat, dan konsumsi sesuai rincian itinerary.'
+          },
+          {
+            q: 'Apakah pemula atau anak-anak aman mendaki Gunung Papandayan?',
+            a: 'Sangat aman. Gunung Papandayan dikenal memiliki kontur jalur pendakian yang landai dan teratur. Tim pemandu kami berpengalaman mendampingi pendaki pemula, keluarga, serta menyediakan perlengkapan keselamatan P3K.'
+          },
+          {
+            q: 'Bagaimana jika saya perlu menjadwal ulang atau membatalkan pesanan?',
+            a: 'Penjadwalan ulang dapat dilakukan selambat-lambatnya H-5 sebelum tanggal trip tanpa biaya tambahan, tergantung ketersediaan kuota. Kebijakan pembatalan dan refund tertera lengkap pada halaman Kebijakan Pembatalan.'
+          }
+        ]);
+        setCtaTitle(s.ctaTitle || 'Siap Berpetualang di Garut?');
+        setCtaSubtitle(s.ctaSubtitle || 'Konsultasikan rencana perjalanan Anda atau pilih paket wisata favorit sekarang bersama pemandu lokal terpercaya.');
+        setCtaButtonText(s.ctaButtonText || 'Jelajahi Paket Wisata');
+        setCtaButtonLink(s.ctaButtonLink || '/paket-wisata');
+
+        // Populate Theme Colors
+        setPrimaryColor(s.primaryColor || '#0F3827');
+        setPrimaryDarkColor(s.primaryDarkColor || '#0A261A');
+        setPrimaryHoverColor(s.primaryHoverColor || '#17523A');
+        setAccentColor(s.accentColor || '#C8A951');
+        setAccentHoverColor(s.accentHoverColor || '#B89940');
+
+        // Populate WhatsApp Templates
+        setWaTemplateBooking(s.whatsappTemplateBooking || 'Halo Tim Garut Journey, saya baru saja membuat pesanan #{bookingNumber} untuk paket {packageName}. Mohon informasi tindak lanjutnya. Terima kasih!');
+        setWaTemplateInvoice(s.whatsappTemplateInvoice || '*INVOICE & E-TICKET RESMI GARUT JOURNEY*\nNomor Pesanan: #{bookingNumber}\nNama Tamu: {customerName}\nPaket: {packageName}\nTanggal Trip: {departureDate}\nPeserta: {participantsCount} Orang\nStatus Pembayaran: {status}\nTotal Biaya: Rp {totalAmount}\nSudah Dibayar: Rp {paidAmount}\nSisa Pelunasan: Rp {remainingBalance}\n\nE-Ticket Digital: {ticketUrl}\n\n{customNote}\nTerima kasih telah mempercayakan liburan Garut Anda bersama kami!');
+        setWaTemplateHelp(s.whatsappTemplateHelp || 'Halo Admin Garut Journey, saya ingin konfirmasi pesanan wisata:\n- No. Booking: {bookingNumber}\n- Atas Nama: {customerName}\n- Paket: {packageName}\nMohon informasi persiapan perjalanannya. Terima kasih!');
+        setWaTemplateGeneral(s.whatsappTemplateGeneral || 'Halo Tim Garut Journey, saya ingin konsultasi paket wisata Garut.');
         
         // Populate SEO fields
-        setMetaTitle(resSettings.data.metaTitle || 'Garut Journey – Jelajahi Keindahan Wisata Garut');
-        setMetaDescription(resSettings.data.metaDescription || 'Temukan pengalaman wisata Garut yang berkesan melalui paket perjalanan praktis, nyaman, dan mudah dipesan secara online. Papandayan, Kamojang, Bagendit.');
-        setMetaKeywords(resSettings.data.metaKeywords || 'Wisata Garut, Paket Wisata Garut, Tour Garut, Garut City Tour, Private Trip Garut');
-        setCanonicalUrl(resSettings.data.canonicalUrl || 'https://garutjourney.id');
-        setOgImageUrl(resSettings.data.ogImageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg');
-        setRobotsTxt(resSettings.data.robotsTxtContent || 'User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /booking/\nDisallow: /pembayaran/\nDisallow: /api/\n\nSitemap: https://garutjourney.id/sitemap.xml');
+        setMetaTitle(s.metaTitle || 'Garut Journey – Jelajahi Keindahan Wisata Garut');
+        setMetaDescription(s.metaDescription || 'Temukan pengalaman wisata Garut yang berkesan melalui paket perjalanan praktis, nyaman, dan mudah dipesan secara online. Papandayan, Kamojang, Bagendit.');
+        setMetaKeywords(s.metaKeywords || 'Wisata Garut, Paket Wisata Garut, Tour Garut, Garut City Tour, Private Trip Garut');
+        setCanonicalUrl(s.canonicalUrl || 'https://garutjourney.id');
+        setOgImageUrl(s.ogImageUrl || '/src/assets/images/hero_garut_papandayan_1792431914366.jpg');
+        setRobotsTxt(s.robotsTxtContent || 'User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /booking/\nDisallow: /pembayaran/\nDisallow: /api/\n\nSitemap: https://garutjourney.id/sitemap.xml');
       }
     } catch (err) {
       console.error('Failed to load admin data', err);
@@ -289,24 +445,32 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     }
   };
 
-  const handleDeleteBooking = async (bookingId: string) => {
-    if (!confirm('Hapus pesanan ini secara permanen dari sistem? Tindakan ini tidak dapat dibatalkan.')) return;
-    try {
-      const res = await fetch(`/api/admin/bookings/${bookingId}`, {
-        method: 'DELETE',
-        headers: { 'x-admin-token': adminToken }
-      });
-      const json = await res.json();
-      if (json.success) {
-        setSelectedBooking(null);
-        setGeneratedInvoice(null);
-        fetchAllData();
-      } else {
-        alert(json.error || 'Gagal menghapus pesanan.');
+  const handleDeleteBooking = (bookingId: string, bookingCode?: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      title: 'Hapus Pesanan Booking',
+      message: 'Apakah Anda yakin ingin menghapus pesanan ini secara permanen dari sistem? Seluruh riwayat transaksi akan dihapus.',
+      itemName: bookingCode ? `Kode Booking: ${bookingCode}` : `ID: ${bookingId}`,
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/admin/bookings/${bookingId}`, {
+            method: 'DELETE',
+            headers: { 'x-admin-token': adminToken }
+          });
+          const json = await res.json();
+          if (json.success) {
+            setSelectedBooking(null);
+            setGeneratedInvoice(null);
+            fetchAllData();
+            showToast('Pesanan booking berhasil dihapus.', 'success');
+          } else {
+            showToast(json.error || 'Gagal menghapus pesanan.', 'error');
+          }
+        } catch {
+          showToast('Koneksi server gagal.', 'error');
+        }
       }
-    } catch {
-      alert('Koneksi server gagal.');
-    }
+    });
   };
 
   // WhatsApp Invoice Generator & Link Handler (FIXED)
@@ -353,32 +517,42 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   };
 
   // Activity Itinerary Management
-  const handleDeleteActivity = async (packageId: string, day: number, activityIndex: number) => {
-    if (!confirm('Yakin ingin menghapus aktivitas ini dari jadwal perjalanan?')) return;
-    try {
-      const res = await fetch(`/api/admin/packages/${packageId}/activities`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-admin-token': adminToken
-        },
-        body: JSON.stringify({ day, activityIndex })
-      });
-      const json = await res.json();
-      if (json.success) {
-        fetchAllData();
-        if (selectedPackageForActivities) {
-          const updatedItin = [...selectedPackageForActivities.itinerary];
-          const dItem = updatedItin.find(it => it.day === day);
-          if (dItem) {
-            dItem.activities.splice(activityIndex, 1);
-            setSelectedPackageForActivities({ ...selectedPackageForActivities, itinerary: updatedItin });
+  const handleDeleteActivity = (packageId: string, day: number, activityIndex: number, text?: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      title: 'Hapus Aktivitas Jadwal',
+      message: `Hapus aktivitas ini dari jadwal perjalanan Hari ke-${day}?`,
+      itemName: text || `Aktivitas Urutan #${activityIndex + 1}`,
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/admin/packages/${packageId}/activities`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-admin-token': adminToken
+            },
+            body: JSON.stringify({ day, activityIndex })
+          });
+          const json = await res.json();
+          if (json.success) {
+            fetchAllData();
+            if (selectedPackageForActivities) {
+              const updatedItin = [...selectedPackageForActivities.itinerary];
+              const dItem = updatedItin.find(it => it.day === day);
+              if (dItem) {
+                dItem.activities.splice(activityIndex, 1);
+                setSelectedPackageForActivities({ ...selectedPackageForActivities, itinerary: updatedItin });
+              }
+            }
+            showToast('Aktivitas berhasil dihapus.', 'success');
+          } else {
+            showToast(json.error || 'Gagal menghapus aktivitas.', 'error');
           }
+        } catch {
+          showToast('Gagal menghapus aktivitas.', 'error');
         }
       }
-    } catch {
-      alert('Gagal menghapus aktivitas.');
-    }
+    });
   };
 
   const handleAddActivity = async (packageId: string) => {
@@ -410,6 +584,131 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     } catch {
       alert('Gagal menambahkan aktivitas.');
     }
+  };
+
+  // Homepage Editor Presets, Trust, Features & FAQs Handlers
+  const handleAddPopularPreset = () => {
+    if (!newPresetLabel.trim() || !newPresetQuery.trim()) {
+      alert('Label tombol dan kata kunci pencarian wajib diisi.');
+      return;
+    }
+    setHeroPopularTrips(prev => [
+      ...prev,
+      { label: newPresetLabel.trim(), query: newPresetQuery.trim(), category: newPresetCategory }
+    ]);
+    setNewPresetLabel('');
+    setNewPresetQuery('');
+  };
+
+  const handleRemovePopularPreset = (index: number) => {
+    setHeroPopularTrips(prev => prev.filter((_, idx) => idx !== index));
+  };
+
+  const handleAddTrustIndicator = () => {
+    if (!newTrustTitle.trim()) return;
+    setTrustIndicators(prev => [...prev, { title: newTrustTitle.trim() }]);
+    setNewTrustTitle('');
+  };
+
+  const handleRemoveTrustIndicator = (index: number) => {
+    setTrustIndicators(prev => prev.filter((_, idx) => idx !== index));
+  };
+
+  const handleAddWhyChooseFeature = () => {
+    if (!newFeatTitle.trim() || !newFeatDesc.trim()) {
+      alert('Judul dan deskripsi keunggulan wajib diisi.');
+      return;
+    }
+    setWhyChooseFeatures(prev => [
+      ...prev,
+      {
+        id: 'feat-' + Date.now(),
+        title: newFeatTitle.trim(),
+        description: newFeatDesc.trim(),
+        icon: newFeatIcon
+      }
+    ]);
+    setNewFeatTitle('');
+    setNewFeatDesc('');
+  };
+
+  const handleRemoveWhyChooseFeature = (id: string) => {
+    setWhyChooseFeatures(prev => prev.filter(f => f.id !== id));
+  };
+
+  const handleAddFaq = () => {
+    if (!newFaqQ.trim() || !newFaqA.trim()) {
+      alert('Pertanyaan dan jawaban FAQ wajib diisi.');
+      return;
+    }
+    setHomepageFaqs(prev => [...prev, { q: newFaqQ.trim(), a: newFaqA.trim() }]);
+    setNewFaqQ('');
+    setNewFaqA('');
+  };
+
+  const handleRemoveFaq = (index: number) => {
+    setHomepageFaqs(prev => prev.filter((_, idx) => idx !== index));
+  };
+
+  const handleAddDayToItinerary = async (packageId: string) => {
+    if (!selectedPackageForActivities) return;
+    const nextDayNum = (selectedPackageForActivities.itinerary?.length || 0) + 1;
+    const dayTitle = newDayTitle.trim() || `Hari ke-${nextDayNum}: Eksplorasi Lanjutan`;
+    try {
+      const res = await fetch(`/api/admin/packages/${packageId}/days`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-token': adminToken },
+        body: JSON.stringify({ day: nextDayNum, title: dayTitle })
+      });
+      const json = await res.json();
+      if (json.success) {
+        setNewDayTitle('');
+        fetchAllData();
+        const updatedItin = [
+          ...selectedPackageForActivities.itinerary,
+          { day: nextDayNum, title: dayTitle, activities: [] }
+        ];
+        setSelectedPackageForActivities({
+          ...selectedPackageForActivities,
+          durationDays: Math.max(selectedPackageForActivities.durationDays, nextDayNum),
+          itinerary: updatedItin
+        });
+      } else {
+        alert(json.error || 'Gagal menambahkan hari itinerary.');
+      }
+    } catch {
+      alert('Koneksi server gagal.');
+    }
+  };
+
+  const handleDeleteDayFromItinerary = (packageId: string, day: number) => {
+    setDeleteConfirm({
+      isOpen: true,
+      title: 'Hapus Rencana Hari',
+      message: `Hapus seluruh rencana Hari ke-${day} beserta semua aktivitas di dalamnya?`,
+      itemName: `Hari ke-${day}`,
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/admin/packages/${packageId}/days/${day}`, {
+            method: 'DELETE',
+            headers: { 'x-admin-token': adminToken }
+          });
+          const json = await res.json();
+          if (json.success) {
+            fetchAllData();
+            if (selectedPackageForActivities) {
+              const updatedItin = selectedPackageForActivities.itinerary.filter(it => it.day !== day);
+              setSelectedPackageForActivities({ ...selectedPackageForActivities, itinerary: updatedItin });
+            }
+            showToast(`Hari ke-${day} berhasil dihapus dari itinerary.`, 'success');
+          } else {
+            showToast(json.error || 'Gagal menghapus hari.', 'error');
+          }
+        } catch {
+          showToast('Koneksi server gagal.', 'error');
+        }
+      }
+    });
   };
 
   // Article Actions (Create, Edit, Delete)
@@ -556,6 +855,295 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     }
   };
 
+  // Create New Package
+  const handleCreatePackage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPkgName.trim()) {
+      alert('Nama paket wisata wajib diisi.');
+      return;
+    }
+    setPackageCreating(true);
+    try {
+      const incList = newPkgInclusions.split('\n').map(s => s.trim()).filter(Boolean);
+      const excList = newPkgExclusions.split('\n').map(s => s.trim()).filter(Boolean);
+      const pickupList = newPkgPickupPoints.split('\n').map(s => s.trim()).filter(Boolean);
+
+      const payload = {
+        name: newPkgName.trim(),
+        category: newPkgCategory,
+        destinationArea: newPkgDestArea.trim(),
+        basePrice: Number(newPkgBasePrice) || 350000,
+        durationDays: Number(newPkgDays) || 1,
+        durationNights: Number(newPkgNights) || 0,
+        shortDescription: newPkgShortDesc.trim() || newPkgName,
+        description: newPkgDesc.trim() || newPkgShortDesc || newPkgName,
+        imageUrl: newPkgImageUrl.trim(),
+        inclusions: incList,
+        exclusions: excList,
+        pickupPoints: pickupList,
+        isPublished: true,
+        itinerary: [
+          {
+            day: 1,
+            title: `Hari 1: Eksplorasi ${newPkgName}`,
+            activities: [
+              '08.00 - Penjemputan di lokasi meeting point Garut',
+              '09.30 - Perjalanan dan briefing keselamatan bersama pemandu lokal',
+              '12.00 - Makan siang khas Sunda dan waktu istirahat',
+              '16.00 - Menikmati pesona destinasi dan foto bersama',
+              '17.30 - Pengantaran kembali ke titik awal. Tour selesai.'
+            ]
+          }
+        ]
+      };
+
+      const res = await fetch('/api/admin/packages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken
+        },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (json.success) {
+        setShowNewPackageModal(false);
+        setNewPkgName('');
+        setNewPkgShortDesc('');
+        setNewPkgDesc('');
+        fetchAllData();
+        alert('Paket wisata baru berhasil ditambahkan!');
+      } else {
+        alert(json.error || 'Gagal menambahkan paket wisata.');
+      }
+    } catch {
+      alert('Koneksi server gagal.');
+    } finally {
+      setPackageCreating(false);
+    }
+  };
+
+  // Delete Package
+  const handleDeletePackage = (id: string, name: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      title: 'Hapus Paket Wisata',
+      message: `Hapus paket wisata "${name}" secara permanen dari sistem? Seluruh pengaturan, pilihan harga bertingkat, dan itinerary paket ini akan dihapus.`,
+      itemName: name,
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/admin/packages/${id}`, {
+            method: 'DELETE',
+            headers: { 'x-admin-token': adminToken }
+          });
+          const json = await res.json();
+          if (json.success) {
+            setEditingPackage(null);
+            fetchAllData();
+            showToast(`Paket wisata "${name}" berhasil dihapus.`, 'success');
+          } else {
+            showToast(json.error || 'Gagal menghapus paket wisata.', 'error');
+          }
+        } catch {
+          showToast('Koneksi server gagal.', 'error');
+        }
+      }
+    });
+  };
+
+  // Homepage Settings Save Handler
+  const handleSaveHomepageSettings = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setHomepageSaving(true);
+    try {
+      const payload = {
+        heroBadge,
+        heroMainTitle,
+        heroMainSubtitle,
+        heroSearchPlaceholder,
+        heroShowcaseBadge,
+        heroPopularTrips,
+        trustIndicators,
+        packagesSectionBadge,
+        packagesSectionTitle,
+        packagesSectionBtnText,
+        whyChooseBadge,
+        whyChooseTitle,
+        whyChooseFeatures,
+        testimonialsSectionBadge,
+        testimonialsSectionTitle,
+        faqSectionBadge,
+        faqSectionTitle,
+        faqs: homepageFaqs,
+        ctaTitle,
+        ctaSubtitle,
+        ctaButtonText,
+        ctaButtonLink
+      };
+
+      const res = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken
+        },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (json.success) {
+        setHomepageSavedMsg(true);
+        setTimeout(() => setHomepageSavedMsg(false), 3500);
+        fetchAllData();
+      } else {
+        alert(json.error || 'Gagal menyimpan pengaturan beranda.');
+      }
+    } catch {
+      alert('Koneksi server gagal.');
+    } finally {
+      setHomepageSaving(false);
+    }
+  };
+
+  // Testimonials CRUD Handlers
+  const handleCreateTestimonial = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!testiName.trim() || !testiText.trim()) {
+      alert('Nama dan isi testimoni ulasan wajib diisi.');
+      return;
+    }
+    setTestiSaving(true);
+    try {
+      const res = await fetch('/api/admin/testimonials', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken
+        },
+        body: JSON.stringify({
+          name: testiName.trim(),
+          role: testiRole.trim(),
+          city: testiCity.trim(),
+          package: testiPackage.trim(),
+          rating: Number(testiRating) || 5,
+          text: testiText.trim(),
+          avatarUrl: testiAvatar.trim()
+        })
+      });
+      const json = await res.json();
+      if (json.success) {
+        setShowNewTestimonialModal(false);
+        setTestiName('');
+        setTestiText('');
+        setTestiAvatar('');
+        fetchAllData();
+      } else {
+        alert(json.error || 'Gagal menambahkan testimoni.');
+      }
+    } catch {
+      alert('Koneksi server gagal.');
+    } finally {
+      setTestiSaving(false);
+    }
+  };
+
+  const handleOpenEditTestimonial = (item: Testimonial) => {
+    setEditingTestimonial({ ...item });
+  };
+
+  const handleSaveEditTestimonial = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingTestimonial) return;
+    setTestiSaving(true);
+    try {
+      const res = await fetch(`/api/admin/testimonials/${editingTestimonial.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken
+        },
+        body: JSON.stringify(editingTestimonial)
+      });
+      const json = await res.json();
+      if (json.success) {
+        setEditingTestimonial(null);
+        fetchAllData();
+      } else {
+        alert(json.error || 'Gagal memperbarui testimoni.');
+      }
+    } catch {
+      alert('Koneksi server gagal.');
+    } finally {
+      setTestiSaving(false);
+    }
+  };
+
+  const handleDeleteTestimonial = (id: string, author?: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      title: 'Hapus Cerita Pengalaman Tamu',
+      message: 'Hapus cerita pengalaman tamu ini dari daftar ulasan website?',
+      itemName: author ? `Ulasan dari ${author}` : undefined,
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/admin/testimonials/${id}`, {
+            method: 'DELETE',
+            headers: { 'x-admin-token': adminToken }
+          });
+          const json = await res.json();
+          if (json.success) {
+            fetchAllData();
+            showToast('Testimoni berhasil dihapus.', 'success');
+          } else {
+            showToast(json.error || 'Gagal menghapus testimoni.', 'error');
+          }
+        } catch {
+          showToast('Koneksi server gagal.', 'error');
+        }
+      }
+    });
+  };
+
+  // Theme & WhatsApp Templates Save Handler
+  const handleSaveThemeAndWhatsApp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setThemeSaving(true);
+    try {
+      const payload = {
+        primaryColor,
+        primaryDarkColor,
+        primaryHoverColor,
+        accentColor,
+        accentHoverColor,
+        whatsappTemplateBooking: waTemplateBooking,
+        whatsappTemplateInvoice: waTemplateInvoice,
+        whatsappTemplateHelp: waTemplateHelp,
+        whatsappTemplateGeneral: waTemplateGeneral
+      };
+
+      const res = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-token': adminToken
+        },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (json.success) {
+        setThemeSuccessMsg('Pengaturan tema warna & template pesan WhatsApp berhasil disimpan!');
+        setTimeout(() => setThemeSuccessMsg(''), 3500);
+        applyThemeColors(payload);
+        fetchAllData();
+      } else {
+        alert(json.error || 'Gagal menyimpan tema.');
+      }
+    } catch {
+      alert('Koneksi server gagal.');
+    } finally {
+      setThemeSaving(false);
+    }
+  };
+
   // Insert Inline Image into Article Content (Markdown format: ![caption](url))
   const handleInsertInlineImage = (url: string, caption: string) => {
     const cleanUrl = url.trim();
@@ -641,17 +1229,30 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     }
   };
 
-  const handleDeleteArticle = async (id: string) => {
-    if (!confirm('Hapus artikel ini secara permanen?')) return;
-    try {
-      await fetch(`/api/admin/articles/${id}`, {
-        method: 'DELETE',
-        headers: { 'x-admin-token': adminToken }
-      });
-      fetchAllData();
-    } catch {
-      alert('Gagal menghapus artikel.');
-    }
+  const handleDeleteArticle = (id: string, title?: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      title: 'Hapus Artikel Wisata',
+      message: 'Hapus artikel ini secara permanen dari blog & panduan wisata website?',
+      itemName: title,
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/admin/articles/${id}`, {
+            method: 'DELETE',
+            headers: { 'x-admin-token': adminToken }
+          });
+          const json = await res.json();
+          if (json.success) {
+            fetchAllData();
+            showToast('Artikel berhasil dihapus.', 'success');
+          } else {
+            showToast(json.error || 'Gagal menghapus artikel.', 'error');
+          }
+        } catch {
+          showToast('Gagal menghapus artikel.', 'error');
+        }
+      }
+    });
   };
 
   // Gallery Actions (Create, Edit, Delete)
@@ -712,37 +1313,57 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     }
   };
 
-  const handleDeleteGallery = async (id: string) => {
-    if (!confirm('Hapus foto ini dari galeri?')) return;
-    try {
-      await fetch(`/api/admin/gallery/${id}`, {
-        method: 'DELETE',
-        headers: { 'x-admin-token': adminToken }
-      });
-      fetchAllData();
-    } catch {
-      alert('Gagal menghapus foto.');
-    }
+  const handleDeleteGallery = (id: string, title?: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      title: 'Hapus Foto Galeri',
+      message: 'Hapus foto dokumentasi ini dari galeri website?',
+      itemName: title,
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/admin/gallery/${id}`, {
+            method: 'DELETE',
+            headers: { 'x-admin-token': adminToken }
+          });
+          const json = await res.json();
+          if (json.success) {
+            fetchAllData();
+            showToast('Foto galeri berhasil dihapus.', 'success');
+          } else {
+            showToast(json.error || 'Gagal menghapus foto.', 'error');
+          }
+        } catch {
+          showToast('Gagal menghapus foto.', 'error');
+        }
+      }
+    });
   };
 
   // Clear Activity Logs (Audits, Views, Emails)
-  const handleClearAllActivities = async () => {
-    if (!confirm('Apakah Anda yakin ingin MENGHAPUS SEMUA log aktivitas (audit pembayaran, riwayat pengunjung, dan log email)? Data pesanan tidak akan terhapus.')) return;
-    try {
-      const res = await fetch('/api/admin/activities/clear', {
-        method: 'DELETE',
-        headers: { 'x-admin-token': adminToken }
-      });
-      const json = await res.json();
-      if (json.success) {
-        alert('Semua log aktivitas berhasil dibersihkan.');
-        fetchAllData();
-      } else {
-        alert(json.error || 'Gagal membersihkan log.');
+  const handleClearAllActivities = () => {
+    setDeleteConfirm({
+      isOpen: true,
+      title: 'Bersihkan Semua Log Aktivitas',
+      message: 'Apakah Anda yakin ingin MENGHAPUS SEMUA log aktivitas (audit transaksi Midtrans, riwayat pengunjung, dan log email)? Data pesanan tidak akan terhapus.',
+      itemName: 'Log Pengunjung & Audit Aktivitas',
+      onConfirm: async () => {
+        try {
+          const res = await fetch('/api/admin/activities/clear', {
+            method: 'DELETE',
+            headers: { 'x-admin-token': adminToken }
+          });
+          const json = await res.json();
+          if (json.success) {
+            showToast('Semua log aktivitas berhasil dibersihkan.', 'success');
+            fetchAllData();
+          } else {
+            showToast(json.error || 'Gagal membersihkan log.', 'error');
+          }
+        } catch {
+          showToast('Koneksi server gagal.', 'error');
+        }
       }
-    } catch {
-      alert('Koneksi server gagal.');
-    }
+    });
   };
 
   // Addons (Layanan Tambahan) CRUD Handlers
@@ -840,22 +1461,30 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     }
   };
 
-  const handleDeleteAddon = async (id: string) => {
-    if (!confirm('Hapus layanan tambahan ini dari sistem?')) return;
-    try {
-      const res = await fetch(`/api/admin/addons/${id}`, {
-        method: 'DELETE',
-        headers: { 'x-admin-token': adminToken }
-      });
-      const json = await res.json();
-      if (json.success) {
-        fetchAllData();
-      } else {
-        alert(json.error || 'Gagal menghapus layanan tambahan.');
+  const handleDeleteAddon = (id: string, name?: string) => {
+    setDeleteConfirm({
+      isOpen: true,
+      title: 'Hapus Layanan Tambahan (Add-on)',
+      message: 'Hapus layanan tambahan ini dari sistem penawaran wisata?',
+      itemName: name,
+      onConfirm: async () => {
+        try {
+          const res = await fetch(`/api/admin/addons/${id}`, {
+            method: 'DELETE',
+            headers: { 'x-admin-token': adminToken }
+          });
+          const json = await res.json();
+          if (json.success) {
+            fetchAllData();
+            showToast('Layanan tambahan berhasil dihapus.', 'success');
+          } else {
+            showToast(json.error || 'Gagal menghapus layanan tambahan.', 'error');
+          }
+        } catch {
+          showToast('Koneksi server gagal.', 'error');
+        }
       }
-    } catch {
-      alert('Koneksi server gagal.');
-    }
+    });
   };
 
   // SEO Save Handler
@@ -943,10 +1572,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     if (bookingSearch.trim()) {
       const q = bookingSearch.toLowerCase().trim();
       return (
-        b.bookingNumber.toLowerCase().includes(q) ||
-        b.customerName.toLowerCase().includes(q) ||
-        b.customerPhone.includes(q) ||
-        b.customerEmail.toLowerCase().includes(q)
+        (b.bookingNumber ? b.bookingNumber.toLowerCase().includes(q) : false) ||
+        (b.customerName ? b.customerName.toLowerCase().includes(q) : false) ||
+        (b.customerPhone ? b.customerPhone.includes(q) : false) ||
+        (b.customerEmail ? b.customerEmail.toLowerCase().includes(q) : false)
       );
     }
     return true;
@@ -990,18 +1619,21 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           </div>
         </div>
 
-        {/* Tab Navigation Strip (Notice: Schedules removed, replaced with Visitor Analytics) */}
+        {/* Tab Navigation Strip */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-1 overflow-x-auto text-xs font-medium border-t border-stone-800/60 py-1">
           {[
             { id: 'overview', label: 'Ringkasan & KPI', icon: TrendingUp },
-            { id: 'analytics', label: 'Laporan Pengunjung', icon: BarChart3 },
+            { id: 'homepage_editor', label: 'Edit Dashboard Beranda', icon: Compass },
             { id: 'bookings', label: 'Manajemen Booking', icon: Calendar },
             { id: 'packages', label: 'Paket & Aktivitas', icon: Package },
             { id: 'addons', label: 'Layanan Tambahan', icon: Layers },
+            { id: 'testimonials', label: 'Cerita & Ulasan Tamu', icon: MessageSquare },
             { id: 'articles', label: 'Artikel & Blog', icon: BookOpen },
             { id: 'gallery', label: 'Galeri Foto', icon: Camera },
+            { id: 'theme_colors', label: 'Warna Tema & WhatsApp', icon: Palette },
             { id: 'branding_legality', label: 'Logo & Legalitas', icon: Building },
             { id: 'seo', label: 'Pengaturan SEO', icon: Globe },
+            { id: 'analytics', label: 'Laporan Pengunjung', icon: BarChart3 },
             { id: 'payments', label: 'Audit & Log Sistem', icon: ShieldCheck }
           ].map(tab => {
             const Icon = tab.icon;
@@ -1227,6 +1859,683 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                       </div>
                     </div>
                   ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB: EDITOR DASHBOARD AWAL (HALAMAN BERANDA LENGKAP TANPA TERKECUALI) */}
+        {activeTab === 'homepage_editor' && (
+          <div className="space-y-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-stone-200 shadow-2xs">
+              <div>
+                <span className="text-xs uppercase tracking-wider font-bold text-[#0F3827] flex items-center gap-1.5">
+                  <Compass className="w-4 h-4 text-[#C8A951]" />
+                  <span>Editor Dashboard Awal & Beranda</span>
+                </span>
+                <h2 className="font-serif-luxury text-2xl font-bold text-stone-900 mt-1">
+                  Kustomisasi Seluruh Tampilan Beranda
+                </h2>
+                <p className="text-xs text-stone-500 mt-1">
+                  Semua elemen beranda mulai dari hero banner, teks promosi, kolom pencarian, pilihan trip, keunggulan, ulasan, hingga FAQ dapat Anda edit secara langsung tanpa terkecuali.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {homepageSavedMsg && (
+                  <span className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 animate-in fade-in duration-200">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    <span>Perubahan Berhasil Disimpan!</span>
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => handleSaveHomepageSettings()}
+                  disabled={homepageSaving}
+                  className="px-5 py-2.5 bg-[#0F3827] hover:bg-[#17523A] text-white text-xs uppercase tracking-wider font-bold rounded-xl transition-colors shadow-sm flex items-center gap-2 cursor-pointer disabled:opacity-60"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${homepageSaving ? 'animate-spin' : ''}`} />
+                  <span>{homepageSaving ? 'Menyimpan...' : 'Simpan Perubahan Beranda'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* SEKSI 1: HERO BANNER UTAMA */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-2xs space-y-6">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                <div>
+                  <h3 className="font-serif-luxury text-lg font-bold text-stone-900 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#C8A951]"></span>
+                    <span>1. Bagian Hero Banner (Header Utama Atas)</span>
+                  </h3>
+                  <p className="text-xs text-stone-500 mt-0.5">Teks utama yang dilihat wisatawan saat pertama kali membuka website Garut Journey.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="space-y-1 md:col-span-2">
+                  <label className="text-xs font-semibold text-stone-700 block">
+                    Badge / Label Kecil di Atas Judul
+                  </label>
+                  <input
+                    type="text"
+                    value={heroBadge}
+                    onChange={(e) => setHeroBadge(e.target.value)}
+                    placeholder="Contoh: TOUR OPERATOR RESMI GARUT • 100% PRIVATE TRIP"
+                    className="w-full text-xs px-3.5 py-2.5 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
+                  />
+                </div>
+
+                <div className="space-y-1 md:col-span-2">
+                  <label className="text-xs font-semibold text-stone-700 block">
+                    Judul Utama Hero (Headline Utama)
+                  </label>
+                  <input
+                    type="text"
+                    value={heroMainTitle}
+                    onChange={(e) => setHeroMainTitle(e.target.value)}
+                    placeholder="Contoh: Jelajahi Pesona Alam Garut yang Menakjubkan"
+                    className="w-full text-sm font-semibold px-3.5 py-2.5 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
+                  />
+                </div>
+
+                <div className="space-y-1 md:col-span-2">
+                  <label className="text-xs font-semibold text-stone-700 block">
+                    Subjudul / Deskripsi Pendukung Hero
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={heroMainSubtitle}
+                    onChange={(e) => setHeroMainSubtitle(e.target.value)}
+                    placeholder="Deskripsi daya tarik wisata Garut yang ramah dan meyakinkan..."
+                    className="w-full text-xs p-3 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">
+                    Placeholder Kotak Pencarian
+                  </label>
+                  <input
+                    type="text"
+                    value={heroSearchPlaceholder}
+                    onChange={(e) => setHeroSearchPlaceholder(e.target.value)}
+                    placeholder="Cari Papandayan, Kamojang, Bagendit, Curug..."
+                    className="w-full text-xs px-3.5 py-2.5 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">
+                    Badge Galeri Foto Showcase
+                  </label>
+                  <input
+                    type="text"
+                    value={heroShowcaseBadge}
+                    onChange={(e) => setHeroShowcaseBadge(e.target.value)}
+                    placeholder="GALERI FOTO RESMI GARUT"
+                    className="w-full text-xs px-3.5 py-2.5 bg-stone-50 rounded-lg border border-stone-200 focus:outline-none focus:ring-1 focus:ring-[#0F3827]"
+                  />
+                </div>
+              </div>
+
+              {/* Sub-item: Pilihan Cepat Trip (Pills) */}
+              <div className="pt-4 border-t border-stone-100 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-xs font-bold text-stone-800 uppercase tracking-wider">
+                      Tombol Pilihan Cepat Destinasi Populer (Pills di Bawah Search)
+                    </h4>
+                    <p className="text-[11px] text-stone-500">Pilihan sekali klik yang memudahkan pengunjung menemukan trip tanpa mengetik.</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  {heroPopularTrips.map((preset, idx) => (
+                    <div
+                      key={idx}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs bg-stone-100 border border-stone-200 text-stone-800 font-medium group"
+                    >
+                      <span>{preset.label}</span>
+                      <span className="text-[10px] text-stone-400">({preset.query || 'Semua'})</span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemovePopularPreset(idx)}
+                        className="text-stone-400 hover:text-rose-600 ml-1 cursor-pointer font-bold"
+                        title="Hapus pilihan ini"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Add new preset form */}
+                <div className="bg-stone-50 p-3.5 rounded-xl border border-stone-200 flex flex-wrap items-center gap-2 text-xs">
+                  <input
+                    type="text"
+                    placeholder="Label Tombol (cth: 🏕️ Papandayan Camp)"
+                    value={newPresetLabel}
+                    onChange={(e) => setNewPresetLabel(e.target.value)}
+                    className="flex-1 min-w-[180px] px-3 py-2 bg-white rounded-lg border border-stone-200"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Kata Kunci Cari (cth: Papandayan)"
+                    value={newPresetQuery}
+                    onChange={(e) => setNewPresetQuery(e.target.value)}
+                    className="flex-1 min-w-[150px] px-3 py-2 bg-white rounded-lg border border-stone-200"
+                  />
+                  <select
+                    value={newPresetCategory}
+                    onChange={(e) => setNewPresetCategory(e.target.value)}
+                    className="px-3 py-2 bg-white rounded-lg border border-stone-200"
+                  >
+                    <option value="Semua">Semua</option>
+                    <option value="Gunung & Alam">Gunung & Alam</option>
+                    <option value="Keluarga & Relaksasi">Keluarga & Relaksasi</option>
+                    <option value="Budaya & Sejarah">Budaya & Sejarah</option>
+                    <option value="Petualangan Alam">Petualangan Alam</option>
+                  </select>
+                  <button
+                    type="button"
+                    onClick={handleAddPopularPreset}
+                    className="px-4 py-2 bg-[#0F3827] text-white font-semibold rounded-lg hover:bg-[#17523A] transition-colors cursor-pointer"
+                  >
+                    + Tambah Pilihan Trip
+                  </button>
+                </div>
+              </div>
+
+              {/* Sub-item: Indikator Kepercayaan (Trust Indicators) */}
+              <div className="pt-4 border-t border-stone-100 space-y-3">
+                <h4 className="text-xs font-bold text-stone-800 uppercase tracking-wider">
+                  Indikator Kepercayaan di Bawah Formulir Hero
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {trustIndicators.map((ti, idx) => (
+                    <div key={idx} className="flex items-center gap-2 p-2 bg-stone-50 rounded-lg border border-stone-200">
+                      <CheckCircle2 className="w-4 h-4 text-[#C8A951] shrink-0" />
+                      <input
+                        type="text"
+                        value={ti.title}
+                        onChange={(e) => {
+                          const updated = [...trustIndicators];
+                          updated[idx] = { title: e.target.value };
+                          setTrustIndicators(updated);
+                        }}
+                        className="flex-1 bg-transparent text-xs text-stone-800 focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTrustIndicator(idx)}
+                        className="text-stone-400 hover:text-rose-600 text-xs px-1 cursor-pointer"
+                        title="Hapus indikator"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="Tambah indikator kepercayaan baru (cth: Layanan Pelanggan 24/7)..."
+                    value={newTrustTitle}
+                    onChange={(e) => setNewTrustTitle(e.target.value)}
+                    className="flex-1 text-xs px-3 py-2 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddTrustIndicator}
+                    className="px-4 py-2 bg-stone-800 text-white text-xs font-semibold rounded-lg hover:bg-stone-900 cursor-pointer"
+                  >
+                    + Tambah
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* SEKSI 2: PAKET WISATA UNGGULAN */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-2xs space-y-5">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                <div>
+                  <h3 className="font-serif-luxury text-lg font-bold text-stone-900 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#0F3827]"></span>
+                    <span>2. Seksi Paket Wisata Paling Populer</span>
+                  </h3>
+                  <p className="text-xs text-stone-500 mt-0.5">Teks pengantar untuk 6 kartu paket wisata teratas di halaman muka.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">Badge Seksi</label>
+                  <input
+                    type="text"
+                    value={packagesSectionBadge}
+                    onChange={(e) => setPackagesSectionBadge(e.target.value)}
+                    placeholder="Destinasi Paling Populer"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">Judul Seksi</label>
+                  <input
+                    type="text"
+                    value={packagesSectionTitle}
+                    onChange={(e) => setPackagesSectionTitle(e.target.value)}
+                    placeholder="Pilihan Paket Wisata Unggulan Garut"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">Teks Tombol Lihat Semua</label>
+                  <input
+                    type="text"
+                    value={packagesSectionBtnText}
+                    onChange={(e) => setPackagesSectionBtnText(e.target.value)}
+                    placeholder="Jelajahi Seluruh Paket"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* SEKSI 3: MENGAPA GARUT JOURNEY (WHY CHOOSE US) */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-2xs space-y-6">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                <div>
+                  <h3 className="font-serif-luxury text-lg font-bold text-stone-900 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#C8A951]"></span>
+                    <span>3. Seksi &quot;Mengapa Garut Journey?&quot; (Fasilitas & Keunggulan)</span>
+                  </h3>
+                  <p className="text-xs text-stone-500 mt-0.5">Empat kartu keunggulan kompetitif yang meyakinkan wisatawan.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">Badge Seksi</label>
+                  <input
+                    type="text"
+                    value={whyChooseBadge}
+                    onChange={(e) => setWhyChooseBadge(e.target.value)}
+                    placeholder="Mengapa Garut Journey?"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">Judul Seksi</label>
+                  <input
+                    type="text"
+                    value={whyChooseTitle}
+                    onChange={(e) => setWhyChooseTitle(e.target.value)}
+                    placeholder="Standar Layanan Wisata Terbaik & Terpercaya"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+              </div>
+
+              {/* Cards List */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {whyChooseFeatures.map((feat, idx) => (
+                  <div key={feat.id || idx} className="p-4 rounded-xl border border-stone-200 bg-stone-50/70 space-y-3 relative group">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase text-[#0F3827] bg-[#E6F0EB] px-2 py-0.5 rounded">
+                          Kartu {idx + 1}
+                        </span>
+                        <select
+                          value={feat.icon || 'Users'}
+                          onChange={(e) => {
+                            const updated = [...whyChooseFeatures];
+                            updated[idx] = { ...feat, icon: e.target.value };
+                            setWhyChooseFeatures(updated);
+                          }}
+                          className="text-xs px-2 py-1 bg-white border border-stone-200 rounded"
+                        >
+                          <option value="Users">Ikon: Tim/Pemandu (Users)</option>
+                          <option value="Award">Ikon: Penghargaan (Award)</option>
+                          <option value="ShieldCheck">Ikon: Keamanan (ShieldCheck)</option>
+                          <option value="Calendar">Ikon: Jadwal (Calendar)</option>
+                          <option value="Sparkles">Ikon: Spesial (Sparkles)</option>
+                          <option value="Star">Ikon: Bintang (Star)</option>
+                          <option value="Clock">Ikon: Waktu (Clock)</option>
+                          <option value="Heart">Ikon: Favorit (Heart)</option>
+                          <option value="Compass">Ikon: Petualangan (Compass)</option>
+                        </select>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveWhyChooseFeature(feat.id)}
+                        className="text-rose-500 hover:text-rose-700 text-xs font-semibold cursor-pointer"
+                        title="Hapus kartu ini"
+                      >
+                        Hapus
+                      </button>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-semibold text-stone-600 block">Judul Keunggulan</label>
+                      <input
+                        type="text"
+                        value={feat.title}
+                        onChange={(e) => {
+                          const updated = [...whyChooseFeatures];
+                          updated[idx] = { ...feat, title: e.target.value };
+                          setWhyChooseFeatures(updated);
+                        }}
+                        className="w-full text-xs px-3 py-2 bg-white rounded-lg border border-stone-200 font-semibold"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-semibold text-stone-600 block">Deskripsi Penjelasan</label>
+                      <textarea
+                        rows={2}
+                        value={feat.description}
+                        onChange={(e) => {
+                          const updated = [...whyChooseFeatures];
+                          updated[idx] = { ...feat, description: e.target.value };
+                          setWhyChooseFeatures(updated);
+                        }}
+                        className="w-full text-xs p-2.5 bg-white rounded-lg border border-stone-200"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Add New Feature Card Form */}
+              <div className="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-3">
+                <span className="text-xs font-bold text-stone-800 block">+ Tambah Kartu Keunggulan Baru:</span>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <input
+                    type="text"
+                    placeholder="Judul Keunggulan (cth: Asuransi Perjalanan Lengkap)"
+                    value={newFeatTitle}
+                    onChange={(e) => setNewFeatTitle(e.target.value)}
+                    className="sm:col-span-2 text-xs px-3 py-2 bg-white rounded-lg border border-stone-200"
+                  />
+                  <select
+                    value={newFeatIcon}
+                    onChange={(e) => setNewFeatIcon(e.target.value)}
+                    className="text-xs px-3 py-2 bg-white rounded-lg border border-stone-200"
+                  >
+                    <option value="Users">Ikon: Users</option>
+                    <option value="Award">Ikon: Award</option>
+                    <option value="ShieldCheck">Ikon: ShieldCheck</option>
+                    <option value="Calendar">Ikon: Calendar</option>
+                    <option value="Sparkles">Ikon: Sparkles</option>
+                    <option value="Star">Ikon: Star</option>
+                    <option value="Compass">Ikon: Compass</option>
+                  </select>
+                </div>
+                <textarea
+                  rows={2}
+                  placeholder="Deskripsi keunggulan yang didapatkan peserta trip..."
+                  value={newFeatDesc}
+                  onChange={(e) => setNewFeatDesc(e.target.value)}
+                  className="w-full text-xs p-2.5 bg-white rounded-lg border border-stone-200"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddWhyChooseFeature}
+                  className="px-4 py-2 bg-[#0F3827] text-white text-xs font-semibold rounded-lg hover:bg-[#17523A] cursor-pointer"
+                >
+                  + Tambahkan ke Daftar Keunggulan
+                </button>
+              </div>
+            </div>
+
+            {/* SEKSI 4: TESTIMONI & ULASAN TAMU */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-2xs space-y-5">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                <div>
+                  <h3 className="font-serif-luxury text-lg font-bold text-stone-900 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#0F3827]"></span>
+                    <span>4. Seksi Cerita & Ulasan Pengalaman Tamu</span>
+                  </h3>
+                  <p className="text-xs text-stone-500 mt-0.5">Kelola judul seksi ulasan atau buka tab Cerita Tamu untuk menambah/mengedit ulasan nyata.</p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('testimonials')}
+                  className="px-3.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-bold rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
+                >
+                  <MessageSquare className="w-3.5 h-3.5 text-amber-700" />
+                  <span>Kelola Ulasan Tamu ({testimonials.length})</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">Badge Seksi Ulasan</label>
+                  <input
+                    type="text"
+                    value={testimonialsSectionBadge}
+                    onChange={(e) => setTestimonialsSectionBadge(e.target.value)}
+                    placeholder="Cerita Pengalaman Tamu"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">Judul Seksi Ulasan</label>
+                  <input
+                    type="text"
+                    value={testimonialsSectionTitle}
+                    onChange={(e) => setTestimonialsSectionTitle(e.target.value)}
+                    placeholder="Ulasan Nyata dari Wisatawan Garut Journey"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* SEKSI 5: PERTANYAAN UMUM (FAQ) */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-2xs space-y-6">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                <div>
+                  <h3 className="font-serif-luxury text-lg font-bold text-stone-900 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#C8A951]"></span>
+                    <span>5. Seksi Pertanyaan Umum (FAQ)</span>
+                  </h3>
+                  <p className="text-xs text-stone-500 mt-0.5">Jawaban atas pertanyaan yang paling sering diajukan calon wisatawan sebelum memesan.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">Badge Seksi FAQ</label>
+                  <input
+                    type="text"
+                    value={faqSectionBadge}
+                    onChange={(e) => setFaqSectionBadge(e.target.value)}
+                    placeholder="Pertanyaan Umum"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">Judul Seksi FAQ</label>
+                  <input
+                    type="text"
+                    value={faqSectionTitle}
+                    onChange={(e) => setFaqSectionTitle(e.target.value)}
+                    placeholder="Informasi Penting Sebelum Memulai Perjalanan"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+              </div>
+
+              {/* FAQ Items List */}
+              <div className="space-y-3">
+                {homepageFaqs.map((faq, idx) => (
+                  <div key={idx} className="p-4 rounded-xl border border-stone-200 bg-stone-50/70 space-y-2 relative">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase text-[#0F3827] bg-white px-2 py-0.5 rounded border border-stone-200">
+                        Pertanyaan #{idx + 1}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveFaq(idx)}
+                        className="text-rose-500 hover:text-rose-700 text-xs font-semibold cursor-pointer"
+                        title="Hapus pertanyaan ini"
+                      >
+                        Hapus FAQ
+                      </button>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-semibold text-stone-600 block">Pertanyaan (Tanya)</label>
+                      <input
+                        type="text"
+                        value={faq.q}
+                        onChange={(e) => {
+                          const updated = [...homepageFaqs];
+                          updated[idx] = { ...faq, q: e.target.value };
+                          setHomepageFaqs(updated);
+                        }}
+                        className="w-full text-xs px-3 py-2 bg-white rounded-lg border border-stone-200 font-semibold"
+                      />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-semibold text-stone-600 block">Jawaban Penjelasan</label>
+                      <textarea
+                        rows={2}
+                        value={faq.a}
+                        onChange={(e) => {
+                          const updated = [...homepageFaqs];
+                          updated[idx] = { ...faq, a: e.target.value };
+                          setHomepageFaqs(updated);
+                        }}
+                        className="w-full text-xs p-2.5 bg-white rounded-lg border border-stone-200"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Add New FAQ Form */}
+              <div className="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-2.5">
+                <span className="text-xs font-bold text-stone-800 block">+ Tambah Pertanyaan FAQ Baru:</span>
+                <input
+                  type="text"
+                  placeholder="Contoh: Apakah bisa request penjemputan dari luar kota Bandung/Jakarta?"
+                  value={newFaqQ}
+                  onChange={(e) => setNewFaqQ(e.target.value)}
+                  className="w-full text-xs px-3 py-2 bg-white rounded-lg border border-stone-200"
+                />
+                <textarea
+                  rows={2}
+                  placeholder="Jawaban penjelasan yang ramah dan informatif..."
+                  value={newFaqA}
+                  onChange={(e) => setNewFaqA(e.target.value)}
+                  className="w-full text-xs p-2.5 bg-white rounded-lg border border-stone-200"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddFaq}
+                  className="px-4 py-2 bg-[#0F3827] text-white text-xs font-semibold rounded-lg hover:bg-[#17523A] cursor-pointer"
+                >
+                  + Tambahkan ke Daftar FAQ
+                </button>
+              </div>
+            </div>
+
+            {/* SEKSI 6: BANNER AJAKAN BERTINDAK (CTA STRIP BAWAH) */}
+            <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-2xs space-y-5">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                <div>
+                  <h3 className="font-serif-luxury text-lg font-bold text-stone-900 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#0F3827]"></span>
+                    <span>6. Banner Ajakan Bertindak (CTA Bawah Beranda)</span>
+                  </h3>
+                  <p className="text-xs text-stone-500 mt-0.5">Banner hijau gelap di bagian paling bawah halaman sebelum footer.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">Judul Ajakan CTA</label>
+                  <input
+                    type="text"
+                    value={ctaTitle}
+                    onChange={(e) => setCtaTitle(e.target.value)}
+                    placeholder="Siap Berpetualang di Garut?"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200 font-semibold"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-stone-700 block">Teks Tombol Aksi</label>
+                  <input
+                    type="text"
+                    value={ctaButtonText}
+                    onChange={(e) => setCtaButtonText(e.target.value)}
+                    placeholder="Jelajahi Paket Wisata"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+
+                <div className="space-y-1 md:col-span-2">
+                  <label className="text-xs font-semibold text-stone-700 block">Subjudul Penjelas CTA</label>
+                  <input
+                    type="text"
+                    value={ctaSubtitle}
+                    onChange={(e) => setCtaSubtitle(e.target.value)}
+                    placeholder="Konsultasikan rencana perjalanan Anda atau pilih paket wisata favorit sekarang..."
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+
+                <div className="space-y-1 md:col-span-2">
+                  <label className="text-xs font-semibold text-stone-700 block">Tautan Tujuan Tombol (URL/Path)</label>
+                  <input
+                    type="text"
+                    value={ctaButtonLink}
+                    onChange={(e) => setCtaButtonLink(e.target.value)}
+                    placeholder="/paket-wisata"
+                    className="w-full text-xs px-3 py-2.5 bg-stone-50 rounded-lg border border-stone-200"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Sticky Save Bar Bottom */}
+            <div className="sticky bottom-4 z-30 bg-stone-900/95 backdrop-blur-md p-4 rounded-2xl border border-stone-800 shadow-2xl flex items-center justify-between gap-4 text-white">
+              <div className="flex items-center gap-2">
+                <Compass className="w-5 h-5 text-[#C8A951]" />
+                <span className="text-xs text-stone-300 font-medium">
+                  Pastikan menekan tombol simpan setelah merubah teks atau susunan beranda.
+                </span>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {homepageSavedMsg && (
+                  <span className="text-xs text-emerald-400 font-bold flex items-center gap-1">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <span>Tersimpan!</span>
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => handleSaveHomepageSettings()}
+                  disabled={homepageSaving}
+                  className="px-6 py-2.5 bg-[#C8A951] hover:bg-[#B89940] text-stone-950 text-xs uppercase tracking-wider font-bold rounded-xl transition-colors shadow cursor-pointer disabled:opacity-60 flex items-center gap-1.5"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${homepageSaving ? 'animate-spin' : ''}`} />
+                  <span>{homepageSaving ? 'Menyimpan...' : 'Simpan Seluruh Perubahan Beranda'}</span>
+                </button>
               </div>
             </div>
           </div>
@@ -1506,7 +2815,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                               <span>Invoice WA</span>
                             </button>
                             <button
-                              onClick={() => handleDeleteBooking(b.id)}
+                              onClick={() => handleDeleteBooking(b.id, b.bookingCode)}
                               className="p-1 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded cursor-pointer"
                               title="Hapus Pesanan"
                             >
@@ -1683,7 +2992,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                       <div className="pt-3 border-t flex justify-end">
                         <button
                           type="button"
-                          onClick={() => handleDeleteBooking(selectedBooking.id)}
+                          onClick={() => handleDeleteBooking(selectedBooking.id, selectedBooking.bookingCode)}
                           className="text-rose-600 hover:text-rose-800 text-xs flex items-center gap-1 font-medium cursor-pointer"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -1701,13 +3010,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         {/* TAB 4: PACKAGES & ACTIVITY MANAGEMENT */}
         {activeTab === 'packages' && (
           <div className="space-y-6">
-            <div>
-              <h2 className="font-serif-luxury text-2xl font-bold text-stone-900">
-                Manajemen Paket & Aktivitas Perjalanan
-              </h2>
-              <p className="text-xs text-stone-500 mt-0.5">
-                Kelola paket private trip dan hapus aktivitas yang tidak relevan dari susunan rencana perjalanan (itinerary).
-              </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="font-serif-luxury text-2xl font-bold text-stone-900">
+                  Manajemen Paket & Aktivitas Perjalanan
+                </h2>
+                <p className="text-xs text-stone-500 mt-0.5">
+                  Kelola paket private trip, harga bertingkat peserta, foto galeri, dan susunan rencana perjalanan (itinerary).
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowNewPackageModal(true)}
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0F3827] hover:bg-[#17523A] text-white rounded-xl text-xs font-bold transition-colors shadow-sm cursor-pointer self-start sm:self-auto"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Tambah Paket Wisata Baru</span>
+              </button>
             </div>
 
             {/* Search and Category Filter for Packages */}
@@ -1860,6 +3179,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                         <Layers className="w-3.5 h-3.5" />
                         <span>Aktivitas</span>
                       </button>
+                      <button
+                        onClick={() => handleDeletePackage(pkg.id, pkg.name)}
+                        className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-semibold rounded-lg flex items-center gap-1 cursor-pointer transition-colors"
+                        title="Hapus Paket Wisata"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span className="sr-only sm:not-sr-only">Hapus</span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -1915,13 +3242,45 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     </div>
                   </div>
 
+                  {/* Form Tambah Hari Baru ke Itinerary */}
+                  <div className="p-3 bg-emerald-50/60 rounded-xl space-y-2 border border-emerald-200">
+                    <span className="text-xs font-bold text-emerald-950 block">+ Tambah Hari Rencana Perjalanan Baru:</span>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        placeholder={`Judul Hari (cth: Hari ${(selectedPackageForActivities.itinerary?.length || 0) + 1}: Eksplorasi Kawah & Hutan)`}
+                        value={newDayTitle}
+                        onChange={(e) => setNewDayTitle(e.target.value)}
+                        className="flex-1 px-3 py-1.5 border border-stone-200 rounded-lg bg-white text-xs"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleAddDayToItinerary(selectedPackageForActivities.id)}
+                        className="px-3.5 py-1.5 bg-[#0F3827] hover:bg-[#17523A] text-white text-xs font-bold rounded-lg cursor-pointer"
+                      >
+                        + Tambah Hari
+                      </button>
+                    </div>
+                  </div>
+
                   {/* List of activities with delete button */}
                   <div className="space-y-4 text-xs">
                     {selectedPackageForActivities.itinerary.map(dayItem => (
                       <div key={dayItem.day} className="space-y-2 border-b pb-3">
-                        <span className="font-bold text-sm text-[#0F3827] block">
-                          Hari {dayItem.day}: {dayItem.title}
-                        </span>
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-sm text-[#0F3827] block">
+                            Hari {dayItem.day}: {dayItem.title}
+                          </span>
+                          {selectedPackageForActivities.itinerary.length > 1 && (
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteDayFromItinerary(selectedPackageForActivities.id, dayItem.day)}
+                              className="text-xs text-rose-600 hover:text-rose-800 font-semibold cursor-pointer"
+                            >
+                              Hapus Hari Ini
+                            </button>
+                          )}
+                        </div>
 
                         <div className="space-y-1.5">
                           {dayItem.activities.map((act, actIdx) => (
@@ -1931,7 +3290,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                             >
                               <span className="text-stone-700 flex-1 pr-2">{act}</span>
                               <button
-                                onClick={() => handleDeleteActivity(selectedPackageForActivities.id, dayItem.day, actIdx)}
+                                onClick={() => handleDeleteActivity(selectedPackageForActivities.id, dayItem.day, actIdx, act)}
                                 className="text-rose-500 hover:text-rose-700 p-1 rounded hover:bg-rose-50 transition-colors cursor-pointer"
                                 title="Hapus aktivitas ini"
                               >
@@ -1952,6 +3311,482 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                       Selesai
                     </button>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* Modal Tambah Paket Wisata Baru */}
+            {showNewPackageModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs">
+                <div className="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-xl border space-y-4 max-h-[90vh] overflow-y-auto">
+                  <div className="flex items-center justify-between border-b pb-3">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase text-[#0F3827]">Paket Wisata Baru</span>
+                      <h3 className="font-serif-luxury text-lg font-bold text-stone-900">
+                        Tambah Paket Wisata Garut
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => setShowNewPackageModal(false)}
+                      className="text-stone-400 hover:text-stone-700 font-bold"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleCreatePackage} className="space-y-4 text-xs">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="space-y-1 sm:col-span-2">
+                        <label className="font-semibold text-stone-700 block">Nama Paket Wisata</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Contoh: Eksplorasi Gunung Papandayan & Sunrise Hutan Mati"
+                          value={newPkgName}
+                          onChange={(e) => setNewPkgName(e.target.value)}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Kategori</label>
+                        <select
+                          value={newPkgCategory}
+                          onChange={(e) => setNewPkgCategory(e.target.value)}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        >
+                          <option value="Gunung & Alam">Gunung & Alam</option>
+                          <option value="Keluarga & Relaksasi">Keluarga & Relaksasi</option>
+                          <option value="Budaya & Sejarah">Budaya & Sejarah</option>
+                          <option value="Petualangan Alam">Petualangan Alam</option>
+                        </select>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Area / Destinasi</label>
+                        <input
+                          type="text"
+                          value={newPkgDestArea}
+                          onChange={(e) => setNewPkgDestArea(e.target.value)}
+                          placeholder="Garut, Jawa Barat"
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Harga Dasar per Orang (Rp)</label>
+                        <input
+                          type="number"
+                          required
+                          min={50000}
+                          step={10000}
+                          value={newPkgBasePrice}
+                          onChange={(e) => setNewPkgBasePrice(Number(e.target.value))}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50 font-mono"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="space-y-1">
+                          <label className="font-semibold text-stone-700 block">Durasi Hari</label>
+                          <input
+                            type="number"
+                            min={1}
+                            value={newPkgDays}
+                            onChange={(e) => setNewPkgDays(Number(e.target.value))}
+                            className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="font-semibold text-stone-700 block">Durasi Malam</label>
+                          <input
+                            type="number"
+                            min={0}
+                            value={newPkgNights}
+                            onChange={(e) => setNewPkgNights(Number(e.target.value))}
+                            className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 sm:col-span-2">
+                        <label className="font-semibold text-stone-700 block">Foto Utama Paket</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={newPkgImageUrl}
+                            onChange={(e) => setNewPkgImageUrl(e.target.value)}
+                            placeholder="URL Gambar atau unggah file foto..."
+                            className="flex-1 px-3 py-2 border rounded-lg bg-stone-50"
+                          />
+                          <label className="px-3 py-2 bg-stone-100 hover:bg-stone-200 border rounded-lg cursor-pointer flex items-center gap-1 font-semibold text-stone-700 shrink-0">
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>{uploadingImage ? 'Mengunggah...' : 'Upload'}</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={async (e) => {
+                                const f = e.target.files?.[0];
+                                if (f) {
+                                  const url = await uploadFileToServer(f);
+                                  if (url) setNewPkgImageUrl(url);
+                                }
+                              }}
+                            />
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 sm:col-span-2">
+                        <label className="font-semibold text-stone-700 block">Ringkasan Singkat (Short Description)</label>
+                        <input
+                          type="text"
+                          required
+                          value={newPkgShortDesc}
+                          onChange={(e) => setNewPkgShortDesc(e.target.value)}
+                          placeholder="Penjelasan ringkas 1-2 kalimat untuk kartu paket..."
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+
+                      <div className="space-y-1 sm:col-span-2">
+                        <label className="font-semibold text-stone-700 block">Deskripsi Lengkap</label>
+                        <textarea
+                          rows={3}
+                          value={newPkgDesc}
+                          onChange={(e) => setNewPkgDesc(e.target.value)}
+                          placeholder="Deskripsi daya tarik, pengalaman, dan suasana wisata yang akan didapatkan..."
+                          className="w-full p-2.5 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Fasilitas Termasuk (1 per baris)</label>
+                        <textarea
+                          rows={3}
+                          value={newPkgInclusions}
+                          onChange={(e) => setNewPkgInclusions(e.target.value)}
+                          className="w-full p-2.5 border rounded-lg bg-stone-50 font-mono text-[11px]"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Tidak Termasuk (1 per baris)</label>
+                        <textarea
+                          rows={3}
+                          value={newPkgExclusions}
+                          onChange={(e) => setNewPkgExclusions(e.target.value)}
+                          className="w-full p-2.5 border rounded-lg bg-stone-50 font-mono text-[11px]"
+                        />
+                      </div>
+
+                      <div className="space-y-1 sm:col-span-2">
+                        <label className="font-semibold text-stone-700 block">Titik Penjemputan / Meeting Point (1 per baris)</label>
+                        <textarea
+                          rows={2}
+                          value={newPkgPickupPoints}
+                          onChange={(e) => setNewPkgPickupPoints(e.target.value)}
+                          className="w-full p-2.5 border rounded-lg bg-stone-50 font-mono text-[11px]"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-3 border-t">
+                      <button
+                        type="button"
+                        onClick={() => setShowNewPackageModal(false)}
+                        className="px-4 py-2 border rounded-lg text-stone-600 font-semibold cursor-pointer"
+                      >
+                        Batal
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={packageCreating}
+                        className="px-5 py-2 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-lg cursor-pointer"
+                      >
+                        {packageCreating ? 'Menyimpan...' : 'Tambahkan Paket Wisata'}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* Modal Edit Paket Wisata & Pilihan Harga Bertingkat */}
+            {editingPackage && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs">
+                <div className="bg-white rounded-2xl max-w-3xl w-full p-6 shadow-xl border space-y-4 max-h-[90vh] overflow-y-auto">
+                  <div className="flex items-center justify-between border-b pb-3">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase text-[#C8A951]">Edit Paket Wisata</span>
+                      <h3 className="font-serif-luxury text-lg font-bold text-stone-900">
+                        {editingPackage.name}
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => setEditingPackage(null)}
+                      className="text-stone-400 hover:text-stone-700 font-bold"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleSaveEditPackage} className="space-y-5 text-xs">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="space-y-1 sm:col-span-2">
+                        <label className="font-semibold text-stone-700 block">Nama Paket Wisata</label>
+                        <input
+                          type="text"
+                          required
+                          value={editingPackage.name}
+                          onChange={(e) => setEditingPackage({ ...editingPackage, name: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50 font-bold text-stone-900"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Kategori</label>
+                        <select
+                          value={editingPackage.category}
+                          onChange={(e) => setEditingPackage({ ...editingPackage, category: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        >
+                          <option value="Gunung & Alam">Gunung & Alam</option>
+                          <option value="Keluarga & Relaksasi">Keluarga & Relaksasi</option>
+                          <option value="Budaya & Sejarah">Budaya & Sejarah</option>
+                          <option value="Petualangan Alam">Petualangan Alam</option>
+                        </select>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Area / Destinasi</label>
+                        <input
+                          type="text"
+                          value={editingPackage.destinationArea}
+                          onChange={(e) => setEditingPackage({ ...editingPackage, destinationArea: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Harga Dasar (Rp)</label>
+                        <input
+                          type="number"
+                          value={editingPackage.basePrice}
+                          onChange={(e) => setEditingPackage({ ...editingPackage, basePrice: Number(e.target.value) })}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50 font-mono"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="space-y-1">
+                          <label className="font-semibold text-stone-700 block">Durasi Hari</label>
+                          <input
+                            type="number"
+                            min={1}
+                            value={editingPackage.durationDays}
+                            onChange={(e) => setEditingPackage({ ...editingPackage, durationDays: Number(e.target.value) })}
+                            className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="font-semibold text-stone-700 block">Durasi Malam</label>
+                          <input
+                            type="number"
+                            min={0}
+                            value={editingPackage.durationNights}
+                            onChange={(e) => setEditingPackage({ ...editingPackage, durationNights: Number(e.target.value) })}
+                            className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 sm:col-span-2">
+                        <label className="font-semibold text-stone-700 block">Foto Utama</label>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={editingPackage.images?.[0]?.imageUrl || ''}
+                            onChange={(e) => {
+                              const newImgs = [...(editingPackage.images || [])];
+                              if (newImgs.length > 0) {
+                                newImgs[0] = { ...newImgs[0], imageUrl: e.target.value };
+                              } else {
+                                newImgs.push({
+                                  id: 'img-' + Date.now(),
+                                  packageId: editingPackage.id,
+                                  imageUrl: e.target.value,
+                                  altText: editingPackage.name,
+                                  sortOrder: 1,
+                                  isPrimary: true
+                                });
+                              }
+                              setEditingPackage({ ...editingPackage, images: newImgs });
+                            }}
+                            className="flex-1 px-3 py-2 border rounded-lg bg-stone-50"
+                          />
+                          <label className="px-3 py-2 bg-stone-100 hover:bg-stone-200 border rounded-lg cursor-pointer flex items-center gap-1 font-semibold text-stone-700 shrink-0">
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>{uploadingImage ? '...' : 'Upload'}</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={async (e) => {
+                                const f = e.target.files?.[0];
+                                if (f) {
+                                  const url = await uploadFileToServer(f);
+                                  if (url) {
+                                    const newImgs = [...(editingPackage.images || [])];
+                                    if (newImgs.length > 0) {
+                                      newImgs[0] = { ...newImgs[0], imageUrl: url };
+                                    } else {
+                                      newImgs.push({
+                                        id: 'img-' + Date.now(),
+                                        packageId: editingPackage.id,
+                                        imageUrl: url,
+                                        altText: editingPackage.name,
+                                        sortOrder: 1,
+                                        isPrimary: true
+                                      });
+                                    }
+                                    setEditingPackage({ ...editingPackage, images: newImgs });
+                                  }
+                                }
+                              }}
+                            />
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1 sm:col-span-2">
+                        <label className="font-semibold text-stone-700 block">Ringkasan Singkat</label>
+                        <input
+                          type="text"
+                          value={editingPackage.shortDescription}
+                          onChange={(e) => setEditingPackage({ ...editingPackage, shortDescription: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+
+                      <div className="space-y-1 sm:col-span-2">
+                        <label className="font-semibold text-stone-700 block">Deskripsi Detail</label>
+                        <textarea
+                          rows={3}
+                          value={editingPackage.description}
+                          onChange={(e) => setEditingPackage({ ...editingPackage, description: e.target.value })}
+                          className="w-full p-2.5 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Fasilitas Termasuk (1 per baris)</label>
+                        <textarea
+                          rows={3}
+                          value={(editingPackage.inclusions || []).join('\n')}
+                          onChange={(e) => setEditingPackage({
+                            ...editingPackage,
+                            inclusions: e.target.value.split('\n').map(s => s.trim()).filter(Boolean)
+                          })}
+                          className="w-full p-2.5 border rounded-lg bg-stone-50 font-mono text-[11px]"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Tidak Termasuk (1 per baris)</label>
+                        <textarea
+                          rows={3}
+                          value={(editingPackage.exclusions || []).join('\n')}
+                          onChange={(e) => setEditingPackage({
+                            ...editingPackage,
+                            exclusions: e.target.value.split('\n').map(s => s.trim()).filter(Boolean)
+                          })}
+                          className="w-full p-2.5 border rounded-lg bg-stone-50 font-mono text-[11px]"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Tiered Pricing Section */}
+                    <div className="p-4 bg-stone-50 rounded-xl border space-y-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                          <span className="font-bold text-stone-900 block">Pilihan Harga Bertingkat Jumlah Peserta (Tiered Pricing)</span>
+                          <span className="text-[11px] text-stone-500">Harga per orang otomatis disesuaikan sesuai jumlah rombongan yang dipesan.</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleAutoCalculatePackageTiers}
+                          className="px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs font-bold transition-colors cursor-pointer self-start sm:self-auto"
+                        >
+                          ⚡ Hitung Otomatis dari Harga Dasar
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                        {(editingPackage.priceTiers || []).map((tier, tIdx) => (
+                          <div key={tIdx} className="p-2.5 bg-white rounded-lg border border-stone-200 space-y-1">
+                            <div className="flex items-center justify-between text-[11px] font-semibold text-stone-700">
+                              <span>{tier.label}</span>
+                              <span className="text-stone-400 font-mono text-[10px]">{tier.minParticipants}–{tier.maxParticipants} org</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <span className="text-stone-400 font-mono text-[10px]">Rp</span>
+                              <input
+                                type="number"
+                                step={5000}
+                                value={tier.pricePerPerson}
+                                onChange={(e) => {
+                                  const updatedTiers = [...(editingPackage.priceTiers || [])];
+                                  updatedTiers[tIdx] = { ...tier, pricePerPerson: Number(e.target.value) };
+                                  setEditingPackage({ ...editingPackage, priceTiers: updatedTiers });
+                                }}
+                                className="w-full px-2 py-1 bg-stone-50 border rounded text-xs font-mono font-bold text-[#0F3827]"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-3 border-t">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={editingPackage.isPublished !== false}
+                          onChange={(e) => setEditingPackage({ ...editingPackage, isPublished: e.target.checked })}
+                          className="w-4 h-4 rounded text-[#0F3827]"
+                        />
+                        <span className="font-semibold text-stone-800">Tayangkan Paket di Website (Published)</span>
+                      </label>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleDeletePackage(editingPackage.id, editingPackage.name)}
+                          className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-semibold rounded-lg flex items-center gap-1.5 cursor-pointer transition-colors"
+                          title="Hapus Paket Wisata Secara Permanen"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>Hapus Paket Ini</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditingPackage(null)}
+                          className="px-4 py-2 border rounded-lg text-stone-600 font-semibold cursor-pointer text-xs"
+                        >
+                          Batal
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={packageSaving}
+                          className="px-5 py-2 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-lg cursor-pointer text-xs"
+                        >
+                          {packageSaving ? 'Menyimpan...' : 'Simpan Perubahan Paket'}
+                        </button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
             )}
@@ -2049,7 +3884,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
                       {/* Delete button */}
                       <button
-                        onClick={() => handleDeleteAddon(addon.id)}
+                        onClick={() => handleDeleteAddon(addon.id, addon.name)}
                         className="p-1.5 text-rose-500 hover:text-rose-700 hover:bg-rose-50 rounded cursor-pointer transition-colors"
                         title="Hapus Layanan"
                       >
@@ -2286,6 +4121,387 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           </div>
         )}
 
+        {/* TAB: MANAJEMEN CERITA & ULASAN PENGALAMAN TAMU (TESTIMONIALS) */}
+        {activeTab === 'testimonials' && (
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-stone-200 shadow-2xs">
+              <div>
+                <span className="text-xs uppercase tracking-wider font-bold text-[#0F3827] flex items-center gap-1.5">
+                  <MessageSquare className="w-4 h-4 text-[#C8A951]" />
+                  <span>Ulasan Wisatawan & Cerita Pengalaman</span>
+                </span>
+                <h2 className="font-serif-luxury text-2xl font-bold text-stone-900 mt-1">
+                  Manajemen Cerita & Ulasan Tamu
+                </h2>
+                <p className="text-xs text-stone-500 mt-0.5">
+                  Kelola ulasan nyata dari pelanggan yang telah berwisata bersama Garut Journey untuk membangun kepercayaan publik.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowNewTestimonialModal(true)}
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#0F3827] hover:bg-[#17523A] text-white rounded-xl text-xs font-bold transition-colors shadow-sm cursor-pointer self-start sm:self-auto"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Tambah Ulasan Baru</span>
+              </button>
+            </div>
+
+            {/* Testimonials Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {testimonials.map(item => (
+                <div key={item.id} className="bg-white p-5 rounded-2xl border border-stone-200 shadow-2xs flex flex-col justify-between space-y-4">
+                  <div className="space-y-2.5">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#0F3827] bg-[#E6F0EB] px-2 py-0.5 rounded">
+                        {item.package || 'Trip Garut'}
+                      </span>
+                      <div className="flex text-amber-400 text-xs">
+                        {Array.from({ length: item.rating || 5 }).map((_, sIdx) => (
+                          <span key={sIdx}>★</span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-stone-700 leading-relaxed italic">
+                      &quot;{item.text}&quot;
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-stone-100 flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      {item.avatarUrl ? (
+                        <img
+                          src={item.avatarUrl}
+                          alt={item.name}
+                          className="w-8 h-8 rounded-full object-cover border border-stone-200"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-[#0F3827] text-white flex items-center justify-center font-bold text-xs uppercase">
+                          {item.name.slice(0, 2)}
+                        </div>
+                      )}
+                      <div>
+                        <span className="text-xs font-bold text-stone-900 block">{item.name}</span>
+                        <span className="text-[10px] text-stone-500">{item.role} · {item.city}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenEditTestimonial(item)}
+                        className="p-1.5 text-stone-600 hover:text-amber-800 hover:bg-amber-50 rounded-lg transition-colors cursor-pointer"
+                        title="Edit ulasan"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteTestimonial(item.id, item.name)}
+                        className="p-1.5 text-stone-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                        title="Hapus ulasan"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {testimonials.length === 0 && (
+              <div className="bg-white p-12 text-center rounded-2xl border border-dashed border-stone-300 space-y-3">
+                <MessageSquare className="w-8 h-8 text-stone-400 mx-auto" />
+                <h4 className="font-bold text-stone-800 text-sm">Belum Ada Cerita Ulasan Tamu</h4>
+                <p className="text-xs text-stone-500 max-w-sm mx-auto">
+                  Tambahkan ulasan atau testimoni pertama wisatawan untuk ditampilkan di halaman beranda.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setShowNewTestimonialModal(true)}
+                  className="px-4 py-2 bg-[#0F3827] text-white text-xs font-bold rounded-lg cursor-pointer"
+                >
+                  + Tambah Ulasan Sekarang
+                </button>
+              </div>
+            )}
+
+            {/* Modal Tambah Testimoni Baru */}
+            {showNewTestimonialModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs">
+                <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border space-y-4">
+                  <div className="flex items-center justify-between border-b pb-3">
+                    <h3 className="font-serif-luxury text-lg font-bold text-stone-900">
+                      Tambah Cerita & Ulasan Tamu
+                    </h3>
+                    <button
+                      onClick={() => setShowNewTestimonialModal(false)}
+                      className="text-stone-400 hover:text-stone-700 font-bold"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleCreateTestimonial} className="space-y-3 text-xs">
+                    <div className="space-y-1">
+                      <label className="font-semibold text-stone-700 block">Nama Lengkap Tamu</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Contoh: Rian Pratama"
+                        value={testiName}
+                        onChange={(e) => setTestiName(e.target.value)}
+                        className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Profesi / Peran</label>
+                        <input
+                          type="text"
+                          placeholder="Fotografer / Keluarga"
+                          value={testiRole}
+                          onChange={(e) => setTestiRole(e.target.value)}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Kota Asal</label>
+                        <input
+                          type="text"
+                          placeholder="Jakarta Selatan"
+                          value={testiCity}
+                          onChange={(e) => setTestiCity(e.target.value)}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Paket yang Diambil</label>
+                        <input
+                          type="text"
+                          placeholder="Eksplorasi Gunung Papandayan"
+                          value={testiPackage}
+                          onChange={(e) => setTestiPackage(e.target.value)}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Rating Bintang</label>
+                        <select
+                          value={testiRating}
+                          onChange={(e) => setTestiRating(Number(e.target.value))}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        >
+                          <option value={5}>⭐⭐⭐⭐⭐ (5 Bintang)</option>
+                          <option value={4}>⭐⭐⭐⭐ (4 Bintang)</option>
+                          <option value={3}>⭐⭐⭐ (3 Bintang)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-semibold text-stone-700 block">Foto Profil / Avatar</label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          placeholder="URL Foto atau unggah avatar..."
+                          value={testiAvatar}
+                          onChange={(e) => setTestiAvatar(e.target.value)}
+                          className="flex-1 px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                        <label className="px-3 py-2 bg-stone-100 hover:bg-stone-200 border rounded-lg cursor-pointer flex items-center gap-1 font-semibold text-stone-700 shrink-0">
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>{uploadingImage ? '...' : 'Upload'}</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={async (e) => {
+                              const f = e.target.files?.[0];
+                              if (f) {
+                                const url = await uploadFileToServer(f);
+                                if (url) setTestiAvatar(url);
+                              }
+                            }}
+                          />
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-semibold text-stone-700 block">Isi Ulasan & Testimoni</label>
+                      <textarea
+                        rows={3}
+                        required
+                        placeholder="Tuliskan pengalaman menyenangkan, kepuasan pemandu, atau fasilitas perjalanan..."
+                        value={testiText}
+                        onChange={(e) => setTestiText(e.target.value)}
+                        className="w-full p-2.5 border rounded-lg bg-stone-50"
+                      />
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-3 border-t">
+                      <button
+                        type="button"
+                        onClick={() => setShowNewTestimonialModal(false)}
+                        className="px-4 py-2 border rounded-lg text-stone-600 font-semibold cursor-pointer"
+                      >
+                        Batal
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={testiSaving}
+                        className="px-5 py-2 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-lg cursor-pointer"
+                      >
+                        {testiSaving ? 'Menyimpan...' : 'Tambahkan Ulasan'}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* Modal Edit Testimoni */}
+            {editingTestimonial && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs">
+                <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border space-y-4">
+                  <div className="flex items-center justify-between border-b pb-3">
+                    <h3 className="font-serif-luxury text-lg font-bold text-stone-900">
+                      Edit Ulasan: {editingTestimonial.name}
+                    </h3>
+                    <button
+                      onClick={() => setEditingTestimonial(null)}
+                      className="text-stone-400 hover:text-stone-700 font-bold"
+                    >
+                      ✕
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleSaveEditTestimonial} className="space-y-3 text-xs">
+                    <div className="space-y-1">
+                      <label className="font-semibold text-stone-700 block">Nama Lengkap Tamu</label>
+                      <input
+                        type="text"
+                        required
+                        value={editingTestimonial.name}
+                        onChange={(e) => setEditingTestimonial({ ...editingTestimonial, name: e.target.value })}
+                        className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Profesi / Peran</label>
+                        <input
+                          type="text"
+                          value={editingTestimonial.role}
+                          onChange={(e) => setEditingTestimonial({ ...editingTestimonial, role: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Kota Asal</label>
+                        <input
+                          type="text"
+                          value={editingTestimonial.city}
+                          onChange={(e) => setEditingTestimonial({ ...editingTestimonial, city: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Paket yang Diambil</label>
+                        <input
+                          type="text"
+                          value={editingTestimonial.package}
+                          onChange={(e) => setEditingTestimonial({ ...editingTestimonial, package: e.target.value })}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="font-semibold text-stone-700 block">Rating Bintang</label>
+                        <select
+                          value={editingTestimonial.rating || 5}
+                          onChange={(e) => setEditingTestimonial({ ...editingTestimonial, rating: Number(e.target.value) })}
+                          className="w-full px-3 py-2 border rounded-lg bg-stone-50"
+                        >
+                          <option value={5}>⭐⭐⭐⭐⭐ (5 Bintang)</option>
+                          <option value={4}>⭐⭐⭐⭐ (4 Bintang)</option>
+                          <option value={3}>⭐⭐⭐ (3 Bintang)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-semibold text-stone-700 block">Foto Profil / Avatar</label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={editingTestimonial.avatarUrl || ''}
+                          onChange={(e) => setEditingTestimonial({ ...editingTestimonial, avatarUrl: e.target.value })}
+                          className="flex-1 px-3 py-2 border rounded-lg bg-stone-50"
+                        />
+                        <label className="px-3 py-2 bg-stone-100 hover:bg-stone-200 border rounded-lg cursor-pointer flex items-center gap-1 font-semibold text-stone-700 shrink-0">
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>{uploadingImage ? '...' : 'Upload'}</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={async (e) => {
+                              const f = e.target.files?.[0];
+                              if (f) {
+                                const url = await uploadFileToServer(f);
+                                if (url) setEditingTestimonial({ ...editingTestimonial, avatarUrl: url });
+                              }
+                            }}
+                          />
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="font-semibold text-stone-700 block">Isi Ulasan & Testimoni</label>
+                      <textarea
+                        rows={3}
+                        required
+                        value={editingTestimonial.text}
+                        onChange={(e) => setEditingTestimonial({ ...editingTestimonial, text: e.target.value })}
+                        className="w-full p-2.5 border rounded-lg bg-stone-50"
+                      />
+                    </div>
+
+                    <div className="flex justify-end gap-2 pt-3 border-t">
+                      <button
+                        type="button"
+                        onClick={() => setEditingTestimonial(null)}
+                        className="px-4 py-2 border rounded-lg text-stone-600 font-semibold cursor-pointer"
+                      >
+                        Batal
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={testiSaving}
+                        className="px-5 py-2 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-lg cursor-pointer"
+                      >
+                        {testiSaving ? 'Menyimpan...' : 'Simpan Perubahan'}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* TAB 5: ARTICLES MANAGEMENT (EDITABLE) */}
         {activeTab === 'articles' && (
           <div className="space-y-6">
@@ -2329,7 +4545,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                         <span>Edit</span>
                       </button>
                       <button
-                        onClick={() => handleDeleteArticle(art.id)}
+                        onClick={() => handleDeleteArticle(art.id, art.title)}
                         className="text-rose-600 hover:text-rose-800 flex items-center gap-1 cursor-pointer font-medium px-2 py-1 bg-rose-50 hover:bg-rose-100 rounded"
                         title="Hapus artikel"
                       >
@@ -2810,7 +5026,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                       <span>Edit</span>
                     </button>
                     <button
-                      onClick={() => handleDeleteGallery(item.id)}
+                      onClick={() => handleDeleteGallery(item.id, item.title)}
                       className="text-rose-600 hover:text-rose-800 text-xs flex items-center gap-1 cursor-pointer font-medium px-2 py-1 bg-rose-50 hover:bg-rose-100 rounded"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -2989,6 +5205,194 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* TAB: WARNA TEMA WEBSITE & TEMPLAT PESAN WHATSAPP */}
+        {activeTab === 'theme_colors' && (
+          <div className="max-w-4xl bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-2xs space-y-6">
+            <div>
+              <span className="text-[10px] text-[#C8A951] uppercase font-bold tracking-wider block">
+                Visual Branding & Integrasi Notifikasi
+              </span>
+              <h2 className="font-serif-luxury text-2xl font-bold text-stone-900 mt-1">
+                Kustomisasi Warna Tema & Templat Pesan WhatsApp
+              </h2>
+              <p className="text-xs text-stone-500 mt-0.5">
+                Sesuaikan skema warna utama website dan format teks pesan WhatsApp otomatis yang dikirimkan kepada calon wisatawan.
+              </p>
+            </div>
+
+            {themeSuccessMsg && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="font-semibold">{themeSuccessMsg}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSaveThemeAndWhatsApp} className="space-y-6 text-xs">
+              {/* Preset Palettes */}
+              <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 space-y-3">
+                <span className="font-bold text-stone-800 block">Pilihan Palet Warna Siap Pakai (Preset Themes):</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
+                  {PRESET_THEMES.map(t => (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => {
+                        setPrimaryColor(t.primaryColor);
+                        setPrimaryDarkColor(t.primaryDarkColor);
+                        setPrimaryHoverColor(t.primaryHoverColor);
+                        setAccentColor(t.accentColor);
+                        setAccentHoverColor(t.accentHoverColor);
+                      }}
+                      className="p-3 rounded-xl border border-stone-200 bg-white hover:border-[#0F3827] text-left space-y-2 cursor-pointer transition-colors shadow-2xs"
+                    >
+                      <span className="font-bold text-stone-800 block text-xs">{t.name}</span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-4 h-4 rounded-full border" style={{ backgroundColor: t.primaryColor }}></span>
+                        <span className="w-4 h-4 rounded-full border" style={{ backgroundColor: t.accentColor }}></span>
+                        <span className="w-4 h-4 rounded-full border" style={{ backgroundColor: t.primaryDarkColor }}></span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Color Inputs */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5 p-3 rounded-xl border border-stone-200">
+                  <label className="font-semibold text-stone-700 block">Warna Utama (Primary Green)</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      value={primaryColor}
+                      onChange={(e) => setPrimaryColor(e.target.value)}
+                      className="w-9 h-9 rounded cursor-pointer border-0 p-0"
+                    />
+                    <input
+                      type="text"
+                      value={primaryColor}
+                      onChange={(e) => setPrimaryColor(e.target.value)}
+                      className="flex-1 px-3 py-1.5 border rounded-lg bg-stone-50 font-mono text-xs"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 p-3 rounded-xl border border-stone-200">
+                  <label className="font-semibold text-stone-700 block">Warna Aksen Emas (Accent Gold)</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      value={accentColor}
+                      onChange={(e) => setAccentColor(e.target.value)}
+                      className="w-9 h-9 rounded cursor-pointer border-0 p-0"
+                    />
+                    <input
+                      type="text"
+                      value={accentColor}
+                      onChange={(e) => setAccentColor(e.target.value)}
+                      className="flex-1 px-3 py-1.5 border rounded-lg bg-stone-50 font-mono text-xs"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 p-3 rounded-xl border border-stone-200">
+                  <label className="font-semibold text-stone-700 block">Warna Gelap Footer (Primary Dark)</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      value={primaryDarkColor}
+                      onChange={(e) => setPrimaryDarkColor(e.target.value)}
+                      className="w-9 h-9 rounded cursor-pointer border-0 p-0"
+                    />
+                    <input
+                      type="text"
+                      value={primaryDarkColor}
+                      onChange={(e) => setPrimaryDarkColor(e.target.value)}
+                      className="flex-1 px-3 py-1.5 border rounded-lg bg-stone-50 font-mono text-xs"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 p-3 rounded-xl border border-stone-200">
+                  <label className="font-semibold text-stone-700 block">Warna Hover Tombol (Primary Hover)</label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      value={primaryHoverColor}
+                      onChange={(e) => setPrimaryHoverColor(e.target.value)}
+                      className="w-9 h-9 rounded cursor-pointer border-0 p-0"
+                    />
+                    <input
+                      type="text"
+                      value={primaryHoverColor}
+                      onChange={(e) => setPrimaryHoverColor(e.target.value)}
+                      className="flex-1 px-3 py-1.5 border rounded-lg bg-stone-50 font-mono text-xs"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* WhatsApp Templates */}
+              <div className="pt-4 border-t space-y-4">
+                <div>
+                  <h3 className="font-serif-luxury text-base font-bold text-stone-900">
+                    Templat Pesan WhatsApp Otomatis
+                  </h3>
+                  <p className="text-[11px] text-stone-500">
+                    Gunakan placeholder otomatis seperti {'{bookingNumber}'}, {'{customerName}'}, {'{packageName}'}, {'{totalAmount}'}, {'{ticketUrl}'}.
+                  </p>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="font-semibold text-stone-700 block">
+                    1. Pesan Konfirmasi Booking Baru
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={waTemplateBooking}
+                    onChange={(e) => setWaTemplateBooking(e.target.value)}
+                    className="w-full p-2.5 bg-stone-50 border rounded-lg font-mono text-[11px]"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="font-semibold text-stone-700 block">
+                    2. Pesan Tagihan Invoice & Link E-Ticket Resmi
+                  </label>
+                  <textarea
+                    rows={4}
+                    value={waTemplateInvoice}
+                    onChange={(e) => setWaTemplateInvoice(e.target.value)}
+                    className="w-full p-2.5 bg-stone-50 border rounded-lg font-mono text-[11px]"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="font-semibold text-stone-700 block">
+                    3. Pesan Konsultasi Umum WhatsApp Floating Button
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={waTemplateGeneral}
+                    onChange={(e) => setWaTemplateGeneral(e.target.value)}
+                    className="w-full p-2.5 bg-stone-50 border rounded-lg font-mono text-[11px]"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end pt-3 border-t">
+                <button
+                  type="submit"
+                  disabled={themeSaving}
+                  className="px-6 py-2.5 bg-[#0F3827] hover:bg-[#17523A] text-white font-bold rounded-xl text-xs shadow-sm cursor-pointer disabled:opacity-60 flex items-center gap-2"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${themeSaving ? 'animate-spin' : ''}`} />
+                  <span>{themeSaving ? 'Menyimpan...' : 'Simpan Tema & Templat WhatsApp'}</span>
+                </button>
+              </div>
+            </form>
           </div>
         )}
 
@@ -3475,6 +5879,88 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 </table>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* CUSTOM IN-APP DELETE CONFIRMATION MODAL */}
+        {deleteConfirm && deleteConfirm.isOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-stone-200 space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 shrink-0">
+                  <Trash2 className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="font-serif-luxury text-lg font-bold text-stone-900">
+                    {deleteConfirm.title}
+                  </h3>
+                  <p className="text-xs text-stone-500">
+                    Tindakan ini permanen dan tidak dapat dibatalkan.
+                  </p>
+                </div>
+              </div>
+
+              <div className="p-3.5 bg-rose-50/60 rounded-xl border border-rose-100 text-xs text-stone-700 space-y-2">
+                <p>{deleteConfirm.message}</p>
+                {deleteConfirm.itemName && (
+                  <div className="font-semibold text-rose-900 bg-white px-2.5 py-1.5 rounded-lg border border-rose-200 text-xs truncate">
+                    {deleteConfirm.itemName}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-stone-100">
+                <button
+                  type="button"
+                  disabled={deleteConfirm.isDeleting}
+                  onClick={() => setDeleteConfirm(null)}
+                  className="px-4 py-2 border border-stone-300 hover:bg-stone-100 text-stone-700 text-xs font-semibold rounded-xl cursor-pointer transition-colors"
+                >
+                  Batal
+                </button>
+                <button
+                  type="button"
+                  disabled={deleteConfirm.isDeleting}
+                  onClick={async () => {
+                    setDeleteConfirm(prev => prev ? { ...prev, isDeleting: true } : null);
+                    try {
+                      await deleteConfirm.onConfirm();
+                    } finally {
+                      setDeleteConfirm(null);
+                    }
+                  }}
+                  className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 cursor-pointer shadow-sm transition-colors disabled:opacity-50"
+                >
+                  {deleteConfirm.isDeleting ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>Menghapus...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Ya, Hapus Sekarang</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* CUSTOM IN-APP TOAST NOTIFICATION */}
+        {toastMessage && (
+          <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-2xl border text-xs font-semibold animate-in slide-in-from-bottom duration-200 bg-stone-900 text-white border-stone-800">
+            {toastMessage.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />}
+            {toastMessage.type === 'error' && <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />}
+            {toastMessage.type === 'info' && <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />}
+            <span className="max-w-xs">{toastMessage.text}</span>
+            <button
+              onClick={() => setToastMessage(null)}
+              className="ml-2 text-stone-400 hover:text-white p-0.5"
+            >
+              ✕
+            </button>
           </div>
         )}
       </div>

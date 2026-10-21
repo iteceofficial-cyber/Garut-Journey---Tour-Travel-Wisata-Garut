@@ -44,11 +44,11 @@
           "day": 1,
           "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
           "activities": [
-            "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan",
             "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
             "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
             "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
-            "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat"
+            "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+            "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan"
           ]
         },
         {
@@ -75,7 +75,7 @@
       "isPublished": true,
       "featuredOrder": 1,
       "createdAt": "2026-10-19T18:22:34.455Z",
-      "updatedAt": "2026-10-20T12:59:06.010Z",
+      "updatedAt": "2026-10-21T10:10:20.486Z",
       "images": [
         {
           "id": "img-1",
@@ -5332,10 +5332,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:22:14.212Z",
       "createdAt": "2026-10-20T12:22:14.212Z",
-      "updatedAt": "2026-10-20T12:22:14.212Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-59f0ce51-d0fb-4f3c-b4cd-a0df9010b0f5",
@@ -5447,7 +5447,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-5aae2a58-6f25-4f32-b876-6c4839f3a60b",
@@ -5469,10 +5470,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:22:14.220Z",
       "createdAt": "2026-10-20T12:22:14.220Z",
-      "updatedAt": "2026-10-20T12:22:14.220Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-c1ae2c9e-a241-4294-b52e-63e056daf4b1",
@@ -5598,7 +5599,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-0118126a-bd04-4f71-95db-2a91567fb88e",
@@ -5924,10 +5926,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:22:23.118Z",
       "createdAt": "2026-10-20T12:22:23.119Z",
-      "updatedAt": "2026-10-20T12:22:23.119Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-b399341f-f8fb-40f6-9c82-f6c8013f68e1",
@@ -6039,7 +6041,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-d08e825d-e2f2-417d-b7fb-dc97cbb6647e",
@@ -6061,10 +6064,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:22:23.126Z",
       "createdAt": "2026-10-20T12:22:23.126Z",
-      "updatedAt": "2026-10-20T12:22:23.126Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-84cf46e1-6b15-40fb-aefa-c4995a7ed9eb",
@@ -6190,7 +6193,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-ede3f992-586f-4873-9228-b6a4cea644f5",
@@ -6516,10 +6520,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:24:29.080Z",
       "createdAt": "2026-10-20T12:24:29.081Z",
-      "updatedAt": "2026-10-20T12:24:29.081Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-621c2a19-dd72-4c2e-ad9c-b9811f310f1b",
@@ -6631,7 +6635,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-dde86f15-f945-41cc-adce-1444b6b5f45e",
@@ -6653,10 +6658,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:24:29.087Z",
       "createdAt": "2026-10-20T12:24:29.087Z",
-      "updatedAt": "2026-10-20T12:24:29.087Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-5c4c3667-87e5-46b2-8053-05c6f0bcf707",
@@ -6782,7 +6787,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-e907a636-8bf4-4d2b-852e-15eb47951999",
@@ -7108,10 +7114,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:24:35.181Z",
       "createdAt": "2026-10-20T12:24:35.182Z",
-      "updatedAt": "2026-10-20T12:24:35.182Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-7c02d63a-b4c1-444a-be88-6d0512838487",
@@ -7223,7 +7229,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-e5e24ffc-60c7-48a4-8927-3149a3c8701e",
@@ -7245,10 +7252,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:24:35.187Z",
       "createdAt": "2026-10-20T12:24:35.187Z",
-      "updatedAt": "2026-10-20T12:24:35.187Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-c2f544d3-ebb3-4406-9386-fbcdeb8d3cc2",
@@ -7374,7 +7381,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-5aafc3d4-1040-49f2-9f89-3af10e4f5585",
@@ -7700,10 +7708,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:36:32.402Z",
       "createdAt": "2026-10-20T12:36:32.402Z",
-      "updatedAt": "2026-10-20T12:36:32.402Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-2f1656db-cd35-47ad-aa80-860daff757be",
@@ -7815,7 +7823,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-69917c10-5986-4d85-b96a-67dcd64d8c34",
@@ -7837,10 +7846,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:36:32.412Z",
       "createdAt": "2026-10-20T12:36:32.412Z",
-      "updatedAt": "2026-10-20T12:36:32.412Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-da3686ad-c993-4c5a-9fb7-b72deaa7768e",
@@ -7966,7 +7975,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-cf98a6cc-3c51-4d40-9eec-a42af9d1875b",
@@ -8292,10 +8302,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:59:05.978Z",
       "createdAt": "2026-10-20T12:59:05.978Z",
-      "updatedAt": "2026-10-20T12:59:05.978Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-3b2741e6-8e0f-4949-81e7-8298c9548e22",
@@ -8407,7 +8417,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-0b6f0fce-e59d-4498-a01d-d871f19a7385",
@@ -8429,10 +8440,10 @@
       "dpAmount": 0,
       "paidAmount": 0,
       "remainingBalance": 0,
-      "status": "pending_payment",
+      "status": "expired",
       "paymentExpiry": "2026-10-20T13:59:05.989Z",
       "createdAt": "2026-10-20T12:59:05.989Z",
-      "updatedAt": "2026-10-20T12:59:05.989Z",
+      "updatedAt": "2026-10-21T10:10:13.005Z",
       "items": [
         {
           "id": "item-888735f7-1062-4b36-a835-c53223847371",
@@ -8558,7 +8569,8 @@
             "label": "11–20 Orang (Grup Besar)"
           }
         ]
-      }
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
     },
     {
       "id": "book-77c06382-bd35-4fe9-8ef0-ca5807f146b0",
@@ -8863,6 +8875,892 @@
         ]
       },
       "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
+    },
+    {
+      "id": "book-c8bbbde5-f950-4819-9678-773a0e530008",
+      "bookingNumber": "GJ-2610-D469",
+      "accessToken": "gj_sec_23234b5dec6000fd34508d41d233599edcfeee34",
+      "customerName": "Keluarga Budi",
+      "customerPhone": "081234567890",
+      "customerEmail": "budi@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-11-25",
+      "packageId": "pkg-kamojang",
+      "participantsCount": 3,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1080000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1080000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "expired",
+      "paymentExpiry": "2026-10-21T11:10:20.457Z",
+      "createdAt": "2026-10-21T10:10:20.457Z",
+      "updatedAt": "2026-10-21T11:11:32.417Z",
+      "items": [
+        {
+          "id": "item-74cb24bc-3ce6-4227-a3e4-151795a7944f",
+          "bookingId": "book-c8bbbde5-f950-4819-9678-773a0e530008",
+          "itemType": "package",
+          "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (3 Pax - 3 Orang (Trio / Bertiga))",
+          "unitPrice": 360000,
+          "quantity": 3,
+          "subtotal": 1080000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-kamojang",
+        "slug": "relaksasi-geothermal-kawah-kamojang",
+        "name": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus",
+        "category": "Keluarga & Relaksasi",
+        "shortDescription": "Nikmati uap alami Kawah Kereta Api bersejarah, sauna bumi alami, dan keasrian danau kawah di ketinggian sejuk.",
+        "description": "Kawah Kamojang merupakan ladang geothermal tertua di Indonesia yang dikelilingi hutan pinus pegunungan asri. Suhu udara 16-20°C yang sangat sejuk dipadukan dengan sensasi sauna uap alami Kawah Hujan dan semburan Kawah Kereta Api.",
+        "durationDays": 1,
+        "durationNights": 0,
+        "basePrice": 320000,
+        "minParticipants": 1,
+        "maxParticipants": 15,
+        "destinationArea": "Kamojang, Samarang",
+        "inclusions": [
+          "Kendaraan privat AC ber-AC sesuai jumlah peserta",
+          "Driver berpengalaman merangkap tour guide lokal",
+          "Tiket masuk Kawasan Wisata Kawah Kamojang",
+          "Tiket Danau Pangkalan & Kawah Cibeureum",
+          "Makan siang prasmanan masakan Sunda di Saung Kuring Kamojang",
+          "Uji coba terapi uap belerang alami (sauna bumi)",
+          "Air mineral kemasan selama tour"
+        ],
+        "exclusions": [
+          "Pengeluaran pribadi & belanja oleh-oleh kopi Kamojang",
+          "Tips sukarela untuk driver/guide"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-2-1",
+            "day": 1,
+            "title": "Satu Hari Jelajah Kamojang Geothermal & Pinus",
+            "activities": [
+              "08.00 - Penjemputan di hotel / penginapan Garut Kota",
+              "09.15 - Tiba di gerbang Kamojang, menyusuri jalur kanopi pinus yang rindang",
+              "10.00 - Atraksi Kawah Kereta Api dengan peluit uap bertekanan tinggi",
+              "11.15 - Relaksasi di Kawah Hujan (sauna alami untuk pernapasan & kulit)",
+              "12.30 - Makan siang lezat dengan Nasi Liwet Sunda, gurame goreng, dan lalapan segar",
+              "14.00 - Singgah ke Danau Cibeureum dan perkebunan teh tertata rapi",
+              "16.00 - Mampir belanja kopi arabika Kamojang khas perkebunan lokal",
+              "17.30 - Kembali ke hotel di Garut. Program selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Semua Hotel & Villa di Garut Kota / Tarogong / Cipanas",
+          "Stasiun Garut"
+        ],
+        "termsAndConditions": "Disarankan mengenakan jaket ringan dan pakaian yang nyaman. Aman untuk semua usia termasuk anak-anak dan lansia.",
+        "isPublished": true,
+        "featuredOrder": 2,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-19T18:22:34.455Z",
+        "images": [
+          {
+            "id": "img-2",
+            "packageId": "pkg-kamojang",
+            "imageUrl": "/src/assets/images/tour_kamojang_pine_1792431915131.jpg",
+            "altText": "Danau geothermal dan hutan pinus berkabut Kawah Kamojang Garut",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 625000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 430000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 360000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 320000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 275000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 240000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
+    },
+    {
+      "id": "book-fa5ebc7e-a6a4-4888-9f4d-584f19c342a6",
+      "bookingNumber": "GJ-2610-CFD6",
+      "accessToken": "gj_sec_b6a84991de8aa151644f05e17fda236876bea8cd",
+      "customerName": "Budi Santoso",
+      "customerPhone": "0833333333",
+      "customerEmail": "budi@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-12-01",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 1,
+      "pickupLocation": "Hotel Santika Garut",
+      "subtotal": 1075000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1075000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "expired",
+      "paymentExpiry": "2026-10-21T11:10:20.466Z",
+      "createdAt": "2026-10-21T10:10:20.466Z",
+      "updatedAt": "2026-10-21T11:11:32.417Z",
+      "items": [
+        {
+          "id": "item-6780ecc0-6064-42a4-a4de-1cc57b03a815",
+          "bookingId": "book-fa5ebc7e-a6a4-4888-9f4d-584f19c342a6",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (1 Pax - 1 Orang (Solo Private))",
+          "unitPrice": 1075000,
+          "quantity": 1,
+          "subtotal": 1075000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-21T10:10:20.486Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "cancelledReason": "Batas waktu pembayaran telah kedaluwarsa."
+    },
+    {
+      "id": "book-6e8ef404-a251-4b52-aa02-89a88e0ddff3",
+      "bookingNumber": "GJ-2610-D2B2",
+      "accessToken": "gj_sec_9ea6e9bd227dddc55d081352b3a734daf9e7e2d5",
+      "customerName": "Doni Pratama",
+      "customerPhone": "081299998888",
+      "customerEmail": "doni@example.com",
+      "customerNotes": "",
+      "departureDate": "2026-12-10",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 2,
+      "pickupLocation": "Stasiun Garut",
+      "subtotal": 1490000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 1490000,
+      "paymentTier": "dp",
+      "dpAmount": 447000,
+      "paidAmount": 447000,
+      "remainingBalance": 1043000,
+      "status": "confirmed",
+      "paymentExpiry": "2026-10-21T11:10:20.471Z",
+      "createdAt": "2026-10-21T10:10:20.471Z",
+      "updatedAt": "2026-10-21T10:10:20.478Z",
+      "items": [
+        {
+          "id": "item-294bd4a1-a0a1-479c-9b5b-1e3cf2040ddd",
+          "bookingId": "book-6e8ef404-a251-4b52-aa02-89a88e0ddff3",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+          "unitPrice": 745000,
+          "quantity": 2,
+          "subtotal": 1490000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-21T10:10:20.486Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "confirmedAt": "2026-10-21T10:10:20.478Z"
+    },
+    {
+      "id": "book-9ded2d0f-8895-4ae6-a09c-4c74dcd79f2b",
+      "bookingNumber": "GJ-2610-9259",
+      "accessToken": "gj_sec_baf8437136f78b766b82be04e587c82795566b39",
+      "customerName": "budidd",
+      "customerPhone": "00000000",
+      "customerEmail": "",
+      "customerNotes": "",
+      "departureDate": "2026-10-23",
+      "packageId": "pkg-papandayan",
+      "participantsCount": 4,
+      "pickupLocation": "Stasiun Kereta Api Garut",
+      "subtotal": 2200000,
+      "addonTotal": 0,
+      "discountTotal": 0,
+      "totalAmount": 2200000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 2200000,
+      "remainingBalance": 0,
+      "status": "confirmed",
+      "paymentExpiry": "2026-10-21T11:58:43.056Z",
+      "createdAt": "2026-10-21T10:58:43.056Z",
+      "updatedAt": "2026-10-21T10:58:49.494Z",
+      "items": [
+        {
+          "id": "item-15e58579-9d18-4170-9572-f4749b728c79",
+          "bookingId": "book-9ded2d0f-8895-4ae6-a09c-4c74dcd79f2b",
+          "itemType": "package",
+          "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (4 Pax - 4–5 Orang (Rombongan Kecil))",
+          "unitPrice": 550000,
+          "quantity": 4,
+          "subtotal": 2200000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-papandayan",
+        "slug": "jelajah-gunung-papandayan-edelweiss",
+        "name": "Eksplorasi Gunung Papandayan & Padang Edelweiss",
+        "category": "Gunung & Alam",
+        "shortDescription": "Petualangan eksklusif menyusuri Kawah Belerang, Hutan Mati yang mistis, dan padang bunga abadi Tegal Alun.",
+        "description": "Gunung Papandayan (2.665 mdpl) adalah salah satu gunung api strato terindah dan paling ramah bagi pendaki di Jawa Barat. Dalam paket ini, Anda akan dipandu oleh pemandu lokal berlisensi menjelajahi kawah aktif dengan uap belerang hangat, melintasi Hutan Mati yang ikonik untuk fotografi dramatis, serta menyaksikan padang bunga abadi Edelweiss di Tegal Alun.",
+        "durationDays": 2,
+        "durationNights": 1,
+        "basePrice": 550000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Papandayan, Cisurupan",
+        "inclusions": [
+          "Transportasi lokal Garut - Basecamp PP (APV / Elf AC)",
+          "Tiket masuk Taman Wisata Alam Gunung Papandayan & Simaksi",
+          "Pemandu gunung bersertifikat & P3K standar",
+          "Makan 3x selama trip (Masakan khas Sunda & sarapan)",
+          "Tenda dome kapasitas 3-4 orang + matras spons",
+          "Dokumentasi foto trip selama perjalanan",
+          "Air mineral & welcome tea / kopi hangat"
+        ],
+        "exclusions": [
+          "Transportasi dari kota asal menuju titik kumpul Garut",
+          "Sleeping bag pribadi (dapat disewa)",
+          "Pengeluaran pribadi di luar program tour",
+          "Tips sukarela untuk pemandu / porter"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-1-1",
+            "day": 1,
+            "title": "Perjalanan Menuju Basecamp & Pendakian Camp Pondok Saladah",
+            "activities": [
+              "10.15 - Trekking menyusuri jalur kawah aktif dan tebing belerang",
+              "12.30 - Istirahat makan siang di Pos Ghober Hoet dengan view perbukitan",
+              "14.30 - Tiba di Pondok Saladah, mendirikan tenda, dan waktu santai kopi hangat",
+              "19.00 - Makan malam bersama, keakraban api unggun ramah alam, dan istirahat",
+              "09.30 - Registrasi Simaksi, briefing keselamatan, dan pemanasan"
+            ]
+          },
+          {
+            "id": "itin-1-2",
+            "day": 2,
+            "title": "Golden Sunrise Hutan Mati, Tegal Alun & Kembali ke Kota",
+            "activities": [
+              "05.00 - Morning call, berjalan 20 menit menuju Hutan Mati",
+              "05.30 - Menikmati golden sunrise dramatis dengan siluet pepohonan purba Hutan Mati",
+              "07.00 - Melanjutkan trekking ke Padang Edelweiss Tegal Alun (foto bersama)",
+              "09.00 - Kembali ke camp, sarapan pagi hangat, dan packing tenda",
+              "11.00 - Trekking turun menuju Camp David",
+              "13.30 - Bersih-bersih di pemandian air panas alami, makan siang penutup",
+              "15.30 - Transfer kembali ke Stasiun Garut / Garut Kota. Tour selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Terminal Guntur Garut",
+          "Hotel Santika / Favehotel / Kampung Sumber Alam Garut"
+        ],
+        "termsAndConditions": "Peserta dalam kondisi fisik sehat. Wajib membawa jaket hangat, sepatu trekking/olahraga dengan grip baik, dan jas hujan.",
+        "isPublished": true,
+        "featuredOrder": 1,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-21T10:10:20.486Z",
+        "images": [
+          {
+            "id": "img-1",
+            "packageId": "pkg-papandayan",
+            "imageUrl": "/src/assets/images/hero_garut_papandayan_1792431914366.jpg",
+            "altText": "Matahari terbit di Gunung Papandayan Garut dengan Hutan Mati dan bunga Edelweiss",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 1075000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 745000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 615000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 550000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 475000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 415000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "confirmedAt": "2026-10-21T10:58:49.494Z"
+    },
+    {
+      "id": "book-385f35f8-b299-4cb4-a396-3e088787b3e9",
+      "bookingNumber": "GJ-2610-102A",
+      "accessToken": "gj_sec_b82369806990215a0ba2db6129263b3e5b4f349d",
+      "customerName": "bssdddd",
+      "customerPhone": "00000000000000",
+      "customerEmail": "",
+      "customerNotes": "",
+      "departureDate": "2026-10-23",
+      "packageId": "pkg-city-tour-garut",
+      "participantsCount": 1,
+      "pickupLocation": "Stasiun Kereta Api Garut",
+      "subtotal": 490000,
+      "addonTotal": 350000,
+      "discountTotal": 0,
+      "totalAmount": 840000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 840000,
+      "remainingBalance": 0,
+      "status": "confirmed",
+      "paymentExpiry": "2026-10-21T12:00:15.322Z",
+      "createdAt": "2026-10-21T11:00:15.322Z",
+      "updatedAt": "2026-10-21T11:00:37.949Z",
+      "items": [
+        {
+          "id": "item-e153f3c1-1caa-4f5b-9a24-ea7c586dcabf",
+          "bookingId": "book-385f35f8-b299-4cb4-a396-3e088787b3e9",
+          "itemType": "package",
+          "itemName": "Garut Heritage City Tour, Kuliner Dodol & Kerajinan Sukaregang (1 Pax - 1 Orang (Solo Private))",
+          "unitPrice": 490000,
+          "quantity": 1,
+          "subtotal": 490000
+        },
+        {
+          "id": "item-f4b40efb-f5c0-4888-ba86-6e11cf16e205",
+          "bookingId": "book-385f35f8-b299-4cb4-a396-3e088787b3e9",
+          "itemType": "addon",
+          "itemName": "Dokumentasi Video Drone 4K & Cinematic Reel",
+          "unitPrice": 350000,
+          "quantity": 1,
+          "subtotal": 350000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-city-tour-garut",
+        "slug": "garut-heritage-city-tour-sukaregang",
+        "name": "Garut Heritage City Tour, Kuliner Dodol & Kerajinan Sukaregang",
+        "category": "Budaya & Sejarah",
+        "shortDescription": "Wisata belanja ikonik jaket kulit Sukaregang, pusat dodol Picnic asli, dan mencicipi ragam kuliner legendaris Garut.",
+        "description": "Menikmati kehangatan dan budaya Kota Garut yang berjuluk \"Swiss van Java\". Mengunjungi sentra penyamakan kulit asli Sukaregang untuk produk jaket & tas kulit terbaik, menyaksikan pembuatan dodol Garut legendaris, serta menikmati santapan kuliner legendaris baso aci dan soto Garut.",
+        "durationDays": 1,
+        "durationNights": 0,
+        "basePrice": 250000,
+        "minParticipants": 1,
+        "maxParticipants": 20,
+        "destinationArea": "Garut Kota & Sukaregang",
+        "tripType": "private",
+        "inclusions": [
+          "Transportasi city tour ber-AC",
+          "Driver berpengalaman merangkap tour guide lokal",
+          "Kunjungan resmi sentra kerajinan kulit Sukaregang",
+          "Kunjungan dan edukasi pembuatan Dodol Picnic Garut",
+          "Makan siang kuliner khas Garut (Soto Ahri / Liwet Asep Stroberi)",
+          "Welcome snack & air mineral"
+        ],
+        "exclusions": [
+          "Belanja produk kerajinan kulit pribadi",
+          "Oleh-oleh dodol & batik garutan"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-7-1",
+            "day": 1,
+            "title": "Satu Hari Jelajah Warisan Budaya & Belanja Khas Garut",
+            "activities": [
+              "09.00 - Penjemputan di Stasiun Garut / hotel",
+              "09.30 - Berkeliling kawasan bersejarah Alun-alun & Babancong Garut",
+              "10.30 - Wisata belanja kerajinan kulit asli Sukaregang (jaket, sepatu, tas kulit garansi asli)",
+              "12.30 - Makan siang kuliner legendaris khas Garut",
+              "14.00 - Mengunjungi pusat oleh-oleh dodol Garut, melihat demonstrasi pembuatan dodol",
+              "16.00 - Singgah di Galeri Batik Tulis Garutan khas motif Merak Ngibing",
+              "17.30 - Kembali ke stasiun / hotel penginapan."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Stasiun Kereta Api Garut",
+          "Hotel di Area Garut Kota, Tarogong, atau Cipanas"
+        ],
+        "termsAndConditions": "Sangat cocok untuk keluarga, liburan singkat, dan pecinta kuliner serta kerajinan.",
+        "isPublished": true,
+        "featuredOrder": 7,
+        "createdAt": "2026-10-20T11:45:20.083Z",
+        "updatedAt": "2026-10-20T11:45:20.083Z",
+        "images": [
+          {
+            "id": "img-7",
+            "packageId": "pkg-city-tour-garut",
+            "imageUrl": "/public/assets/aistudio/image_19f9301b.png",
+            "altText": "Garut City Tour Sentra Kerajinan Kulit Sukaregang dan Dodol Garut",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 490000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 340000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 280000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 250000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 215000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 190000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      },
+      "confirmedAt": "2026-10-21T11:00:37.949Z"
+    },
+    {
+      "id": "book-2045d9a1-228d-4bae-b261-633afc37dc02",
+      "bookingNumber": "GJ-2610-0910",
+      "accessToken": "gj_sec_f4c5e9283e9e4b51808a652ffc94ae82f67a7951",
+      "customerName": "dddd",
+      "customerPhone": "00000000000",
+      "customerEmail": "",
+      "customerNotes": "",
+      "departureDate": "2026-10-23",
+      "packageId": "pkg-kamojang",
+      "participantsCount": 1,
+      "pickupLocation": "Semua Hotel & Villa di Garut Kota / Tarogong / Cipanas",
+      "subtotal": 625000,
+      "addonTotal": 120000,
+      "discountTotal": 0,
+      "totalAmount": 745000,
+      "paymentTier": "full",
+      "dpAmount": 0,
+      "paidAmount": 0,
+      "remainingBalance": 0,
+      "status": "pending_payment",
+      "paymentExpiry": "2026-10-21T12:01:23.397Z",
+      "createdAt": "2026-10-21T11:01:23.397Z",
+      "updatedAt": "2026-10-21T11:01:23.397Z",
+      "items": [
+        {
+          "id": "item-a61363b2-d4b3-450b-8678-8de75e3272ab",
+          "bookingId": "book-2045d9a1-228d-4bae-b261-633afc37dc02",
+          "itemType": "package",
+          "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (1 Pax - 1 Orang (Solo Private))",
+          "unitPrice": 625000,
+          "quantity": 1,
+          "subtotal": 625000
+        },
+        {
+          "id": "item-fd929d6e-ae4b-41c8-9b69-18edb5aa38e9",
+          "bookingId": "book-2045d9a1-228d-4bae-b261-633afc37dc02",
+          "itemType": "addon",
+          "itemName": "Paket Oleh-oleh Khas (Dodol Garut Picnic & Chocodot)",
+          "unitPrice": 120000,
+          "quantity": 1,
+          "subtotal": 120000
+        }
+      ],
+      "tourPackage": {
+        "id": "pkg-kamojang",
+        "slug": "relaksasi-geothermal-kawah-kamojang",
+        "name": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus",
+        "category": "Keluarga & Relaksasi",
+        "shortDescription": "Nikmati uap alami Kawah Kereta Api bersejarah, sauna bumi alami, dan keasrian danau kawah di ketinggian sejuk.",
+        "description": "Kawah Kamojang merupakan ladang geothermal tertua di Indonesia yang dikelilingi hutan pinus pegunungan asri. Suhu udara 16-20°C yang sangat sejuk dipadukan dengan sensasi sauna uap alami Kawah Hujan dan semburan Kawah Kereta Api.",
+        "durationDays": 1,
+        "durationNights": 0,
+        "basePrice": 320000,
+        "minParticipants": 1,
+        "maxParticipants": 15,
+        "destinationArea": "Kamojang, Samarang",
+        "inclusions": [
+          "Kendaraan privat AC ber-AC sesuai jumlah peserta",
+          "Driver berpengalaman merangkap tour guide lokal",
+          "Tiket masuk Kawasan Wisata Kawah Kamojang",
+          "Tiket Danau Pangkalan & Kawah Cibeureum",
+          "Makan siang prasmanan masakan Sunda di Saung Kuring Kamojang",
+          "Uji coba terapi uap belerang alami (sauna bumi)",
+          "Air mineral kemasan selama tour"
+        ],
+        "exclusions": [
+          "Pengeluaran pribadi & belanja oleh-oleh kopi Kamojang",
+          "Tips sukarela untuk driver/guide"
+        ],
+        "itinerary": [
+          {
+            "id": "itin-2-1",
+            "day": 1,
+            "title": "Satu Hari Jelajah Kamojang Geothermal & Pinus",
+            "activities": [
+              "08.00 - Penjemputan di hotel / penginapan Garut Kota",
+              "09.15 - Tiba di gerbang Kamojang, menyusuri jalur kanopi pinus yang rindang",
+              "10.00 - Atraksi Kawah Kereta Api dengan peluit uap bertekanan tinggi",
+              "11.15 - Relaksasi di Kawah Hujan (sauna alami untuk pernapasan & kulit)",
+              "12.30 - Makan siang lezat dengan Nasi Liwet Sunda, gurame goreng, dan lalapan segar",
+              "14.00 - Singgah ke Danau Cibeureum dan perkebunan teh tertata rapi",
+              "16.00 - Mampir belanja kopi arabika Kamojang khas perkebunan lokal",
+              "17.30 - Kembali ke hotel di Garut. Program selesai."
+            ]
+          }
+        ],
+        "pickupPoints": [
+          "Semua Hotel & Villa di Garut Kota / Tarogong / Cipanas",
+          "Stasiun Garut"
+        ],
+        "termsAndConditions": "Disarankan mengenakan jaket ringan dan pakaian yang nyaman. Aman untuk semua usia termasuk anak-anak dan lansia.",
+        "isPublished": true,
+        "featuredOrder": 2,
+        "createdAt": "2026-10-19T18:22:34.455Z",
+        "updatedAt": "2026-10-19T18:22:34.455Z",
+        "images": [
+          {
+            "id": "img-2",
+            "packageId": "pkg-kamojang",
+            "imageUrl": "/src/assets/images/tour_kamojang_pine_1792431915131.jpg",
+            "altText": "Danau geothermal dan hutan pinus berkabut Kawah Kamojang Garut",
+            "sortOrder": 1,
+            "isPrimary": true
+          }
+        ],
+        "priceTiers": [
+          {
+            "minParticipants": 1,
+            "maxParticipants": 1,
+            "pricePerPerson": 625000,
+            "label": "1 Orang (Solo Private)"
+          },
+          {
+            "minParticipants": 2,
+            "maxParticipants": 2,
+            "pricePerPerson": 430000,
+            "label": "2 Orang (Duo / Berdua)"
+          },
+          {
+            "minParticipants": 3,
+            "maxParticipants": 3,
+            "pricePerPerson": 360000,
+            "label": "3 Orang (Trio / Bertiga)"
+          },
+          {
+            "minParticipants": 4,
+            "maxParticipants": 5,
+            "pricePerPerson": 320000,
+            "label": "4–5 Orang (Rombongan Kecil)"
+          },
+          {
+            "minParticipants": 6,
+            "maxParticipants": 10,
+            "pricePerPerson": 275000,
+            "label": "6–10 Orang (Hemat Rombongan)"
+          },
+          {
+            "minParticipants": 11,
+            "maxParticipants": 20,
+            "pricePerPerson": 240000,
+            "label": "11–20 Orang (Grup Besar)"
+          }
+        ]
+      }
     }
   ],
   "bookingItems": [
@@ -9459,6 +10357,78 @@
       "unitPrice": 745000,
       "quantity": 2,
       "subtotal": 1490000
+    },
+    {
+      "id": "item-74cb24bc-3ce6-4227-a3e4-151795a7944f",
+      "bookingId": "book-c8bbbde5-f950-4819-9678-773a0e530008",
+      "itemType": "package",
+      "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (3 Pax - 3 Orang (Trio / Bertiga))",
+      "unitPrice": 360000,
+      "quantity": 3,
+      "subtotal": 1080000
+    },
+    {
+      "id": "item-6780ecc0-6064-42a4-a4de-1cc57b03a815",
+      "bookingId": "book-fa5ebc7e-a6a4-4888-9f4d-584f19c342a6",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (1 Pax - 1 Orang (Solo Private))",
+      "unitPrice": 1075000,
+      "quantity": 1,
+      "subtotal": 1075000
+    },
+    {
+      "id": "item-294bd4a1-a0a1-479c-9b5b-1e3cf2040ddd",
+      "bookingId": "book-6e8ef404-a251-4b52-aa02-89a88e0ddff3",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (2 Pax - 2 Orang (Duo / Berdua))",
+      "unitPrice": 745000,
+      "quantity": 2,
+      "subtotal": 1490000
+    },
+    {
+      "id": "item-15e58579-9d18-4170-9572-f4749b728c79",
+      "bookingId": "book-9ded2d0f-8895-4ae6-a09c-4c74dcd79f2b",
+      "itemType": "package",
+      "itemName": "Eksplorasi Gunung Papandayan & Padang Edelweiss (4 Pax - 4–5 Orang (Rombongan Kecil))",
+      "unitPrice": 550000,
+      "quantity": 4,
+      "subtotal": 2200000
+    },
+    {
+      "id": "item-e153f3c1-1caa-4f5b-9a24-ea7c586dcabf",
+      "bookingId": "book-385f35f8-b299-4cb4-a396-3e088787b3e9",
+      "itemType": "package",
+      "itemName": "Garut Heritage City Tour, Kuliner Dodol & Kerajinan Sukaregang (1 Pax - 1 Orang (Solo Private))",
+      "unitPrice": 490000,
+      "quantity": 1,
+      "subtotal": 490000
+    },
+    {
+      "id": "item-f4b40efb-f5c0-4888-ba86-6e11cf16e205",
+      "bookingId": "book-385f35f8-b299-4cb4-a396-3e088787b3e9",
+      "itemType": "addon",
+      "itemName": "Dokumentasi Video Drone 4K & Cinematic Reel",
+      "unitPrice": 350000,
+      "quantity": 1,
+      "subtotal": 350000
+    },
+    {
+      "id": "item-a61363b2-d4b3-450b-8678-8de75e3272ab",
+      "bookingId": "book-2045d9a1-228d-4bae-b261-633afc37dc02",
+      "itemType": "package",
+      "itemName": "Relaksasi Geothermal Kawah Kamojang & Hutan Pinus (1 Pax - 1 Orang (Solo Private))",
+      "unitPrice": 625000,
+      "quantity": 1,
+      "subtotal": 625000
+    },
+    {
+      "id": "item-fd929d6e-ae4b-41c8-9b69-18edb5aa38e9",
+      "bookingId": "book-2045d9a1-228d-4bae-b261-633afc37dc02",
+      "itemType": "addon",
+      "itemName": "Paket Oleh-oleh Khas (Dodol Garut Picnic & Chocodot)",
+      "unitPrice": 120000,
+      "quantity": 1,
+      "subtotal": 120000
     }
   ],
   "payments": [
@@ -9475,192 +10445,51 @@
       "settlementTime": "2026-10-19T16:22:34.456Z",
       "createdAt": "2026-10-19T15:22:34.456Z",
       "updatedAt": "2026-10-19T16:22:34.456Z"
+    },
+    {
+      "id": "pay-db7c0771-32d9-427e-afac-617df0850ea7",
+      "bookingId": "book-9ded2d0f-8895-4ae6-a09c-4c74dcd79f2b",
+      "provider": "midtrans",
+      "orderId": "GJ-2610-9259",
+      "grossAmount": 2200000,
+      "status": "settlement",
+      "snapToken": "snap_sandbox_GJ-2610-9259_8ae4d64b",
+      "snapRedirectUrl": "/pembayaran/GJ-2610-9259?simulated=snap",
+      "transactionId": "sim-1792580329488",
+      "paymentType": "qris",
+      "createdAt": "2026-10-21T10:58:45.681Z",
+      "updatedAt": "2026-10-21T10:58:49.494Z",
+      "settlementTime": "2026-10-21T10:58:49.494Z"
+    },
+    {
+      "id": "pay-acae3bda-4380-48f8-8dfd-fb569aff4ede",
+      "bookingId": "book-385f35f8-b299-4cb4-a396-3e088787b3e9",
+      "provider": "midtrans",
+      "orderId": "GJ-2610-102A",
+      "grossAmount": 840000,
+      "status": "settlement",
+      "snapToken": "snap_sandbox_GJ-2610-102A_ee88d27c",
+      "snapRedirectUrl": "/pembayaran/GJ-2610-102A?simulated=snap",
+      "transactionId": "sim-1792580437942",
+      "paymentType": "qris",
+      "createdAt": "2026-10-21T11:00:18.067Z",
+      "updatedAt": "2026-10-21T11:00:37.949Z",
+      "settlementTime": "2026-10-21T11:00:37.949Z"
+    },
+    {
+      "id": "pay-7f2fdb5a-85c4-4859-8f7e-b9982f8e0c97",
+      "bookingId": "book-2045d9a1-228d-4bae-b261-633afc37dc02",
+      "provider": "midtrans",
+      "orderId": "GJ-2610-0910",
+      "grossAmount": 745000,
+      "status": "pending",
+      "snapToken": "snap_sandbox_GJ-2610-0910_5ae40c6d",
+      "snapRedirectUrl": "/pembayaran/GJ-2610-0910?simulated=snap",
+      "createdAt": "2026-10-21T11:01:41.110Z",
+      "updatedAt": "2026-10-21T11:01:41.110Z"
     }
   ],
-  "paymentEvents": [
-    {
-      "id": "evt-e7e36514-7f80-46b5-a454-68079d696db3",
-      "orderId": "GJ-TEST-IDEMPOTENT",
-      "eventId": "evt-GJ-TEST-IDEMPOTENT-settlement-200",
-      "eventType": "settlement",
-      "payload": {
-        "order_id": "GJ-TEST-IDEMPOTENT",
-        "status_code": "200",
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-19T18:22:34.482Z",
-      "createdAt": "2026-10-19T18:22:34.482Z"
-    },
-    {
-      "id": "evt-e01853be-b45e-4023-85b2-9d3f060ac374",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792436206162",
-      "eventId": "evt-1792436206162",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-19T18:56:46.162Z",
-      "createdAt": "2026-10-19T18:56:46.163Z"
-    },
-    {
-      "id": "evt-484bd108-5c42-4ff8-974c-451c6adf8b59",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792437325898",
-      "eventId": "evt-1792437325898",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-19T19:15:25.898Z",
-      "createdAt": "2026-10-19T19:15:25.898Z"
-    },
-    {
-      "id": "evt-fc100de9-51ad-431c-9a2e-2d241979fa54",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792437521530",
-      "eventId": "evt-1792437521530",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-19T19:18:41.530Z",
-      "createdAt": "2026-10-19T19:18:41.530Z"
-    },
-    {
-      "id": "evt-eb3be4da-d8a2-40cc-a9f8-e710710c86fc",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792438204864",
-      "eventId": "evt-1792438204864",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-19T19:30:04.864Z",
-      "createdAt": "2026-10-19T19:30:04.864Z"
-    },
-    {
-      "id": "evt-8a12efdb-ac32-48b9-96f6-ea64d2fbf57b",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792492334467",
-      "eventId": "evt-1792492334467",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-20T10:32:14.467Z",
-      "createdAt": "2026-10-20T10:32:14.467Z"
-    },
-    {
-      "id": "evt-8dfb4435-6f2d-44c6-9efb-947da706b489",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792494082799",
-      "eventId": "evt-1792494082799",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-20T11:01:22.799Z",
-      "createdAt": "2026-10-20T11:01:22.799Z"
-    },
-    {
-      "id": "evt-5d386296-8e1b-4b36-a435-97b66c7374b7",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792494931405",
-      "eventId": "evt-1792494931405",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-20T11:15:31.406Z",
-      "createdAt": "2026-10-20T11:15:31.406Z"
-    },
-    {
-      "id": "evt-09b17931-7192-4770-8605-ebd61182589c",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792497047340",
-      "eventId": "evt-1792497047340",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-20T11:50:47.340Z",
-      "createdAt": "2026-10-20T11:50:47.340Z"
-    },
-    {
-      "id": "evt-038f1b04-628a-4f81-8136-e30112567df3",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792498934236",
-      "eventId": "evt-1792498934236",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-20T12:22:14.236Z",
-      "createdAt": "2026-10-20T12:22:14.236Z"
-    },
-    {
-      "id": "evt-df7d94d6-88a2-4fca-b576-8a7c4ae8b6d0",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792498943146",
-      "eventId": "evt-1792498943147",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-20T12:22:23.147Z",
-      "createdAt": "2026-10-20T12:22:23.147Z"
-    },
-    {
-      "id": "evt-3f4ccfca-0936-4ad7-a79c-c03565594809",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792499069111",
-      "eventId": "evt-1792499069111",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-20T12:24:29.112Z",
-      "createdAt": "2026-10-20T12:24:29.112Z"
-    },
-    {
-      "id": "evt-66667824-84bf-4b88-bd0e-77fdd2a2a93b",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792499075211",
-      "eventId": "evt-1792499075211",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-20T12:24:35.212Z",
-      "createdAt": "2026-10-20T12:24:35.212Z"
-    },
-    {
-      "id": "evt-c746facc-361c-45f6-88fa-793f6c8bdc9c",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792499792434",
-      "eventId": "evt-1792499792434",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-20T12:36:32.434Z",
-      "createdAt": "2026-10-20T12:36:32.434Z"
-    },
-    {
-      "id": "evt-54f9c8e9-7aec-4c72-8d19-81f3179daa0d",
-      "orderId": "GJ-TEST-IDEMPOTENT-1792501146014",
-      "eventId": "evt-1792501146014",
-      "eventType": "payment.settlement",
-      "payload": {
-        "transaction_status": "settlement"
-      },
-      "isProcessed": true,
-      "processedAt": "2026-10-20T12:59:06.014Z",
-      "createdAt": "2026-10-20T12:59:06.014Z"
-    }
-  ],
+  "paymentEvents": [],
   "articles": [
     {
       "id": "art-1",
@@ -9814,436 +10643,388 @@
   ],
   "pageViews": [
     {
-      "id": "pv-1792436163769-e4gm",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
-      "deviceType": "mobile",
-      "timestamp": "2026-10-19T18:56:03.769Z"
-    },
-    {
-      "id": "pv-1792436163770-ln91",
+      "id": "pv-init-0",
       "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-19T18:56:03.770Z"
-    },
-    {
-      "id": "pv-1792436206166-csoi",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.10.1",
       "deviceType": "mobile",
-      "timestamp": "2026-10-19T18:56:46.167Z"
+      "timestamp": "2026-10-19T11:11:52.689Z"
     },
     {
-      "id": "pv-1792436206168-7gow",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
+      "id": "pv-init-1",
+      "path": "/paket-wisata/relaksasi-geothermal-kawah-kamojang",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.11.2",
       "deviceType": "desktop",
-      "timestamp": "2026-10-19T18:56:46.168Z"
+      "timestamp": "2026-10-18T11:11:52.689Z"
     },
     {
-      "id": "pv-1792437113441-k07r",
+      "id": "pv-init-2",
+      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.12.3",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-21T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-3",
+      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.13.4",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-20T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-4",
+      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.14.5",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-17T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-5",
+      "path": "/paket-wisata/relaksasi-geothermal-kawah-kamojang",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.15.6",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-21T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-6",
+      "path": "/artikel",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.16.7",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-16T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-7",
       "path": "/",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "2402:8780:101d:1be:1403:bd55:5753:a5ea, 169.254.169.126",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.17.8",
       "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:11:53.441Z"
+      "timestamp": "2026-10-21T11:11:52.689Z"
     },
     {
-      "id": "pv-1792437208737-gkwz",
+      "id": "pv-init-8",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.18.9",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-18T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-9",
       "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "2402:8780:101d:1be:1403:bd55:5753:a5ea, 169.254.169.126",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.19.10",
       "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:13:28.737Z"
+      "timestamp": "2026-10-19T11:11:52.689Z"
     },
     {
-      "id": "pv-1792437209767-89ho",
+      "id": "pv-init-10",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.20.11",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-18T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-11",
+      "path": "/artikel",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.21.12",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-20T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-12",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.22.13",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-20T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-13",
+      "path": "/",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.23.14",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-17T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-14",
+      "path": "/artikel",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.24.15",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-17T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-15",
+      "path": "/paket-wisata/relaksasi-geothermal-kawah-kamojang",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.25.16",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-20T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-16",
       "path": "/paket-wisata",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "2402:8780:101d:1be:1403:bd55:5753:a5ea, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:13:29.767Z"
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.26.17",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-16T11:11:52.689Z"
     },
     {
-      "id": "pv-1792437214084-ubyv",
+      "id": "pv-init-17",
+      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.27.18",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-17T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-18",
       "path": "/galeri",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "2402:8780:101d:1be:1403:bd55:5753:a5ea, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:13:34.084Z"
-    },
-    {
-      "id": "pv-1792437215194-nc3i",
-      "path": "/tentang-kami",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "2402:8780:101d:1be:1403:bd55:5753:a5ea, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:13:35.194Z"
-    },
-    {
-      "id": "pv-1792437216420-wkrp",
-      "path": "/kontak",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "2402:8780:101d:1be:1403:bd55:5753:a5ea, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:13:36.420Z"
-    },
-    {
-      "id": "pv-1792437325905-b5s8",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.28.19",
       "deviceType": "mobile",
-      "timestamp": "2026-10-19T19:15:25.905Z"
+      "timestamp": "2026-10-19T11:11:52.689Z"
     },
     {
-      "id": "pv-1792437325907-hdk0",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
+      "id": "pv-init-19",
+      "path": "/paket-wisata/relaksasi-geothermal-kawah-kamojang",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.29.20",
       "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:15:25.907Z"
+      "timestamp": "2026-10-21T11:11:52.689Z"
     },
     {
-      "id": "pv-1792437521537-vzxg",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
-      "deviceType": "mobile",
-      "timestamp": "2026-10-19T19:18:41.537Z"
-    },
-    {
-      "id": "pv-1792437521538-ho4u",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:18:41.538Z"
-    },
-    {
-      "id": "pv-1792437971058-ul16",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "2402:8780:101d:1be:1403:bd55:5753:a5ea, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:26:11.058Z"
-    },
-    {
-      "id": "pv-1792437985870-daxl",
-      "path": "/syarat-ketentuan",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "2402:8780:101d:1be:1403:bd55:5753:a5ea, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:26:25.870Z"
-    },
-    {
-      "id": "pv-1792437990528-rbvr",
-      "path": "/admin",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "2402:8780:101d:1be:1403:bd55:5753:a5ea, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:26:30.528Z"
-    },
-    {
-      "id": "pv-1792438204871-mimj",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
-      "deviceType": "mobile",
-      "timestamp": "2026-10-19T19:30:04.871Z"
-    },
-    {
-      "id": "pv-1792438204873-gzop",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-19T19:30:04.873Z"
-    },
-    {
-      "id": "pv-1792492232511-e88f",
-      "path": "/",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T10:30:32.511Z"
-    },
-    {
-      "id": "pv-1792492334477-18ug",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
-      "deviceType": "mobile",
-      "timestamp": "2026-10-20T10:32:14.477Z"
-    },
-    {
-      "id": "pv-1792492334480-18lg",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T10:32:14.480Z"
-    },
-    {
-      "id": "pv-1792493802991-g71c",
-      "path": "/tentang-kami",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T10:56:42.991Z"
-    },
-    {
-      "id": "pv-1792494062428-t24z",
-      "path": "/",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:01:02.428Z"
-    },
-    {
-      "id": "pv-1792494063794-qxhi",
+      "id": "pv-init-20",
       "path": "/paket-wisata",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:01:03.794Z"
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.10.21",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-19T11:11:52.689Z"
     },
     {
-      "id": "pv-1792494063867-6x9u",
+      "id": "pv-init-21",
+      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.11.22",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-20T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-22",
+      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.12.23",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-19T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-23",
+      "path": "/paket-wisata/relaksasi-geothermal-kawah-kamojang",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.13.24",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-16T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-24",
+      "path": "/paket-wisata/relaksasi-geothermal-kawah-kamojang",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.14.25",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-18T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-25",
       "path": "/",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.15.26",
       "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:01:03.867Z"
+      "timestamp": "2026-10-17T11:11:52.689Z"
     },
     {
-      "id": "pv-1792494082807-wxyv",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
+      "id": "pv-init-26",
+      "path": "/paket-wisata/relaksasi-geothermal-kawah-kamojang",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.16.27",
       "deviceType": "mobile",
-      "timestamp": "2026-10-20T11:01:22.807Z"
+      "timestamp": "2026-10-18T11:11:52.689Z"
     },
     {
-      "id": "pv-1792494082810-dnxm",
+      "id": "pv-init-27",
       "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.17.28",
       "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:01:22.810Z"
+      "timestamp": "2026-10-17T11:11:52.689Z"
     },
     {
-      "id": "pv-1792494897172-t3jf",
+      "id": "pv-init-28",
+      "path": "/paket-wisata/relaksasi-geothermal-kawah-kamojang",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.18.29",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-19T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-29",
+      "path": "/galeri",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.19.30",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-17T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-30",
+      "path": "/artikel",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.20.31",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-19T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-31",
+      "path": "/artikel",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.21.32",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-18T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-32",
       "path": "/",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:14:57.172Z"
-    },
-    {
-      "id": "pv-1792494931416-yp4u",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.22.33",
       "deviceType": "mobile",
-      "timestamp": "2026-10-20T11:15:31.416Z"
+      "timestamp": "2026-10-17T11:11:52.689Z"
     },
     {
-      "id": "pv-1792494931418-9n7x",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
+      "id": "pv-init-33",
+      "path": "/paket-wisata",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.23.34",
       "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:15:31.418Z"
+      "timestamp": "2026-10-21T11:11:52.689Z"
     },
     {
-      "id": "pv-1792495193830-yy34",
-      "path": "/admin",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
+      "id": "pv-init-34",
+      "path": "/paket-wisata",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.24.35",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-16T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-35",
+      "path": "/galeri",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.25.36",
       "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:19:53.830Z"
+      "timestamp": "2026-10-20T11:11:52.689Z"
     },
     {
-      "id": "pv-1792495298889-47sq",
+      "id": "pv-init-36",
+      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.26.37",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-19T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-37",
       "path": "/",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.27.38",
       "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:21:38.889Z"
+      "timestamp": "2026-10-19T11:11:52.689Z"
     },
     {
-      "id": "pv-1792495302870-g3n2",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:21:42.870Z"
-    },
-    {
-      "id": "pv-1792495304769-jehb",
-      "path": "/artikel/panduan-lengkap-mendaki-gunung-papandayan",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:21:44.769Z"
-    },
-    {
-      "id": "pv-1792495317809-erz8",
-      "path": "/admin",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:21:57.809Z"
-    },
-    {
-      "id": "pv-1792497047353-wund",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
+      "id": "pv-init-38",
+      "path": "/paket-wisata",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.28.39",
       "deviceType": "mobile",
-      "timestamp": "2026-10-20T11:50:47.353Z"
+      "timestamp": "2026-10-16T11:11:52.689Z"
     },
     {
-      "id": "pv-1792497047356-2z31",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
+      "id": "pv-init-39",
+      "path": "/galeri",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.29.40",
       "deviceType": "desktop",
-      "timestamp": "2026-10-20T11:50:47.356Z"
+      "timestamp": "2026-10-20T11:11:52.689Z"
     },
     {
-      "id": "pv-1792497659709-yrpc",
+      "id": "pv-init-40",
+      "path": "/paket-wisata",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.10.41",
+      "deviceType": "mobile",
+      "timestamp": "2026-10-20T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-41",
+      "path": "/artikel",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.11.42",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-17T11:11:52.689Z"
+    },
+    {
+      "id": "pv-init-42",
       "path": "/",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T12:00:59.709Z"
-    },
-    {
-      "id": "pv-1792497709214-w4ch",
-      "path": "/admin",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T12:01:49.214Z"
-    },
-    {
-      "id": "pv-1792498934248-cyey",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.12.43",
       "deviceType": "mobile",
-      "timestamp": "2026-10-20T12:22:14.248Z"
+      "timestamp": "2026-10-20T11:11:52.689Z"
     },
     {
-      "id": "pv-1792498934251-ybqu",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
+      "id": "pv-init-43",
+      "path": "/galeri",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.13.44",
       "deviceType": "desktop",
-      "timestamp": "2026-10-20T12:22:14.252Z"
+      "timestamp": "2026-10-19T11:11:52.689Z"
     },
     {
-      "id": "pv-1792498943159-guy7",
+      "id": "pv-init-44",
       "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.14.45",
       "deviceType": "mobile",
-      "timestamp": "2026-10-20T12:22:23.159Z"
+      "timestamp": "2026-10-17T11:11:52.689Z"
     },
     {
-      "id": "pv-1792498943162-p5ps",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T12:22:23.162Z"
-    },
-    {
-      "id": "pv-1792499069125-ymvt",
+      "id": "pv-init-45",
       "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
-      "deviceType": "mobile",
-      "timestamp": "2026-10-20T12:24:29.125Z"
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.15.46",
+      "deviceType": "desktop",
+      "timestamp": "2026-10-16T11:11:52.689Z"
     },
     {
-      "id": "pv-1792499069130-35bp",
+      "id": "pv-init-46",
       "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T12:24:29.130Z"
-    },
-    {
-      "id": "pv-1792499075226-fgjr",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)",
+      "ip": "114.124.16.47",
       "deviceType": "mobile",
-      "timestamp": "2026-10-20T12:24:35.226Z"
+      "timestamp": "2026-10-21T11:11:52.689Z"
     },
     {
-      "id": "pv-1792499075231-jt14",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
+      "id": "pv-init-47",
+      "path": "/paket-wisata/relaksasi-geothermal-kawah-kamojang",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "ip": "114.124.17.48",
       "deviceType": "desktop",
-      "timestamp": "2026-10-20T12:24:35.231Z"
-    },
-    {
-      "id": "pv-1792499686285-lkzw",
-      "path": "/",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T12:34:46.285Z"
-    },
-    {
-      "id": "pv-1792499746074-toza",
-      "path": "/paket-wisata?q=Papandayan&cat=Gunung%20%26%20Alam",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
-      "ip": "157.10.107.45, 169.254.169.126",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T12:35:46.074Z"
-    },
-    {
-      "id": "pv-1792499792447-wbbo",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
-      "deviceType": "mobile",
-      "timestamp": "2026-10-20T12:36:32.447Z"
-    },
-    {
-      "id": "pv-1792499792450-9jcm",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T12:36:32.450Z"
-    },
-    {
-      "id": "pv-1792501146030-y18v",
-      "path": "/paket-wisata/jelajah-gunung-papandayan-edelweiss",
-      "userAgent": "Mozilla/5.0 (iPhone)",
-      "ip": "114.124.50.1",
-      "deviceType": "mobile",
-      "timestamp": "2026-10-20T12:59:06.030Z"
-    },
-    {
-      "id": "pv-1792501146034-mumg",
-      "path": "/artikel",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0)",
-      "ip": "114.124.50.2",
-      "deviceType": "desktop",
-      "timestamp": "2026-10-20T12:59:06.034Z"
+      "timestamp": "2026-10-19T11:11:52.689Z"
     }
   ],
   "siteSettings": {
@@ -10261,6 +11042,25 @@
     "bankName": "Bank Central Asia (BCA)",
     "bankAccountNumber": "148-092-8899",
     "bankAccountHolder": "PT Garut Journey Nusantara",
+    "bankBranch": "KCP Garut Tarogong",
+    "qrisImageUrl": "",
+    "paymentInstructions": "Transfer tepat sesuai nominal tagihan. Cantumkan nomor pesanan pada berita transfer dan konfirmasi bukti bayar melalui tombol WhatsApp.",
+    "additionalBankAccounts": [
+      {
+        "id": "bank-mandiri",
+        "bankName": "Bank Mandiri",
+        "accountNumber": "131-00-9821-4455",
+        "accountHolder": "PT Garut Journey Nusantara",
+        "branch": "KC Garut Otista"
+      },
+      {
+        "id": "bank-bri",
+        "bankName": "Bank Rakyat Indonesia (BRI)",
+        "accountNumber": "0102-01-004523-53-8",
+        "accountHolder": "PT Garut Journey Nusantara",
+        "branch": "KCP Cimanuk Garut"
+      }
+    ],
     "paymentTimeoutMinutes": 60,
     "primaryColor": "#0F3827",
     "primaryDarkColor": "#0A261A",
@@ -10305,6 +11105,116 @@
         "label": "Kebijakan Pembatalan & Refund",
         "path": "/kebijakan-pembatalan"
       }
-    ]
+    ],
+    "heroBadge": "TOUR OPERATOR RESMI GARUT • 100% PRIVATE TRIP",
+    "heroMainTitle": "Jelajahi Pesona Alam Garut yang Menakjubkan",
+    "heroMainSubtitle": "Rasakan kemegahan kawah Papandayan, keheningan Kawah Kamojang, dan keindahan Situ Bagendit bersama pemandu profesional dan fasilitas perjalanan terpercaya.",
+    "heroSearchPlaceholder": "Cari Papandayan, Kamojang, Bagendit, Curug...",
+    "heroPopularTrips": [
+      {
+        "label": "🏔️ Papandayan",
+        "query": "Papandayan",
+        "category": "Gunung & Alam"
+      },
+      {
+        "label": "🌋 Kamojang",
+        "query": "Kamojang",
+        "category": "Keluarga & Relaksasi"
+      },
+      {
+        "label": "🚣 Situ Bagendit",
+        "query": "Situ Bagendit",
+        "category": "Budaya & Sejarah"
+      },
+      {
+        "label": "🌊 Curug Taraje",
+        "query": "Curug Sanghyang Taraje",
+        "category": "Petualangan Alam"
+      },
+      {
+        "label": "♨️ Darajat Pass",
+        "query": "Darajat",
+        "category": "Keluarga & Relaksasi"
+      },
+      {
+        "label": "🏖️ Pantai Santolo",
+        "query": "Santolo",
+        "category": "Petualangan Alam"
+      },
+      {
+        "label": "⭐ Semua Paket",
+        "query": "",
+        "category": "Semua"
+      }
+    ],
+    "trustIndicators": [
+      {
+        "title": "Pemandu Lokal Berlisensi HPI"
+      },
+      {
+        "title": "Jaminan Pasti Berangkat"
+      },
+      {
+        "title": "Metode Bayar Midtrans Aman"
+      }
+    ],
+    "heroShowcaseBadge": "GALERI FOTO RESMI GARUT",
+    "packagesSectionBadge": "Destinasi Paling Populer",
+    "packagesSectionTitle": "Pilihan Paket Wisata Unggulan Garut",
+    "packagesSectionBtnText": "Jelajahi Seluruh Paket",
+    "whyChooseBadge": "Mengapa Garut Journey?",
+    "whyChooseTitle": "Standar Layanan Wisata Terbaik & Terpercaya",
+    "whyChooseFeatures": [
+      {
+        "id": "feat-1",
+        "title": "Pemandu Lokal Bersertifikasi",
+        "description": "Didampingi oleh pemandu lokal berlisensi HPI yang memahami setiap sudut rute alam, sejarah, dan titik fotografi terbaik di Garut.",
+        "icon": "Users"
+      },
+      {
+        "id": "feat-2",
+        "title": "Harga Transparan Tanpa Biaya Tersembunyi",
+        "description": "Biaya paket sudah mencakup tiket simaksi resmi, armada transportasi AC, makan, dan fasilitas tanpa pungutan liar di lokasi.",
+        "icon": "Award"
+      },
+      {
+        "id": "feat-3",
+        "title": "Booking Instan & Terverifikasi",
+        "description": "Sistem pemesanan online terintegrasi langsung dengan gateway pembayaran Midtrans dengan konfirmasi instan dan E-Ticket resmi.",
+        "icon": "ShieldCheck"
+      },
+      {
+        "id": "feat-4",
+        "title": "100% Private Trip Fleksibel",
+        "description": "Perjalanan privat eksklusif untuk Anda dan rombongan tanpa digabung peserta lain, dengan tanggal dan penjemputan bebas Anda tentukan.",
+        "icon": "Calendar"
+      }
+    ],
+    "testimonialsSectionBadge": "Cerita Pengalaman Tamu",
+    "testimonialsSectionTitle": "Ulasan Nyata dari Wisatawan Garut Journey",
+    "faqSectionBadge": "Pertanyaan Umum",
+    "faqSectionTitle": "Informasi Penting Sebelum Memulai Perjalanan",
+    "faqs": [
+      {
+        "q": "Bagaimana alur pemesanan dan pembayaran di Garut Journey?",
+        "a": "Pilih paket dan tanggal keberangkatan yang diinginkan, tentukan jumlah peserta, isi data diri, lalu lanjutkan ke pembayaran resmi via Midtrans Snap. Sistem akan mengunci kapasitas Anda secara otomatis dan mengirimkan E-Ticket ke email Anda."
+      },
+      {
+        "q": "Apakah harga sudah termasuk tiket masuk seluruh objek wisata?",
+        "a": "Ya, seluruh harga paket Garut Journey bersifat transparan dan telah mencakup tiket masuk resmi destinasi (Simaksi Papandayan, Situ Bagendit, Cangkuang, Kawah Kamojang), armada transportasi lokal, pemandu wisata bersertifikat, dan konsumsi sesuai rincian itinerary."
+      },
+      {
+        "q": "Apakah pemula atau anak-anak aman mendaki Gunung Papandayan?",
+        "a": "Sangat aman. Gunung Papandayan dikenal memiliki kontur jalur pendakian yang landai dan teratur. Tim pemandu kami berpengalaman mendampingi pendaki pemula, keluarga, serta menyediakan perlengkapan keselamatan P3K."
+      },
+      {
+        "q": "Bagaimana jika saya perlu menjadwal ulang atau membatalkan pesanan?",
+        "a": "Penjadwalan ulang dapat dilakukan selambat-lambatnya H-5 sebelum tanggal trip tanpa biaya tambahan, tergantung ketersediaan kuota. Kebijakan pembatalan dan refund tertera lengkap pada halaman Kebijakan Pembatalan."
+      }
+    ],
+    "ctaTitle": "Siap Berpetualang di Garut?",
+    "ctaSubtitle": "Konsultasikan rencana perjalanan Anda atau pilih paket wisata favorit sekarang bersama pemandu lokal terpercaya.",
+    "ctaButtonText": "Jelajahi Paket Wisata",
+    "ctaButtonLink": "/paket-wisata"
   }
 }

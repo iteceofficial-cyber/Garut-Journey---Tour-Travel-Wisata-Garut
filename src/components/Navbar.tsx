@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { SiteSettings } from '../types.js';
-import { Compass, Menu, X, Globe, ChevronDown, ShieldCheck } from 'lucide-react';
+import { Compass, Menu, X, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext.tsx';
 import type { SupportedLanguage } from '../utils/i18n.js';
 
@@ -97,16 +97,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, navigate, siteSetti
 
           {/* Zone 3: Language Switcher & Primary Action */}
           <div className="hidden sm:flex items-center gap-2.5 shrink-0">
-            {/* Direct Admin Portal Shortcut Button */}
-            <button
-              onClick={() => handleNav('/admin')}
-              className="px-2.5 py-2 text-xs font-medium text-stone-600 hover:text-[#0F3827] hover:bg-stone-100 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
-              title="Portal Admin Garut Journey"
-            >
-              <ShieldCheck className="w-4 h-4 text-[#C8A951]" />
-              <span className="text-[11px] font-semibold">Admin</span>
-            </button>
-
             {/* Language Selector Dropdown */}
             <div className="relative" ref={langRef}>
               <button
@@ -221,19 +211,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, navigate, siteSetti
             </div>
           </div>
 
-          <div className="pt-2 flex flex-col gap-2">
+          <div className="pt-2">
             <button
               onClick={() => handleNav('/paket-wisata')}
               className="w-full py-3 text-center text-xs uppercase tracking-wider font-semibold text-stone-50 bg-[#0F3827] rounded-lg"
             >
               {t('navBookTrip')}
-            </button>
-            <button
-              onClick={() => handleNav('/admin')}
-              className="w-full py-2.5 text-center text-xs font-semibold text-stone-700 bg-stone-200/80 rounded-lg flex items-center justify-center gap-1.5"
-            >
-              <ShieldCheck className="w-4 h-4 text-[#C8A951]" />
-              <span>Portal Administrator</span>
             </button>
           </div>
         </div>

@@ -196,7 +196,90 @@ class GarutJourneyStore {
       { label: 'Syarat & Ketentuan Pemesanan', path: '/syarat-ketentuan' },
       { label: 'Kebijakan Privasi', path: '/kebijakan-privasi' },
       { label: 'Kebijakan Pembatalan & Refund', path: '/kebijakan-pembatalan' }
-    ]
+    ],
+
+    // Homepage (Dashboard Awal) Customization
+    heroBadge: 'TOUR OPERATOR RESMI GARUT • 100% PRIVATE TRIP',
+    heroMainTitle: 'Jelajahi Pesona Alam Garut yang Menakjubkan',
+    heroMainSubtitle: 'Rasakan kemegahan kawah Papandayan, keheningan Kawah Kamojang, dan keindahan Situ Bagendit bersama pemandu profesional dan fasilitas perjalanan terpercaya.',
+    heroSearchPlaceholder: 'Cari Papandayan, Kamojang, Bagendit, Curug...',
+    heroPopularTrips: [
+      { label: '🏔️ Papandayan', query: 'Papandayan', category: 'Gunung & Alam' },
+      { label: '🌋 Kamojang', query: 'Kamojang', category: 'Keluarga & Relaksasi' },
+      { label: '🚣 Situ Bagendit', query: 'Situ Bagendit', category: 'Budaya & Sejarah' },
+      { label: '🌊 Curug Taraje', query: 'Curug Sanghyang Taraje', category: 'Petualangan Alam' },
+      { label: '♨️ Darajat Pass', query: 'Darajat', category: 'Keluarga & Relaksasi' },
+      { label: '🏖️ Pantai Santolo', query: 'Santolo', category: 'Petualangan Alam' },
+      { label: '⭐ Semua Paket', query: '', category: 'Semua' }
+    ],
+    trustIndicators: [
+      { title: 'Pemandu Lokal Berlisensi HPI' },
+      { title: 'Jaminan Pasti Berangkat' },
+      { title: 'Metode Bayar Midtrans Aman' }
+    ],
+    heroShowcaseBadge: 'GALERI FOTO RESMI GARUT',
+
+    packagesSectionBadge: 'Destinasi Paling Populer',
+    packagesSectionTitle: 'Pilihan Paket Wisata Unggulan Garut',
+    packagesSectionBtnText: 'Jelajahi Seluruh Paket',
+
+    whyChooseBadge: 'Mengapa Garut Journey?',
+    whyChooseTitle: 'Standar Layanan Wisata Terbaik & Terpercaya',
+    whyChooseFeatures: [
+      {
+        id: 'feat-1',
+        title: 'Pemandu Lokal Bersertifikasi',
+        description: 'Didampingi oleh pemandu lokal berlisensi HPI yang memahami setiap sudut rute alam, sejarah, dan titik fotografi terbaik di Garut.',
+        icon: 'Users'
+      },
+      {
+        id: 'feat-2',
+        title: 'Harga Transparan Tanpa Biaya Tersembunyi',
+        description: 'Biaya paket sudah mencakup tiket simaksi resmi, armada transportasi AC, makan, dan fasilitas tanpa pungutan liar di lokasi.',
+        icon: 'Award'
+      },
+      {
+        id: 'feat-3',
+        title: 'Booking Instan & Terverifikasi',
+        description: 'Sistem pemesanan online terintegrasi langsung dengan gateway pembayaran Midtrans dengan konfirmasi instan dan E-Ticket resmi.',
+        icon: 'ShieldCheck'
+      },
+      {
+        id: 'feat-4',
+        title: '100% Private Trip Fleksibel',
+        description: 'Perjalanan privat eksklusif untuk Anda dan rombongan tanpa digabung peserta lain, dengan tanggal dan penjemputan bebas Anda tentukan.',
+        icon: 'Calendar'
+      }
+    ],
+
+    testimonialsSectionBadge: 'Cerita Pengalaman Tamu',
+    testimonialsSectionTitle: 'Ulasan Nyata dari Wisatawan Garut Journey',
+
+    faqSectionBadge: 'Pertanyaan Umum',
+    faqSectionTitle: 'Informasi Penting Sebelum Memulai Perjalanan',
+    faqs: [
+      {
+        q: 'Bagaimana alur pemesanan dan pembayaran di Garut Journey?',
+        a: 'Pilih paket dan tanggal keberangkatan yang diinginkan, tentukan jumlah peserta, isi data diri, lalu lanjutkan ke pembayaran resmi via Midtrans Snap. Sistem akan mengunci kapasitas Anda secara otomatis dan mengirimkan E-Ticket ke email Anda.'
+      },
+      {
+        q: 'Apakah harga sudah termasuk tiket masuk seluruh objek wisata?',
+        a: 'Ya, seluruh harga paket Garut Journey bersifat transparan dan telah mencakup tiket masuk resmi destinasi (Simaksi Papandayan, Situ Bagendit, Cangkuang, Kawah Kamojang), armada transportasi lokal, pemandu wisata bersertifikat, dan konsumsi sesuai rincian itinerary.'
+      },
+      {
+        q: 'Apakah pemula atau anak-anak aman mendaki Gunung Papandayan?',
+        a: 'Sangat aman. Gunung Papandayan dikenal memiliki kontur jalur pendakian yang landai dan teratur. Tim pemandu kami berpengalaman mendampingi pendaki pemula, keluarga, serta menyediakan perlengkapan keselamatan P3K.'
+      },
+      {
+        q: 'Bagaimana jika saya perlu menjadwal ulang atau membatalkan pesanan?',
+        a: 'Penjadwalan ulang dapat dilakukan selambat-lambatnya H-5 sebelum tanggal trip tanpa biaya tambahan, tergantung ketersediaan kuota. Kebijakan pembatalan dan refund tertera lengkap pada halaman Kebijakan Pembatalan.'
+      }
+    ],
+
+    ctaTitle: 'Siap Berpetualang di Garut?',
+    ctaSubtitle: 'Konsultasikan rencana perjalanan Anda atau pilih paket wisata favorit sekarang bersama pemandu lokal terpercaya.',
+    ctaButtonText: 'Jelajahi Paket Wisata',
+    ctaButtonLink: '/paket-wisata'
   };
 
   constructor() {

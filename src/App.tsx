@@ -231,6 +231,7 @@ export default function App() {
         packages={packages}
         navigate={navigate}
         onSelectPackage={(slug) => navigate(`/paket-wisata/${slug}`)}
+        siteSettings={siteSettings}
       />
     );
   };
