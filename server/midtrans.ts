@@ -42,7 +42,7 @@ export class MidtransService implements PaymentGateway {
     return (
       Boolean(this.serverKey) &&
       !this.serverKey.includes('YOUR_SANDBOX_SERVER_KEY') &&
-      this.serverKey.startsWith('SB-Mid-server-') || this.serverKey.startsWith('Mid-server-')
+      (this.serverKey.startsWith('SB-Mid-server-') || this.serverKey.startsWith('Mid-server-'))
     );
   }
 

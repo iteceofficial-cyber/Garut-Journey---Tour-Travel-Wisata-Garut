@@ -24,6 +24,7 @@ import {
   Clock,
   Heart
 } from 'lucide-react';
+import initialDbData from '../../data/database.json';
 
 interface HomePageProps {
   packages: TourPackage[];
@@ -34,16 +35,16 @@ interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelectPackage, siteSettings }) => {
   const { t, language } = useLanguage();
-  const [settings, setSettings] = useState<SiteSettings | null>(siteSettings || null);
+  const [settings, setSettings] = useState<SiteSettings | null>(siteSettings || (initialDbData.siteSettings as any) || null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Semua');
-  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
-  const [loadingGallery, setLoadingGallery] = useState(true);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>((initialDbData.gallery as any) || []);
+  const [loadingGallery, setLoadingGallery] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [showTripDropdown, setShowTripDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>((initialDbData.testimonials as any) || []);
 
   useEffect(() => {
     if (siteSettings) {
@@ -550,6 +551,9 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
                   src={activeImgUrl}
                   alt={activeGalleryItem?.title || 'Galeri Foto Wisata Garut'}
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/assets/images/hero_garut_papandayan_1792431914366.jpg';
+                  }}
                   className="w-full h-full object-cover transition-all duration-700 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A261A]/95 via-[#0A261A]/30 to-transparent" />
@@ -606,7 +610,7 @@ export const HomePage: React.FC<HomePageProps> = ({ packages, navigate, onSelect
                       <span>{activeGalleryItem?.location || 'Garut, Jawa Barat'}</span>
                     </span>
                     <span className="text-[10px] font-mono text-stone-400">
-                      Foto {currentSlide + 1} / {galleryItems.length}
+                      Foto {galleryItems.length > 0 ? currentSlide + 1 : 1} / {Math.max(1, galleryItems.length)}
                     </span>
                   </div>
 

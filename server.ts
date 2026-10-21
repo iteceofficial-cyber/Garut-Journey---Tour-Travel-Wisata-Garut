@@ -25,15 +25,43 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const isDev = process.env.NODE_ENV !== 'production';
 
-// Ensure data/uploads directory exists and is publicly served
-const UPLOADS_DIR = path.resolve(process.cwd(), 'data', 'uploads');
-if (!fs.existsSync(UPLOADS_DIR)) {
-  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+const isVercel = Boolean(process.env.VERCEL || process.env.VERCEL_ENV || process.env.NOW_REGION);
+
+// Ensure uploads directory exists and is publicly served (using /tmp on serverless environments)
+const UPLOADS_DIR = isVercel
+  ? path.join('/tmp', 'uploads')
+  : path.resolve(process.cwd(), 'data', 'uploads');
+
+try {
+  if (!fs.existsSync(UPLOADS_DIR)) {
+    fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+  }
+} catch (e) {
+  // Safe fallback for read-only environments
 }
 app.use('/uploads', express.static(UPLOADS_DIR));
 
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));
+
+// Normalize incoming API routes so requests both with and without /api prefix work seamlessly on Vercel
+app.use((req, _res, next) => {
+  if (
+    !req.url.startsWith('/api') &&
+    !req.url.startsWith('/tiket') &&
+    !req.url.startsWith('/uploads') &&
+    !req.url.startsWith('/sitemap.xml') &&
+    !req.url.startsWith('/robots.txt') &&
+    !req.url.startsWith('/assets') &&
+    !req.url.startsWith('/src') &&
+    !req.url.startsWith('/@') &&
+    req.url !== '/' &&
+    req.url !== '/favicon.ico'
+  ) {
+    req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
+  }
+  next();
+});
 
 // --- INPUT VALIDATION SCHEMAS (ZOD) ---
 
@@ -1227,7 +1255,7 @@ async function startServer() {
   });
 }
 
-if (!process.env.VERCEL) {
+if (!isVercel) {
   startServer();
 }
 

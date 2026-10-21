@@ -2,14 +2,22 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/api"
     },
     {
       "source": "/tiket/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/api"
     },
     {
-      "source": "/((?!api/|tiket/|assets/).*)",
+      "source": "/sitemap.xml",
+      "destination": "/api"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/api"
+    },
+    {
+      "source": "/((?!api/|tiket/|sitemap\\.xml|robots\\.txt|assets/|src/|uploads/).*)",
       "destination": "/index.html"
     }
   ]

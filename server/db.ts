@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import initialDatabase from '../data/database.json';
 import type {
   AddonOption,
   Booking,
@@ -24,6 +25,8 @@ import type {
 
 const DATA_DIR = path.resolve(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'database.json');
+const TMP_DATA_DIR = path.join('/tmp', 'data');
+const TMP_DATA_FILE = path.join(TMP_DATA_DIR, 'database.json');
 
 export const VERIFIED_ADDONS: Record<string, { name: string; price: number; unit: string; description: string }> = {
   'drone-doc': {
@@ -283,33 +286,34 @@ class GarutJourneyStore {
   };
 
   constructor() {
-    this.ensureDataDir();
+    this.ensureDataDir(DATA_DIR);
     const loaded = this.loadFromDisk();
     if (!loaded) {
       this.seedInitialData();
       this.saveToDisk();
     }
-    const interval = setInterval(() => {
-      this.expireStaleBookings();
-    }, 30000);
-    if (interval.unref) {
-      interval.unref();
+    if (!process.env.VERCEL) {
+      const interval = setInterval(() => {
+        this.expireStaleBookings();
+      }, 30000);
+      if (interval.unref) {
+        interval.unref();
+      }
     }
   }
 
-  private ensureDataDir() {
+  private ensureDataDir(targetDir: string) {
     try {
-      if (!fs.existsSync(DATA_DIR)) {
-        fs.mkdirSync(DATA_DIR, { recursive: true });
+      if (!fs.existsSync(targetDir)) {
+        fs.mkdirSync(targetDir, { recursive: true });
       }
     } catch (e) {
-      console.warn('Could not create data directory', e);
+      // Ignored for read-only environments
     }
   }
 
   saveToDisk() {
     try {
-      this.ensureDataDir();
       const state = {
         profiles: this.profiles,
         packages: this.packages,
@@ -326,74 +330,113 @@ class GarutJourneyStore {
         pageViews: this.pageViews.slice(-5000), // Keep last 5000 views
         siteSettings: this.siteSettings
       };
-      fs.writeFileSync(DATA_FILE, JSON.stringify(state, null, 2), 'utf-8');
+      const jsonStr = JSON.stringify(state, null, 2);
+
+      let written = false;
+      try {
+        this.ensureDataDir(DATA_DIR);
+        fs.writeFileSync(DATA_FILE, jsonStr, 'utf-8');
+        written = true;
+      } catch (err) {
+        // Read-only filesystem on Vercel
+      }
+
+      if (!written || process.env.VERCEL) {
+        try {
+          this.ensureDataDir(TMP_DATA_DIR);
+          fs.writeFileSync(TMP_DATA_FILE, jsonStr, 'utf-8');
+        } catch (tmpErr) {}
+      }
     } catch (e) {
-      console.error('Failed to save database to disk:', e);
+      console.warn('Failed to save database to disk (using in-memory state):', e);
     }
   }
 
+  private applyLoadedState(state: any): boolean {
+    if (!state || !Array.isArray(state.packages) || state.packages.length === 0) {
+      return false;
+    }
+    this.profiles = state.profiles || [];
+    this.packages = state.packages || [];
+    this.packageImages = state.packageImages || [];
+    this.promotions = state.promotions || [];
+    this.bookings = state.bookings || [];
+    this.bookingItems = state.bookingItems || [];
+    this.payments = state.payments || [];
+    this.paymentEvents = state.paymentEvents || [];
+    this.articles = state.articles || [];
+    this.gallery = state.gallery || [];
+    if (state.addons && Array.isArray(state.addons) && state.addons.length > 0) {
+      this.addons = state.addons;
+    }
+    if (state.testimonials && Array.isArray(state.testimonials) && state.testimonials.length > 0) {
+      this.testimonials = state.testimonials;
+    }
+    this.pageViews = state.pageViews || [];
+    if (state.siteSettings) {
+      this.siteSettings = { ...this.siteSettings, ...state.siteSettings };
+    }
+    // Ensure all standard curated packages and images are present
+    const existingIds = new Set(this.packages.map(p => p.id));
+    const standardPackages = this.getStandardCuratedPackages();
+    for (const sp of standardPackages) {
+      if (!existingIds.has(sp.id)) {
+        this.packages.push(sp);
+      }
+    }
+    const stdImages = this.getStandardPackageImages();
+    const existingImgIds = new Set(this.packageImages.map(img => img.id));
+    for (const sImg of stdImages) {
+      if (!existingImgIds.has(sImg.id)) {
+        this.packageImages.push(sImg);
+      }
+    }
+    for (const pkg of this.packages) {
+      if (!pkg.images || pkg.images.length === 0) {
+        pkg.images = this.packageImages.filter(img => img.packageId === pkg.id);
+      }
+      if (!pkg.priceTiers || pkg.priceTiers.length === 0) {
+        const stdPkg = standardPackages.find(sp => sp.id === pkg.id);
+        if (stdPkg && stdPkg.priceTiers && stdPkg.priceTiers.length > 0) {
+          pkg.priceTiers = stdPkg.priceTiers;
+        } else {
+          pkg.priceTiers = this.generateDefaultPriceTiers(pkg.basePrice);
+        }
+      }
+    }
+    return true;
+  }
+
   private loadFromDisk(): boolean {
+    // 1. Try loading from TMP_DATA_FILE if it exists (e.g. running on Vercel with modifications)
+    try {
+      if (fs.existsSync(TMP_DATA_FILE)) {
+        const raw = fs.readFileSync(TMP_DATA_FILE, 'utf-8');
+        const state = JSON.parse(raw);
+        if (this.applyLoadedState(state)) {
+          return true;
+        }
+      }
+    } catch {}
+
+    // 2. Try loading from primary DATA_FILE (local development, container)
     try {
       if (fs.existsSync(DATA_FILE)) {
         const raw = fs.readFileSync(DATA_FILE, 'utf-8');
         const state = JSON.parse(raw);
-        if (state && Array.isArray(state.packages) && state.packages.length > 0) {
-          this.profiles = state.profiles || [];
-          this.packages = state.packages || [];
-          this.packageImages = state.packageImages || [];
-          this.promotions = state.promotions || [];
-          this.bookings = state.bookings || [];
-          this.bookingItems = state.bookingItems || [];
-          this.payments = state.payments || [];
-          this.paymentEvents = state.paymentEvents || [];
-          this.articles = state.articles || [];
-          this.gallery = state.gallery || [];
-          if (state.addons && Array.isArray(state.addons) && state.addons.length > 0) {
-            this.addons = state.addons;
-          }
-          if (state.testimonials && Array.isArray(state.testimonials) && state.testimonials.length > 0) {
-            this.testimonials = state.testimonials;
-          }
-          this.pageViews = state.pageViews || [];
-          if (state.siteSettings) {
-            this.siteSettings = { ...this.siteSettings, ...state.siteSettings };
-          }
-          // Ensure all standard curated packages and images are present
-          const existingIds = new Set(this.packages.map(p => p.id));
-          const standardPackages = this.getStandardCuratedPackages();
-          for (const sp of standardPackages) {
-            if (!existingIds.has(sp.id)) {
-              this.packages.push(sp);
-            }
-          }
-          const stdImages = this.getStandardPackageImages();
-          const existingImgIds = new Set(this.packageImages.map(img => img.id));
-          for (const sImg of stdImages) {
-            if (!existingImgIds.has(sImg.id)) {
-              this.packageImages.push(sImg);
-            }
-          }
-          for (const pkg of this.packages) {
-            if (!pkg.images || pkg.images.length === 0) {
-              pkg.images = this.packageImages.filter(img => img.packageId === pkg.id);
-            }
-            if (!pkg.priceTiers || pkg.priceTiers.length === 0) {
-              const stdPkg = standardPackages.find(sp => sp.id === pkg.id);
-              if (stdPkg && stdPkg.priceTiers && stdPkg.priceTiers.length > 0) {
-                pkg.priceTiers = stdPkg.priceTiers;
-              } else {
-                pkg.priceTiers = this.generateDefaultPriceTiers(pkg.basePrice);
-              }
-            }
-          }
-          this.saveToDisk();
-          console.log('[Garut Journey] Database restored from disk with full package catalog.');
+        if (this.applyLoadedState(state)) {
           return true;
         }
       }
-    } catch (e) {
-      console.warn('Failed to load database from disk:', e);
-    }
+    } catch {}
+
+    // 3. Fallback to bundled initialDatabase (ensures Vercel ALWAYS has full catalog even if filesystem is read-only)
+    try {
+      if (initialDatabase && this.applyLoadedState(initialDatabase)) {
+        return true;
+      }
+    } catch {}
+
     return false;
   }
 

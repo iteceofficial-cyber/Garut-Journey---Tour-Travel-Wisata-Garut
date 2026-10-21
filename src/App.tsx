@@ -19,12 +19,13 @@ import { AdminLogin } from './components/AdminLogin.js';
 
 import { updateFavicon } from './utils/seo.js';
 import { applyThemeColors } from './utils/theme.js';
+import initialDbData from '../data/database.json';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(window.location.pathname || '/');
-  const [packages, setPackages] = useState<TourPackage[]>([]);
-  const [siteSettings, setSiteSettings] = useState<SiteSettings | undefined>(undefined);
-  const [loadingPackages, setLoadingPackages] = useState(true);
+  const [packages, setPackages] = useState<TourPackage[]>((initialDbData.packages as any) || []);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings | undefined>((initialDbData.siteSettings as any) || undefined);
+  const [loadingPackages, setLoadingPackages] = useState(false);
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   useEffect(() => {
