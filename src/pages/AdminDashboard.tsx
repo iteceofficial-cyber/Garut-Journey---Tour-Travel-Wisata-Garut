@@ -50,6 +50,7 @@ import {
 } from 'lucide-react';
 import { analyzeArticleSEO, autoOptimizeArticleSEO, type ArticleSEOAnalysis } from '../utils/seo.js';
 import { downloadBookingPdf, PRESET_THEMES, applyThemeColors } from '../utils/theme.js';
+import initialDbData from '../../data/database.json';
 
 interface AdminDashboardProps {
   onLogout: () => void;
@@ -62,14 +63,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
   const [metrics, setMetrics] = useState<any>(null);
   const [analytics, setAnalytics] = useState<any>(null);
-  const [bookings, setBookings] = useState<any[]>([]);
-  const [packages, setPackages] = useState<TourPackage[]>([]);
-  const [addons, setAddons] = useState<AddonOption[]>([]);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [gallery, setGallery] = useState<GalleryItem[]>([]);
-  const [paymentEvents, setPaymentEvents] = useState<any[]>([]);
-  const [siteSettings, setSiteSettings] = useState<SiteSettings | null>(null);
+  const [bookings, setBookings] = useState<any[]>((initialDbData.bookings as any) || []);
+  const [packages, setPackages] = useState<TourPackage[]>((initialDbData.packages as any) || []);
+  const [addons, setAddons] = useState<AddonOption[]>((initialDbData.addons as any) || []);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>((initialDbData.testimonials as any) || []);
+  const [articles, setArticles] = useState<Article[]>((initialDbData.articles as any) || []);
+  const [gallery, setGallery] = useState<GalleryItem[]>((initialDbData.gallery as any) || []);
+  const [paymentEvents, setPaymentEvents] = useState<any[]>((initialDbData.paymentEvents as any) || []);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings | null>((initialDbData.siteSettings as any) || null);
 
   const [loading, setLoading] = useState(true);
   const [bookingFilterStatus, setBookingFilterStatus] = useState('all');
@@ -290,14 +291,26 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           fetch('/api/site-settings').then(r => r.json()).catch(() => ({}))
         ]);
 
-      if (resMetrics.success) setMetrics(resMetrics.data);
-      if (resAnalytics.success) setAnalytics(resAnalytics.data);
-      if (resBookings.success) setBookings(resBookings.data);
-      if (resPackages.success) setPackages(resPackages.data);
+      if (resMetrics.success && resMetrics.data) {
+        setMetrics(resMetrics.data);
+      } else {
+        const bks = (resBookings.success && resBookings.data) ? resBookings.data : ((initialDbData.bookings as any) || []);
+        const confirmed = bks.filter((b: any) => b.status === 'confirmed' || b.status === 'completed');
+        const rev = confirmed.reduce((acc: number, b: any) => acc + (b.totalAmount || 0), 0);
+        setMetrics({
+          verifiedRevenue: rev,
+          paymentsSuccessful: confirmed.length,
+          paymentsPending: bks.filter((b: any) => b.status === 'pending').length,
+          totalBookings: bks.length
+        });
+      }
+      if (resAnalytics.success && resAnalytics.data) setAnalytics(resAnalytics.data);
+      if (resBookings.success && Array.isArray(resBookings.data)) setBookings(resBookings.data);
+      if (resPackages.success && Array.isArray(resPackages.data)) setPackages(resPackages.data);
       if (resAddons.success && Array.isArray(resAddons.data)) setAddons(resAddons.data);
-      if (resEvents.success) setPaymentEvents(resEvents.data);
-      if (resArticles.success) setArticles(resArticles.data);
-      if (resGallery.success) setGallery(resGallery.data);
+      if (resEvents.success && Array.isArray(resEvents.data)) setPaymentEvents(resEvents.data);
+      if (resArticles.success && Array.isArray(resArticles.data)) setArticles(resArticles.data);
+      if (resGallery.success && Array.isArray(resGallery.data)) setGallery(resGallery.data);
       if (resTestimonials.success && Array.isArray(resTestimonials.data)) setTestimonials(resTestimonials.data);
       if (resSettings.success && resSettings.data) {
         const s = resSettings.data;
