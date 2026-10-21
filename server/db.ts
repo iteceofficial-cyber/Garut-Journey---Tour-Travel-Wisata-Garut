@@ -1,7 +1,20 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import initialDatabase from '../data/database.json';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+let initialDatabase: any = null;
+try {
+  initialDatabase = require('../data/database.json');
+} catch (e) {
+  try {
+    const raw = fs.readFileSync(path.resolve(process.cwd(), 'data/database.json'), 'utf-8');
+    initialDatabase = JSON.parse(raw);
+  } catch (err) {
+    console.warn('Could not load initialDatabase:', err);
+  }
+}
 import type {
   AddonOption,
   Booking,
